@@ -3,69 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chemistry Engine Final</title>
+    <title>ChemMaster Pro: Ultimate Edition</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"></script>
     <style>
-        :root { --bg-mass: #e0f2f1; --bg-rxn: #fff3e0; --bg-stoch: #f3e5f5; --bg-redox: #ffebee; --primary: #263238; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: var(--bg-mass); transition: 0.6s; display: flex; flex-direction: column; align-items: center; }
-        nav { margin: 20px; display: flex; gap: 10px; padding: 10px; background: rgba(255,255,255,0.9); border-radius: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); position: sticky; top: 10px; z-index: 1000; }
-        .nav-btn { border: none; padding: 12px 20px; border-radius: 20px; cursor: pointer; background: transparent; font-weight: 600; transition: 0.3s; color: #555; }
-        .nav-btn.active { background: var(--primary); color: white; }
-        .container { display: none; width: 90%; max-width: 800px; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 40px; }
-        .active-page { display: block; animation: fadeIn 0.4s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        input, select { padding: 12px; margin: 5px 0; border: 2px solid #eee; border-radius: 10px; font-size: 16px; outline: none; transition: 0.3s; }
-        input:focus { border-color: var(--primary); }
-        .btn-solve { background: var(--primary); color: white; border: none; padding: 15px; width: 100%; border-radius: 12px; font-size: 17px; cursor: pointer; margin-top: 15px; font-weight: bold; }
-        .btn-solve:hover { opacity: 0.9; }
-        .result { margin-top: 20px; padding: 20px; background: #f9f9f9; border-radius: 12px; border-left: 6px solid var(--primary); line-height: 1.6; font-size: 16px; }
-        .stoch-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        .stoch-table th, .stoch-table td { padding: 12px; border: 1px solid #eee; text-align: center; }
-        .badge { padding: 4px 10px; border-radius: 6px; color: white; font-size: 0.9em; font-weight: bold; display: inline-block; }
-        .ox { background: #d32f2f; } .red { background: #1976d2; }
+        :root {
+            --bg-color: #f0f4f8;
+            --primary: #2c3e50;
+            --accent: #3498db;
+            --success: #27ae60;
+            --danger: #e74c3c;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            background-color: var(--bg-color);
+            /* Химический фон с иконками */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill='%232c3e50' fill-opacity='0.03'%3E%3Cpath d='M30 20l-5 10h10l-5-10zm40 40l-5 10h10l-5-10zM10 80c2 0 3-1 3-3s-1-3-3-3-3 1-3 3 1 3 3 3zm80-60c2 0 3-1 3-3s-1-3-3-3-3 1-3 3 1 3 3 3zM50 10l-2 5h4l-2-5zm0 80l-2 5h4l-2-5z'/%3E%3Ccircle cx='20' cy='40' r='2'/%3E%3Ccircle cx='80' cy='80' r='3'/%3E%3Cpath d='M45 45h10v10H45z'/%3E%3C/g%3E%3C/svg%3E");
+            color: var(--primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        nav {
+            margin: 25px;
+            display: flex;
+            gap: 12px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 50px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 15px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            border: none;
+            padding: 12px 24px;
+            border-radius: 40px;
+            cursor: pointer;
+            background: transparent;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: var(--primary);
+            font-size: 14px;
+        }
+
+        .nav-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(44, 62, 80, 0.3);
+        }
+
+        .container {
+            display: none;
+            width: 90%;
+            max-width: 850px;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 35px;
+            border-radius: 24px;
+            box-shadow: 0 15px 45px rgba(0,0,0,0.08);
+            margin-bottom: 50px;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .active-page { display: block; animation: slideUp 0.5s ease; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 { margin-top: 0; font-weight: 800; letter-spacing: -0.5px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+
+        input, select {
+            padding: 14px;
+            margin: 8px 0;
+            border: 2px solid #edf2f7;
+            border-radius: 12px;
+            font-size: 16px;
+            outline: none;
+            transition: 0.2s;
+            background: #f8fafc;
+        }
+
+        input:focus { border-color: var(--accent); background: #fff; box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1); }
+
+        .btn-solve {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 16px;
+            width: 100%;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+
+        .btn-solve:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+
+        .result {
+            margin-top: 25px;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 16px;
+            border-left: 6px solid var(--accent);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        .step-box { background: #f1f5f9; padding: 10px; border-radius: 8px; margin: 5px 0; font-family: monospace; font-size: 14px; }
+
+        .stoch-table { width: 100%; border-collapse: separate; border-spacing: 0; margin-top: 20px; border-radius: 12px; overflow: hidden; border: 1px solid #eee; }
+        .stoch-table th { background: #f8fafc; padding: 15px; font-weight: 600; }
+        .stoch-table td { padding: 15px; text-align: center; background: white; border-top: 1px solid #eee; }
+
+        .badge { padding: 4px 10px; border-radius: 8px; color: white; font-size: 12px; font-weight: bold; text-transform: uppercase; }
+        .ox { background: var(--danger); }
+        .red { background: var(--accent); }
     </style>
 </head>
 <body id="mainBody">
 
     <nav>
-        <button class="nav-btn active" onclick="showPage('mass', '--bg-mass', this)">⚖️ Масса</button>
-        <button class="nav-btn" onclick="showPage('rxn', '--bg-rxn', this)">🧪 Реакции</button>
-        <button class="nav-btn" onclick="showPage('stoch', '--bg-stoch', this)">📐 Задачи</button>
-        <button class="nav-btn" onclick="showPage('redox', '--bg-redox', this)">⚡ ОВР</button>
+        <button class="nav-btn active" onclick="showPage('mass', this)">⚖️ Масса</button>
+        <button class="nav-btn" onclick="showPage('rxn', this)">🧪 Реакции</button>
+        <button class="nav-btn" onclick="showPage('stoch', this)">📐 Задачи</button>
+        <button class="nav-btn" onclick="showPage('redox', this)">⚡ ОВР</button>
     </nav>
 
     <div id="mass" class="container active-page">
-        <h2>⚖️ Расчет молярной массы</h2>
-        <input type="text" id="massInput" placeholder="Введите формулу, например: Ba(OH)2" oninput="liveMass()" style="width: 96%;">
-        <div id="massResult" class="result">Введите формулу...</div>
+        <h2>⚖️ Молярная масса</h2>
+        <p style="color: #666; font-size: 14px;">Поддерживает коэффициенты (например: <b>5H2O</b> или <b>2KMnO4</b>)</p>
+        <input type="text" id="massInput" placeholder="Введите формулу..." oninput="liveMass()" style="width: 96%;">
+        <div id="massResult" class="result">Результат появится здесь...</div>
     </div>
 
     <div id="rxn" class="container">
-        <h2>🧪 Уравнивание реакций</h2>
-        <input type="text" id="rxnInput" placeholder="KMnO4 + HCl = KCl + MnCl2 + Cl2 + H2O" style="width: 96%;">
-        <button class="btn-solve" onclick="balanceRxnUI()">Уравнять реакцию</button>
+        <h2>🧪 Уравнивание</h2>
+        <input type="text" id="rxnInput" placeholder="Напр: NaOH + H2SO4 = Na2SO4 + H2O" style="width: 96%;">
+        <button class="btn-solve" onclick="balanceRxnUI()">Уравнять уравнение</button>
         <div id="rxnResult" class="result">...</div>
     </div>
 
     <div id="stoch" class="container">
-        <h2>📐 Решение задач по уравнению</h2>
-        <p style="font-size: 0.9em; color: #666;">Введите уравнение, нажмите "Разбор", затем введите одно известное число.</p>
-        <input type="text" id="stochEq" placeholder="Fe + Cl2 = FeCl3" style="width: 96%;">
-        <button class="btn-solve" onclick="parseStoch()">1. Разбор уравнения</button>
+        <h2>📐 Решение задач</h2>
+        <input type="text" id="stochEq" placeholder="Уравнение (напр: Zn + 2HCl = ZnCl2 + H2)" style="width: 96%;">
+        <button class="btn-solve" onclick="parseStoch()">1. Разбор веществ</button>
         <div id="stochWorkplace" style="display:none; margin-top:20px;">
             <table class="stoch-table">
                 <thead id="stochHead"></thead>
                 <tbody id="stochBody"></tbody>
             </table>
-            <button class="btn-solve" onclick="calculateStoch()">2. Найти неизвестные</button>
+            <button class="btn-solve" onclick="calculateStoch()">2. Рассчитать путь и результат</button>
         </div>
-        <div id="stochFinalResult" class="result">Оставьте ячейку пустой, чтобы найти её значение.</div>
+        <div id="stochFinalResult" class="result">Введите одно известное значение в таблицу.</div>
     </div>
 
     <div id="redox" class="container">
-        <h2>⚡ Окислительно-восстановительный анализ</h2>
-        <input type="text" id="redoxInput" placeholder="KMnO4 + HCl = KCl + MnCl2 + Cl2 + H2O" style="width: 96%;">
-        <button class="btn-solve" onclick="solveRedox()">Определить степени и роли</button>
+        <h2>⚡ Окислительно-восстановительный баланс</h2>
+        <input type="text" id="redoxInput" placeholder="Напр: KMnO4 + HCl = KCl + MnCl2 + Cl2 + H2O" style="width: 96%;">
+        <button class="btn-solve" onclick="solveRedox()">Найти роли элементов</button>
         <div id="redoxRes" class="result">...</div>
     </div>
 
@@ -73,26 +179,47 @@
         const PT = {"H":1.008,"He":4.003,"Li":6.941,"Be":9.012,"B":10.81,"C":12.01,"N":14.01,"O":16.00,"F":19.00,"Ne":20.18,"Na":22.99,"Mg":24.31,"Al":26.98,"Si":28.09,"P":30.97,"S":32.06,"Cl":35.45,"Ar":39.95,"K":39.10,"Ca":40.08,"Sc":44.96,"Ti":47.87,"V":50.94,"Cr":52.00,"Mn":54.94,"Fe":55.85,"Co":58.93,"Ni":58.69,"Cu":63.55,"Zn":65.38,"Ga":69.72,"Ge":72.63,"As":74.92,"Se":78.96,"Br":79.90,"Kr":83.80,"Rb":85.47,"Sr":87.62,"Y":88.91,"Zr":91.22,"Nb":92.91,"Mo":95.94,"Tc":98,"Ru":101.07,"Rh":102.91,"Pd":106.42,"Ag":107.87,"Cd":112.41,"In":114.82,"Sn":118.71,"Sb":121.76,"Te":127.60,"I":126.90,"Xe":131.29,"Cs":132.91,"Ba":137.33,"La":138.91,"Ce":140.12,"Pr":140.91,"Nd":144.24,"Pm":145,"Sm":150.36,"Eu":151.96,"Gd":157.25,"Tb":158.93,"Dy":162.50,"Ho":164.93,"Er":167.26,"Tm":168.93,"Yb":173.04,"Lu":174.97,"Hf":178.49,"Ta":180.95,"W":183.84,"Re":186.21,"Os":190.23,"Ir":192.22,"Pt":195.08,"Au":196.97,"Hg":200.59,"Tl":204.38,"Pb":207.2,"Bi":208.98,"Po":209,"At":210,"Rn":222,"Fr":223,"Ra":226,"Ac":227,"Th":232.04,"Pa":231.04,"U":238.03,"Np":237,"Pu":244,"Am":243,"Cm":247,"Bk":247,"Cf":251,"Es":252,"Fm":257,"Md":258,"No":259,"Lr":262,"Rf":267,"Db":270,"Sg":271,"Bh":270,"Hs":277,"Mt":276,"Ds":281,"Rg":280,"Cn":285,"Nh":284,"Fl":289,"Mc":288,"Lv":293,"Ts":294,"Og":294};
         const FIXED_SOX = {"K":1,"Na":1,"Li":1,"Rb":1,"Cs":1,"Ag":1,"Ba":2,"Ca":2,"Mg":2,"Sr":2,"Zn":2,"Al":3,"F":-1,"O":-2,"H":1};
 
-        function showPage(id, col, btn) {
+        function showPage(id, btn) {
             document.querySelectorAll('.container').forEach(c => c.classList.remove('active-page'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(id).classList.add('active-page');
             btn.classList.add('active');
-            document.getElementById('mainBody').style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue(col);
         }
 
+        // Парсинг формулы (учитывает скобки и коэффициенты)
         function parseF(f) {
+            let multiplier = 1;
+            let formulaPart = f;
+            let matchCoeff = f.match(/^(\d+)/);
+            if(matchCoeff) {
+                multiplier = parseInt(matchCoeff[1]);
+                formulaPart = f.slice(matchCoeff[1].length);
+            }
+
             let i=0; const p=()=>{
-                let d={}; while(i<f.length && f[i]!=')'){
-                    if(f[i]=='('){i++;let n=p();i++;let ft="";while(i<f.length&&/[0-9]/.test(f[i]))ft+=f[i++];
+                let d={}; while(i<formulaPart.length && formulaPart[i]!=')'){
+                    if(formulaPart[i]=='('){i++;let n=p();i++;let ft="";while(i<formulaPart.length&&/[0-9]/.test(formulaPart[i]))ft+=formulaPart[i++];
                     ft=parseInt(ft)||1;for(let e in n)d[e]=(d[e]||0)+n[e]*ft;
-                    }else{let m=f.slice(i).match(/^([A-Z][a-z]?)([0-9]*)/);if(m){let e=m[1];let c=parseInt(m[2])||1;d[e]=(d[e]||0)+c;i+=m[0].length;}else i++;}
+                    }else{let m=formulaPart.slice(i).match(/^([A-Z][a-z]?)([0-9]*)/);if(m){let e=m[1];let c=parseInt(m[2])||1;d[e]=(d[e]||0)+c;i+=m[0].length;}else i++;}
                 } return d;
-            }; return p();
+            };
+            let result = p();
+            for(let el in result) result[el] *= multiplier;
+            return result;
         }
 
         function getM(f) { try { const els = parseF(f); return Object.entries(els).reduce((s,[e,c])=>(PT[e]||0)*c+s,0); } catch(e){return 0;} }
-        function liveMass() { const m = getM(document.getElementById('massInput').value); document.getElementById('massResult').innerHTML = m > 0 ? `<b>М = ${m.toFixed(3)} г/моль</b>` : "..."; }
+        
+        function liveMass() { 
+            const input = document.getElementById('massInput').value.trim();
+            const m = getM(input); 
+            if(m > 0) {
+                document.getElementById('massResult').innerHTML = `
+                    <div style="font-size: 1.4em; color: var(--primary);"><b>M = ${m.toFixed(3)} г/моль</b></div>
+                    <div style="color: #666; margin-top:10px;">Для вещества: ${input}</div>
+                `;
+            } else { document.getElementById('massResult').innerHTML = "..."; }
+        }
 
         function balanceRxn(input) {
             try {
@@ -110,46 +237,65 @@
 
         function balanceRxnUI() {
             const data = balanceRxn(document.getElementById('rxnInput').value);
-            if(!data) return document.getElementById('rxnResult').innerHTML = "❌ Ошибка: проверьте правильность формул.";
+            if(!data) return document.getElementById('rxnResult').innerHTML = "❌ Ошибка в формулах.";
             let oL = [], oR = [];
             data.coeffs.forEach((c, i) => { let s = (c === 1 ? '' : c) + data.comps[i]; if (i < data.lhsLen) oL.push(s); else oR.push(s); });
-            document.getElementById('rxnResult').innerHTML = `<b style="color:#2e7d32; font-size:1.2em;">${oL.join(' + ')} = ${oR.join(' + ')}</b>`;
+            document.getElementById('rxnResult').innerHTML = `<b style="color:var(--success); font-size:1.3em;">${oL.join(' + ')} = ${oR.join(' + ')}</b>`;
         }
 
         function parseStoch() {
             const eq = document.getElementById('stochEq').value.replace(/\s+/g, '');
-            if(!eq.includes('=')) return alert("Введите уравнение со знаком '='");
+            if(!eq.includes('=')) return alert("Нужен знак '='");
             const comps = [...eq.split('=')[0].split('+'), ...eq.split('=')[1].split('+')];
             document.getElementById('stochHead').innerHTML = '<tr>' + comps.map(c => `<th>${c}</th>`).join('') + '</tr>';
-            document.getElementById('stochBody').innerHTML = '<tr>' + comps.map((_, i) => `<td><input type="text" id="v${i}" placeholder="0.00" style="width:70px;"><br><select id="t${i}"><option value="m">г</option><option value="V">л</option><option value="n">моль</option></select></td>`).join('') + '</tr>';
+            document.getElementById('stochBody').innerHTML = '<tr>' + comps.map((_, i) => `<td><input type="text" id="v${i}" placeholder="Дано" style="width:70px;"><br><select id="t${i}"><option value="m">г</option><option value="V">л</option><option value="n">моль</option></select></td>`).join('') + '</tr>';
             document.getElementById('stochWorkplace').style.display = 'block';
         }
 
         function calculateStoch() {
             const data = balanceRxn(document.getElementById('stochEq').value);
-            if(!data) return alert("Ошибка в уравнении!");
-            let nPerCoeff = -1;
+            if(!data) return alert("Ошибка!");
+            let knownIdx = -1, knownMoles = 0, step1 = "";
+
             for(let i=0; i<data.comps.length; i++) {
                 let val = document.getElementById(`v${i}`).value.trim();
                 if(val !== "") {
+                    knownIdx = i;
                     let v = parseFloat(val);
                     let type = document.getElementById(`t${i}`).value;
-                    let m = (type==='m') ? v/getM(data.comps[i]) : (type==='V' ? v/22.4 : v);
-                    nPerCoeff = m / data.coeffs[i];
+                    let MW = getM(data.comps[i]);
+                    if(type==='m') { knownMoles = v/MW; step1 = `n(${data.comps[i]}) = m/M = ${v}/${MW.toFixed(2)} = ${knownMoles.toFixed(3)} моль`; }
+                    else if(type==='V') { knownMoles = v/22.4; step1 = `n(${data.comps[i]}) = V/Vm = ${v}/22.4 = ${knownMoles.toFixed(3)} моль`; }
+                    else { knownMoles = v; step1 = `n(${data.comps[i]}) = ${v} моль`; }
                     break;
                 }
             }
-            if(nPerCoeff < 0) return alert("Введите хотя бы одно известное значение!");
-            let res = "<b>Результаты расчета:</b><br>";
+
+            if(knownIdx < 0) return alert("Введите число!");
+            
+            let nFactor = knownMoles / data.coeffs[knownIdx];
+            let resultsHTML = `<div class="step-box"><b>Шаг 1:</b> ${step1}</div>`;
+            resultsHTML += `<div class="step-box"><b>Шаг 2:</b> Пропорция по коэффициентам (${data.coeffs[knownIdx]} моль -> ${knownMoles.toFixed(3)} моль)</div>`;
+
             data.comps.forEach((c, i) => {
-                if(document.getElementById(`v${i}`).value.trim() === "") {
-                    let ni = nPerCoeff * data.coeffs[i];
+                if(i !== knownIdx) {
+                    let ni = nFactor * data.coeffs[i];
                     let type = document.getElementById(`t${i}`).value;
-                    let val = (type==='m') ? (ni*getM(c)).toFixed(2)+" г" : (type==='V' ? (ni*22.4).toFixed(2)+" л" : ni.toFixed(3)+" моль");
-                    res += `🔹 <b>${c}</b>: ${val}<br>`;
+                    let MW = getM(c);
+                    let finalVal = "", calcStr = "";
+                    
+                    if(type==='m') { finalVal = (ni*MW).toFixed(2) + " г"; calcStr = `m = n * M = ${ni.toFixed(3)} * ${MW.toFixed(2)}`; }
+                    else if(type==='V') { finalVal = (ni*22.4).toFixed(2) + " л"; calcStr = `V = n * 22.4 = ${ni.toFixed(3)} * 22.4`; }
+                    else { finalVal = ni.toFixed(3) + " моль"; calcStr = `n = ${ni.toFixed(3)} моль`; }
+
+                    resultsHTML += `
+                        <div class="result" style="margin-top:10px; border-left-color: var(--success);">
+                            <b>${c}: ${finalVal}</b><br>
+                            <small style="color:#777;">Путь: ${calcStr} = ${finalVal}</small>
+                        </div>`;
                 }
             });
-            document.getElementById('stochFinalResult').innerHTML = res;
+            document.getElementById('stochFinalResult').innerHTML = resultsHTML;
         }
 
         function getSox(comp) {
@@ -162,19 +308,15 @@
                 else unknown.push(k);
             });
             if (unknown.length === 1) res[unknown[0]] = -knownSum / els[unknown[0]];
-            else if (unknown.length > 1) {
-                if (unknown.includes("Cl") && !keys.includes("O")) {
-                    res["Cl"] = -1; knownSum += (-1)*els["Cl"];
-                    let last = unknown.find(x => x !== "Cl"); if(last) res[last] = -knownSum/els[last];
-                }
+            else if (unknown.length > 1 && unknown.includes("Cl") && !keys.includes("O")) {
+                res["Cl"] = -1; knownSum += (-1)*els["Cl"];
+                let last = unknown.find(x => x !== "Cl"); if(last) res[last] = -knownSum/els[last];
             }
-            keys.forEach(k => { if(res[k] === undefined) res[k] = 0; });
             return res;
         }
 
         function solveRedox() {
             const eq = document.getElementById('redoxInput').value.replace(/\s+/g, '');
-            if(!eq.includes('=')) return alert("Используйте знак '='");
             const [l, r] = eq.split('=');
             let lS = {}, rS = {};
             l.split('+').forEach(c => { let m = getSox(c); for(let e in m) { if(!lS[e]) lS[e] = new Set(); lS[e].add(Math.round(m[e])); }});
@@ -185,12 +327,12 @@
                     lS[el].forEach(s1 => { rS[el].forEach(s2 => {
                         if(s1 !== s2) {
                             let isOx = s1 > s2;
-                            out += `<div style="margin-bottom:10px;"><b>${el}</b>: ${s1>0?'+':''}${s1} → ${s2>0?'+':''}${s2} | <span class="badge ${isOx?'ox':'red'}">${isOx?'Окислитель':'Восстановитель'}</span></div>`;
+                            out += `<div style="margin-bottom:12px;">🧪 <b>${el}</b>: ${s1>0?'+':''}${s1} → ${s2>0?'+':''}${s2} | <span class="badge ${isOx?'ox':'red'}">${isOx?'Окислитель':'Восстановитель'}</span></div>`;
                         }
                     });});
                 }
             });
-            document.getElementById('redoxRes').innerHTML = out || "Степени окисления не изменились.";
+            document.getElementById('redoxRes').innerHTML = out || "Изменений нет.";
         }
     </script>
 </body>
