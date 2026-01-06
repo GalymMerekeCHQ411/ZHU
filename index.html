@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChemMaster Final Pro Max</title>
+    <title>ChemMaster Ultimate Fix</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"></script>
     <style>
         :root { --bg-mass: #e0f2f1; --bg-rxn: #fff3e0; --bg-stoch: #f3e5f5; --bg-redox: #ffebee; --primary: #263238; }
@@ -48,21 +48,21 @@
     <div id="stoch" class="container">
         <h2>📐 Решение задач</h2>
         <input type="text" id="stochEq" placeholder="Fe + Cl2 = FeCl3" style="width: 95%;">
-        <button class="btn-solve" onclick="parseStoch()">1. Разбор</button>
+        <button class="btn-solve" onclick="parseStoch()">Разбор</button>
         <div id="stochWorkplace" style="display:none; margin-top:15px;">
             <table class="stoch-table">
                 <thead id="stochHead"></thead>
                 <tbody id="stochBody"></tbody>
             </table>
-            <button class="btn-solve" onclick="calculateStoch()">2. Рассчитать</button>
+            <button class="btn-solve" onclick="calculateStoch()">Рассчитать</button>
         </div>
-        <div id="stochFinalResult" class="result">...</div>
+        <div id="stochFinalResult" class="result">Введите известное, выберите л/г для искомого.</div>
     </div>
 
     <div id="redox" class="container">
-        <h2>⚡ Электронный баланс</h2>
+        <h2>⚡ Анализ ОВР</h2>
         <input type="text" id="redoxInput" placeholder="KMnO4 + HCl = KCl + MnCl2 + Cl2 + H2O" style="width: 95%;">
-        <button class="btn-solve" onclick="solveRedox()">Определить роли</button>
+        <button class="btn-solve" onclick="solveRedox()">Найти окислитель и восстановитель</button>
         <div id="redoxRes" class="result">...</div>
     </div>
 
@@ -123,49 +123,62 @@
 
         function calculateStoch() {
             const data = balanceRxn(document.getElementById('stochEq').value);
-            if(!data) return alert("Ошибка в уравнении!");
+            if(!data) return alert("Ошибка!");
             let n0 = -1;
             for(let i=0; i<data.comps.length; i++) {
                 let val = document.getElementById(`v${i}`).value.trim();
                 if(val !== "") {
                     let v = parseFloat(val);
-                    let type = document.getElementById(`t${i}`).value;
-                    let moles = (type==='m') ? v/getM(data.comps[i]) : (type==='V' ? v/22.4 : v);
+                    let t = document.getElementById(`t${i}`).value;
+                    let moles = (t==='m') ? v/getM(data.comps[i]) : (t==='V' ? v/22.4 : v);
                     n0 = moles / data.coeffs[i];
                     break;
                 }
             }
-            if(n0 < 0) return alert("Введите хотя бы одно число!");
+            if(n0 < 0) return alert("Введите число!");
             let res = "<b>Результат:</b><br>";
             data.comps.forEach((c, i) => {
                 if(document.getElementById(`v${i}`).value === "") {
                     let ni = n0 * data.coeffs[i];
-                    let type = document.getElementById(`t${i}`).value;
-                    let fv = (type==='m') ? (ni*getM(c)).toFixed(2)+" г" : (type==='V' ? (ni*22.4).toFixed(2)+" л" : ni.toFixed(3)+" моль");
+                    let t = document.getElementById(`t${i}`).value;
+                    let fv = (t==='m') ? (ni*getM(c)).toFixed(2)+" г" : (t==='V' ? (ni*22.4).toFixed(2)+" л" : ni.toFixed(3)+" моль");
                     res += `✅ <b>${c}</b>: ${fv}<br>`;
                 }
             });
             document.getElementById('stochFinalResult').innerHTML = res;
         }
 
-        // --- УЛЬТРА ОВР МОДУЛЬ ---
-        function getAdvancedSox(comp) {
+        // --- УЛУЧШЕННЫЙ ОВР: ПОНИМАЕТ МЕТАЛЛЫ ---
+        function getSmartSox(comp) {
             const els = parseF(comp);
             const atoms = Object.keys(els);
             if(atoms.length === 1) return {[atoms[0]]: 0};
 
-            const fixed = {"K":1,"Na":1,"Li":1,"Cs":1,"Ba":2,"Ca":2,"Mg":2,"Al":3,"F":-1,"H":1,"O":-2};
-            let knownCharge = 0;
-            let unknownAtom = "";
+            // Список элементов с практически всегда постоянной степенью окисления
+            const CONST_SOX = {
+                "K":1,"Na":1,"Li":1,"Rb":1,"Cs":1, // Группа I
+                "Ba":2,"Ca":2,"Mg":2,"Sr":2,"Zn":2, // Группа II
+                "Al":3,"F":-1,"H":1,"O":-2
+            };
+
+            let chargeSum = 0;
+            let targetAtom = null;
 
             atoms.forEach(a => {
-                if(fixed[a]) knownCharge += fixed[a] * els[a];
-                else unknownAtom = a;
+                if(CONST_SOX[a] !== undefined) {
+                    chargeSum += CONST_SOX[a] * els[a];
+                } else {
+                    targetAtom = a; // Находим "неизвестный" (Mn, Cl в солях, S и т.д.)
+                }
             });
 
             let res = {};
-            if(unknownAtom) res[unknownAtom] = -knownCharge / els[unknownAtom];
-            atoms.forEach(a => { if(fixed[a]) res[a] = fixed[a]; });
+            // Если нашли неизвестный, вычисляем его степень
+            if(targetAtom) {
+                res[targetAtom] = -chargeSum / els[targetAtom];
+            }
+            // Добавляем остальные
+            atoms.forEach(a => { if(CONST_SOX[a] !== undefined) res[a] = CONST_SOX[a]; });
             return res;
         }
 
@@ -174,42 +187,38 @@
             if(!eq.includes('=')) return alert("Нужно '='");
             const [l, r] = eq.split('=');
 
-            let leftStates = {};
+            let lMap = {}, rMap = {};
             l.split('+').forEach(c => {
-                let states = getAdvancedSox(c);
-                for(let el in states) {
-                    if(!leftStates[el]) leftStates[el] = new Set();
-                    leftStates[el].add(Math.round(states[el]));
+                let m = getSmartSox(c);
+                for(let e in m) {
+                    if(!lMap[e]) lMap[e] = new Set();
+                    lMap[e].add(Math.round(m[e]));
                 }
             });
-
-            let rightStates = {};
             r.split('+').forEach(c => {
-                let states = getAdvancedSox(c);
-                for(let el in states) {
-                    if(!rightStates[el]) rightStates[el] = new Set();
-                    rightStates[el].add(Math.round(states[el]));
+                let m = getSmartSox(c);
+                for(let e in m) {
+                    if(!rMap[e]) rMap[e] = new Set();
+                    rMap[e].add(Math.round(m[e]));
                 }
             });
 
             let out = "";
-            let elements = new Set([...Object.keys(leftStates), ...Object.keys(rightStates)]);
+            let els = new Set([...Object.keys(lMap), ...Object.keys(rMap)]);
 
-            elements.forEach(el => {
-                if(leftStates[el] && rightStates[el]) {
-                    // Проверяем каждую комбинацию "было" и "стало"
-                    for(let s1 of leftStates[el]) {
-                        for(let s2 of rightStates[el]) {
+            els.forEach(el => {
+                if(lMap[el] && rMap[el]) {
+                    lMap[el].forEach(s1 => {
+                        rMap[el].forEach(s2 => {
                             if(s1 !== s2) {
                                 let isOx = s1 > s2;
                                 out += `<div style="margin-bottom:8px;"><b>${el}</b>: ${s1>0?'+':''}${s1} → ${s2>0?'+':''}${s2} | <span class="badge ${isOx?'ox':'red'}">${isOx?'Окислитель':'Восстановитель'}</span></div>`;
                             }
-                        }
-                    }
+                        });
+                    });
                 }
             });
-
-            document.getElementById('redoxRes').innerHTML = out || "Степени окисления стабильны.";
+            document.getElementById('redoxRes').innerHTML = out || "Изменений нет.";
         }
     </script>
 </body>
