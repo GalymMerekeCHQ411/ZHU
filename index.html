@@ -29,14 +29,13 @@
             overflow-x: hidden;
         }
 
-        /* Навигация и кнопки */
+        /* Тіл ауыстырғыш */
         .lang-switcher {
             position: fixed; top: 20px; right: 20px; z-index: 2000;
             background: white; padding: 8px 18px; border-radius: 30px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: flex;
             gap: 10px; align-items: center; cursor: pointer;
-            border: 2px solid var(--primary); font-weight: bold; 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid var(--primary); font-weight: bold; transition: 0.3s;
         }
 
         nav {
@@ -49,31 +48,29 @@
         .nav-btn {
             border: none; padding: 12px 22px; border-radius: 40px;
             cursor: pointer; background: transparent; font-weight: 700;
-            color: var(--primary);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            will-change: transform, background;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); color: var(--primary);
         }
 
         .nav-btn.active { background: var(--primary); color: white; }
         .nav-btn:active { transform: scale(0.95); }
 
-        /* Контейнеры с 60 FPS переходами */
+        /* 60 FPS Transitions */
         .container {
-            display: none; width: 90%; max-width: 850px;
+            display: none; 
+            width: 90%; max-width: 850px;
             background: var(--glass); padding: 40px; border-radius: 30px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.1); margin-bottom: 50px;
-            /* Анимация появления */
             opacity: 0;
-            transform: translate3d(0, 20px, 0);
+            transform: translateY(20px) scale(0.98);
             transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
                         transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            will-change: opacity, transform;
+            will-change: transform, opacity;
         }
 
         .active-page { 
             display: block; 
-            opacity: 1; 
-            transform: translate3d(0, 0, 0); 
+            opacity: 1;
+            transform: translateY(0) scale(1);
         }
 
         /* pH Simulator Styles */
@@ -81,42 +78,45 @@
         .item-list { display: flex; flex-direction: column; gap: 12px; }
         .item-card {
             background: white; padding: 12px; border-radius: 15px;
-            text-align: center; cursor: pointer; 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center; cursor: pointer; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border: 2px solid transparent; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            will-change: transform;
         }
-        .item-card:hover { transform: scale(1.03) translateY(-5px); border-color: var(--accent); }
-        
+        .item-card:hover { transform: translateY(-3px); border-color: var(--accent); }
+        .item-card span { display: block; font-size: 13px; margin-top: 5px; font-weight: 700; }
         .ph-display { text-align: center; background: #fff; padding: 25px; border-radius: 25px; border: 1px solid #eee; }
-        
         #ph-slider {
             width: 100%; height: 15px; border-radius: 10px; appearance: none;
             background: linear-gradient(to right, #ff0000, #ffa500, #ffff00, #008000, #00ffff, #0000ff, #800080);
-            outline: none; margin: 25px 0; cursor: pointer;
+            outline: none; margin: 25px 0;
         }
-        #ph-slider::-webkit-slider-thumb {
-            appearance: none; width: 26px; height: 26px; background: white; 
-            border: 3px solid var(--primary); border-radius: 50%;
-            transition: transform 0.1s ease;
-        }
-
-        .ph-value { 
-            font-size: 54px; font-weight: 900; margin: 10px 0; 
-            transition: color 0.4s linear; 
+        .ph-value { font-size: 54px; font-weight: 900; margin: 10px 0; transition: color 0.3s; }
+        .indicator-row { display: flex; justify-content: space-around; gap: 8px; margin-top: 25px; }
+        .ind-box { padding: 10px; border-radius: 10px; color: white; font-size: 11px; width: 32%; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); transition: background 0.3s; }
+        .explanation {
+            margin-top: 20px; padding: 18px; background: #f8fbff;
+            border-radius: 15px; font-size: 14px; line-height: 1.5; border-left: 6px solid var(--primary);
+            text-align: left; min-height: 60px;
         }
 
-        .ind-box { 
-            padding: 10px; border-radius: 10px; color: white; font-size: 11px; width: 32%; 
-            font-weight: bold; transition: background 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+        /* Home Content */
+        .home-content { text-align: center; }
+        .mendeleev-card {
+            display: flex; flex-direction: column; align-items: center; margin: 30px 0;
+            padding: 25px; background: rgba(255,255,255,0.6); border-radius: 25px;
+            border: 1px solid rgba(26, 42, 108, 0.1);
         }
+        .mendeleev-img { width: 220px; height: 280px; object-fit: cover; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.15); margin-bottom: 20px; }
+        .periodic-img { width: 100%; border-radius: 20px; margin-top: 25px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); border: 2px solid white; }
 
-        .mendeleev-img { width: 220px; height: 280px; object-fit: cover; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.15); }
-        .periodic-img { width: 100%; border-radius: 20px; margin-top: 25px; }
-
-        input, select { padding: 15px; margin: 10px 0; border: 2px solid #e1e8f0; border-radius: 12px; width: 100%; box-sizing: border-box; transition: border-color 0.3s; }
-        .btn-solve { background: var(--primary); color: white; border: none; padding: 18px; width: 100%; border-radius: 15px; font-weight: bold; cursor: pointer; transition: all 0.3s; }
-        .btn-solve:hover { filter: brightness(1.2); transform: translateY(-2px); }
+        input, select { padding: 15px; margin: 10px 0; border: 2px solid #e1e8f0; border-radius: 12px; font-size: 16px; width: 100%; box-sizing: border-box; background: white; transition: border-color 0.3s; }
+        input:focus { border-color: var(--accent); outline: none; }
+        .btn-solve { background: var(--primary); color: white; border: none; padding: 18px; width: 100%; border-radius: 15px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 15px; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .btn-solve:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+        .btn-solve:active { transform: translateY(0); }
+        
+        .result { margin-top: 25px; padding: 25px; background: white; border-radius: 20px; border-left: 8px solid var(--accent); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .badge { padding: 6px 12px; border-radius: 8px; color: white; font-size: 12px; font-weight: bold; }
+        .ox { background: var(--danger); } .red { background: var(--accent); }
     </style>
 </head>
 <body>
@@ -135,12 +135,15 @@
     </nav>
 
     <div id="home" class="container active-page">
-        <div style="text-align: center;">
+        <div class="home-content">
             <h1 data-key="h-welcome">Химия әлеміне қош келдіңіз!</h1>
-            <div class="mendeleev-card" style="display: flex; flex-direction: column; align-items: center; margin: 30px 0;">
+            <div class="mendeleev-card">
                 <img src="mendeleev.jpg" class="mendeleev-img" alt="Менделеев">
                 <h2 data-key="m-name">Дмитрий Иванович Менделеев</h2>
+                <p><b>1834 — 1907</b></p>
+                <p data-key="m-desc">Периодтық заңды ашқан және элементтер кестесін жасаған ұлы ғалым.</p>
             </div>
+            <h3 data-key="p-title">Периодтық кесте</h3>
             <img src="table.png" class="periodic-img" alt="Кесте">
         </div>
     </div>
@@ -149,55 +152,61 @@
         <h2 style="text-align:center" data-key="ph-title">🌈 pH Интерактивті шкаласы</h2>
         <div class="ph-grid">
             <div class="item-list">
-                <div class="item-card" onclick="animateSlider(2.0, 'lemon')">🍋 <span data-key="lemon">Лимон</span></div>
-                <div class="item-card" onclick="animateSlider(7.0, 'water')">💧 <span data-key="water">Су</span></div>
+                <h4 style="text-align:center" data-key="ph-home">🏠 Тұрмыстық</h4>
+                <div class="item-card" onclick="updatePH(2.0, 'lemon')">🍋 <span data-key="lemon">Лимон</span></div>
+                <div class="item-card" onclick="updatePH(5.5, 'coffee')">☕ <span data-key="coffee">Кофе</span></div>
+                <div class="item-card" onclick="updatePH(7.0, 'water')">💧 <span data-key="water">Су</span></div>
+                <div class="item-card" onclick="updatePH(10.5, 'soap')">🧼 <span data-key="soap">Сабын</span></div>
             </div>
             <div class="ph-display">
                 <div id="ph-status" style="font-weight:bold;">ОРТА: НЕЙТРАЛДЫ</div>
                 <div class="ph-value" id="ph-num">7.0</div>
                 <input type="range" id="ph-slider" min="0" max="14" step="0.1" value="7" oninput="manualPH(this.value)">
-                <div style="display: flex; justify-content: space-around; margin-top: 20px;">
+                <div class="indicator-row">
                     <div id="ind-lak" class="ind-box">ЛАКМУС</div>
                     <div id="ind-met" class="ind-box">МЕТИЛОРАНЖ</div>
                     <div id="ind-fen" class="ind-box">ФЕНОЛФТАЛЕИН</div>
                 </div>
-                <div id="ph-exp" style="margin-top: 15px; font-size: 14px;"></div>
+                <div class="explanation" id="ph-exp" data-key="ph-intro">Затты таңдаңыз немесе ползунокты жылжытыңыз.</div>
             </div>
             <div class="item-list">
-                <div class="item-card" onclick="animateSlider(14.0, 'naoh')">🔥 <span data-key="naoh">NaOH</span></div>
-                <div class="item-card" onclick="animateSlider(0.0, 'hcl')">⚗️ <span data-key="hcl">HCl</span></div>
+                <h4 style="text-align:center" data-key="ph-chem">🧪 Химиялық</h4>
+                <div class="item-card" onclick="updatePH(0.0, 'hcl')">⚗️ <span data-key="hcl">Тұз қышқылы</span></div>
+                <div class="item-card" onclick="updatePH(1.0, 'h2so4')">🧪 <span data-key="h2so4">Күкірт қышқылы</span></div>
+                <div class="item-card" onclick="updatePH(9.0, 'nh3')">🧬 <span data-key="nh3">Аммиак</span></div>
+                <div class="item-card" onclick="updatePH(14.0, 'naoh')">🔥 <span data-key="naoh">Күйдіргіш натр</span></div>
             </div>
         </div>
     </div>
 
     <div id="mass" class="container">
-        <h2 data-key="mass-title">⚖️ Молярлық масса</h2>
-        <input type="text" id="mIn" placeholder="H2SO4" oninput="calcM()">
+        <h2 data-key="mass-title">⚖️ Молярлық массаны есептеу</h2>
+        <input type="text" id="mIn" placeholder="Мысалы: 2KMnO4" oninput="calcM()">
         <div id="mRes" class="result">...</div>
     </div>
 
     <div id="rxn" class="container">
-        <h2 data-key="rxn-title">🧪 Реакциялар</h2>
-        <input type="text" id="rIn" placeholder="H2 + O2 = H2O">
-        <button class="btn-solve" onclick="runBal()">Теңестіру</button>
+        <h2 data-key="rxn-title">🧪 Реакцияларды теңестіру</h2>
+        <input type="text" id="rIn" placeholder="NaOH + HCl = NaCl + H2O">
+        <button class="btn-solve" onclick="runBal()" data-key="btn-solve">Теңестіру</button>
         <div id="rRes" class="result">...</div>
     </div>
 
     <div id="stoch" class="container">
-        <h2 data-key="stoch-title">📐 Есептер</h2>
-        <input type="text" id="sEq" placeholder="Реакция">
-        <button class="btn-solve" onclick="prepS()">Талдау</button>
+        <h2 data-key="stoch-title">📐 Есептерді толық шығару жолы</h2>
+        <input type="text" id="sEq" placeholder="1Cu + 4HNO3 = 1Cu(NO3)2 + 2NO2 + 2H2O">
+        <button class="btn-solve" onclick="prepS()" data-key="btn-parse">1. Талдау</button>
         <div id="sUI" style="display:none; margin-top:20px;">
             <table id="sTab" style="width:100%"></table>
-            <button class="btn-solve" onclick="solveS()">Есептеу</button>
+            <button class="btn-solve" onclick="solveS()" data-key="btn-calc">2. Есептеу</button>
         </div>
         <div id="sRes"></div>
     </div>
 
     <div id="redox" class="container">
-        <h2 data-key="redox-title">⚡ ТТБ</h2>
+        <h2 data-key="redox-title">⚡ Тотығу-тотықсыздану</h2>
         <input type="text" id="oIn" placeholder="KMnO4 + HCl = ...">
-        <button class="btn-solve" onclick="runO()">Анықтау</button>
+        <button class="btn-solve" onclick="runO()" data-key="btn-redox">Анықтау</button>
         <div id="oRes" class="result">...</div>
     </div>
 
@@ -205,74 +214,136 @@
         const PT = {"H":1.008,"He":4.003,"Li":6.941,"Be":9.012,"B":10.81,"C":12.01,"N":14.01,"O":16,"F":19,"Ne":20.18,"Na":22.99,"Mg":24.31,"Al":26.98,"Si":28.09,"P":30.97,"S":32.06,"Cl":35.45,"Ar":39.95,"K":39.1,"Ca":40.08,"Sc":44.96,"Ti":47.87,"V":50.94,"Cr":52,"Mn":54.94,"Fe":55.85,"Co":58.93,"Ni":58.69,"Cu":63.55,"Zn":65.38,"Ga":69.72,"Ge":72.63,"As":74.92,"Se":78.96,"Br":79.9,"Kr":83.8,"Rb":85.47,"Sr":87.62,"Y":88.91,"Zr":91.22,"Nb":92.91,"Mo":95.94,"Ag":107.87,"Ba":137.33,"Pt":195.08,"Au":196.97,"Hg":200.59,"Pb":207.2};
         const FIXED_SOX = {"K":1,"Na":1,"Li":1,"Ag":1,"Ba":2,"Ca":2,"Mg":2,"Zn":2,"Al":3,"F":-1,"O":-2,"H":1};
 
-        // Навигация 60 FPS
+        const dict = {
+            kk: {
+                "nav-home":"Басты бет","nav-mass":"Масса","nav-rxn":"Реакциялар","nav-stoch":"Есептер","nav-redox":"ТТБ","nav-ph":"pH Орта",
+                "h-welcome":"Химия әлеміне қош келдіңіз!","m-name":"Дмитрий Иванович Менделеев","m-desc":"Периодтық заңды ашқан және кесте жасаған ұлы ғалым.","p-title":"Периодтық кесте",
+                "mass-title":"⚖️ Молярлық масса","rxn-title":"🧪 Реакцияларды теңестіру","stoch-title":"📐 Есептерді шығару жолы","ph-title":"🌈 pH Интерактивті шкаласы",
+                "redox-title":"⚡ Тотығу-тотықсыздану","btn-solve":"Теңестіру","btn-parse":"1. Талдау","btn-calc":"2. Есептеу",
+                "btn-redox":"Анықтау","given":"Берілгені:","sol":"Шешуі:","ans":"Жауабы:","ox":"Тотықтырғыш","red":"Тотықсыздандырғыш",
+                "ph-intro":"Затты таңдаңыз немесе ползунокты жылжытыңыз.","ph-home":"🏠 Тұрмыстық","ph-chem":"🧪 Химиялық",
+                "lemon":"Лимон","coffee":"Кофе","water":"Су","soap":"Сабын","hcl":"Тұз қышқылы","h2so4":"Күкірт қышқылы","nh3":"Аммиак","naoh":"Күйдіргіш натр"
+            },
+            ru: {
+                "nav-home":"Главная","nav-mass":"Масса","nav-rxn":"Реакции","nav-stoch":"Задачи","nav-redox":"ОВР","nav-ph":"pH Среда",
+                "h-welcome":"Добро пожаловать в мир химии!","m-name":"Дмитрий Иванович Менделеев","m-desc":"Великий учёный, создавший периодическую таблицу.","p-title":"Периодическая таблица",
+                "mass-title":"⚖️ Молярная масса","rxn-title":"🧪 Уравнивание реакций","stoch-title":"📐 Решение задач","ph-title":"🌈 Интерактивная шкала pH",
+                "redox-title":"⚡ Анализ ОВР","btn-solve":"Уравнять","btn-parse":"1. Разобрать","btn-calc":"2. Рассчитать",
+                "btn-redox":"Определить","given":"Дано:","sol":"Решение:","ans":"Ответ:","ox":"Окислитель","red":"Восстановитель",
+                "ph-intro":"Выберите вещество или двигайте ползунок.","ph-home":"🏠 Бытовые","ph-chem":"🧪 Химические",
+                "lemon":"Лимон","coffee":"Кофе","water":"Вода","soap":"Мыло","hcl":"Соляная кислота","h2so4":"Серная кислота","nh3":"Аммиак","naoh":"Едкий натр"
+            }
+        };
+
+        const phInfo = {
+            'lemon': { kk: 'Лимон құрамында қышқыл бар. Орта қышқылды.', ru: 'Лимон содержит кислоту. Среда кислая.' },
+            'coffee': { kk: 'Кофе аздап қышқылды ортаға ие.', ru: 'Кофе имеет слабокислую среду.' },
+            'water': { kk: 'Таза су - бейтарап.', ru: 'Чистая вода - нейтральная.' },
+            'soap': { kk: 'Сабын ерітіндісі сілтілік болады.', ru: 'Мыльный раствор дает щелочную среду.' },
+            'hcl': { kk: 'Күшті қышқыл. H+ иондарының көптігі.', ru: 'Сильная кислота. Избыток ионов H+.' },
+            'h2so4': { kk: 'Күкірт қышқылы - өте күшті электролит.', ru: 'Серная кислота - очень сильный электролит.' },
+            'nh3': { kk: 'Аммиак суда әлсіз негіз түзеді.', ru: 'Аммиак в воде образует слабое основание.' },
+            'naoh': { kk: 'Күшті сілті. OH- иондарының көптігі.', ru: 'Сильная щелочь. Избыток ионов OH-.' }
+        };
+
+        let curLang = 'kk';
+
+        function toggleLang() {
+            curLang = curLang === 'kk' ? 'ru' : 'kk';
+            document.getElementById('flag').innerText = curLang === 'kk' ? '🇰🇿' : '🇷🇺';
+            document.getElementById('langName').innerText = curLang === 'kk' ? 'Қазақша' : 'Русский';
+            document.querySelectorAll('[data-key]').forEach(el => el.innerText = dict[curLang][el.getAttribute('data-key')]);
+            manualPH(document.getElementById('ph-slider').value);
+        }
+
+        // Optimized Smooth Page Switching
         function showPage(id, btn) {
-            const current = document.querySelector('.container.active-page');
-            const next = document.getElementById(id);
-            if (current === next) return;
+            const currentActive = document.querySelector('.container.active-page');
+            const nextTarget = document.getElementById(id);
+            
+            if (currentActive === nextTarget) return;
 
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
 
-            if (current) {
-                current.style.opacity = '0';
-                current.style.transform = 'translate3d(0, -10px, 0)';
+            if (currentActive) {
+                currentActive.style.opacity = '0';
+                currentActive.style.transform = 'translateY(-20px) scale(0.98)';
                 setTimeout(() => {
-                    current.classList.remove('active-page');
-                    current.style.display = 'none';
-                    next.style.display = 'block';
-                    requestAnimationFrame(() => {
-                        next.classList.add('active-page');
-                    });
-                }, 300);
+                    currentActive.classList.remove('active-page');
+                    currentActive.style.display = 'none';
+                    
+                    startEnterAnimation(nextTarget);
+                }, 400);
             } else {
-                next.style.display = 'block';
-                requestAnimationFrame(() => next.classList.add('active-page'));
+                startEnterAnimation(nextTarget);
             }
         }
 
-        // Анимация ползунка 60 FPS (requestAnimationFrame)
-        function animateSlider(target, key) {
-            const slider = document.getElementById('ph-slider');
-            const start = parseFloat(slider.value);
-            const dist = target - start;
-            const duration = 600; 
-            let startTime = null;
+        function startEnterAnimation(el) {
+            el.style.display = 'block';
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px) scale(0.98)';
+            
+            // Force reflow
+            void el.offsetWidth;
+            
+            el.classList.add('active-page');
+            el.style.opacity = '1';
+            el.style.transform = 'translateY(0) scale(1)';
+        }
 
-            function step(timestamp) {
-                if (!startTime) startTime = timestamp;
-                const progress = Math.min((timestamp - startTime) / duration, 1);
-                const easedProgress = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+        // 60 FPS Smooth Slider Animation
+        let animationFrame = null;
+        function updatePH(targetVal, key) {
+            if (animationFrame) cancelAnimationFrame(animationFrame);
+            
+            const slider = document.getElementById('ph-slider');
+            const startVal = parseFloat(slider.value);
+            const duration = 500; // 0.5 seconds
+            const startTime = performance.now();
+
+            function animate(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
                 
-                const currentVal = start + (dist * easedProgress);
+                // Ease out function for smoothness
+                const easedProgress = 1 - Math.pow(1 - progress, 3);
+                
+                const currentVal = startVal + (targetVal - startVal) * easedProgress;
                 slider.value = currentVal;
-                manualPH(currentVal, false);
+                manualPH(currentVal);
 
                 if (progress < 1) {
-                    requestAnimationFrame(step);
+                    animationFrame = requestAnimationFrame(animate);
+                } else if (key) {
+                    document.getElementById('ph-exp').innerHTML = `<b>${phInfo[key][curLang]}</b>`;
                 }
             }
-            requestAnimationFrame(step);
+            animationFrame = requestAnimationFrame(animate);
         }
 
-        function manualPH(val, updateExp = true) {
+        function manualPH(val) {
             val = parseFloat(val);
             document.getElementById('ph-num').innerText = val.toFixed(1);
-            
             let r, g, b;
             if(val < 7) { r = 255; g = Math.round(255 * val/7); b = 0; }
             else { r = Math.round(255 * (14-val)/7); g = Math.round(255 * (14-val)/7); b = 255; }
-            
             document.getElementById('ph-num').style.color = `rgb(${r},${g},${b})`;
+            
             document.getElementById('ind-lak').style.backgroundColor = val < 6 ? '#e74c3c' : (val > 8 ? '#3498db' : '#9b59b6');
             document.getElementById('ind-met').style.backgroundColor = val < 4 ? '#ff4d4d' : '#f1c40f';
             document.getElementById('ind-fen').style.backgroundColor = val < 9 ? '#bdc3c7' : '#e84393';
             
-            let st = val < 6 ? 'ҚЫШҚЫЛДЫ' : (val <= 7.5 ? 'БЕЙТАРАП' : 'СІЛТІЛІК');
-            document.getElementById('ph-status').innerText = 'ОРТА: ' + st;
+            let st = val < 3 ? (curLang==='kk'?'КҮШТІ ҚЫШҚЫЛ':'СИЛЬНАЯ КИСЛОТА') : 
+                     val < 6 ? (curLang==='kk'?'ҚЫШҚЫЛ':'КИСЛОТА') : 
+                     val <= 7.5 ? (curLang==='kk'?'НЕЙТРАЛДЫ':'НЕЙТРАЛЬНО') : 
+                     val < 11 ? (curLang==='kk'?'СІЛТІ':'ЩЕЛОЧЬ') : (curLang==='kk'?'КҮШТІ СІЛТІ':'СИЛЬНАЯ ЩЕЛОЧЬ');
+            document.getElementById('ph-status').innerText = (curLang==='kk'?'ОРТА: ':'СРЕДА: ') + st;
+            document.getElementById('ph-status').style.color = `rgb(${r},${g},${b})`;
         }
 
-        // ВАША ОРИГИНАЛЬНАЯ ЛОГИКА (БЕЗ ИЗМЕНЕНИЙ)
+        // Mass Logic
         function parse(f) {
             let mult = (f.match(/^(\d+)/) || [1, 1])[1];
             let s = f.replace(/^\d+/, ''), i = 0;
@@ -289,18 +360,25 @@
             };
             let res = p(); for(let e in res) res[e] *= mult; return res;
         }
+
         function getM(f) { let d = parse(f); return Object.entries(d).reduce((a, [e, c]) => a + (PT[e] || 0) * c, 0); }
-        function calcM() { let v = document.getElementById('mIn').value; let m = getM(v); document.getElementById('mRes').innerHTML = m > 0 ? `<b>M(${v}) = ${m.toFixed(3)} г/моль</b>` : "..."; }
-        
+
+        function calcM() {
+            let v = document.getElementById('mIn').value;
+            let m = getM(v);
+            document.getElementById('mRes').innerHTML = m > 0 ? `<b>M(${v}) = ${m.toFixed(3)} г/моль</b>` : "...";
+        }
+
         function runBal() {
-            let [l, r] = document.getElementById('rIn').value.replace(/\s+/g, '').split('=');
+            let inp = document.getElementById('rIn').value.replace(/\s+/g, '');
+            let [l, r] = inp.split('=');
             let lhs = l.split('+'), rhs = r.split('+'), comps = [...lhs, ...rhs];
             let els = Array.from(new Set(comps.flatMap(c => Object.keys(parse(c)))));
             let matrix = els.map(e => comps.map((c, j) => (parse(c)[e] || 0) * (j < lhs.length ? 1 : -1)));
             matrix.push(comps.map((_, j) => j === 0 ? 1 : 0));
             let b = new Array(els.length).fill(0); b.push(1);
             let x = math.lusolve(matrix, b).map(v => Math.abs(v[0]));
-            let f = 1; while(!x.every(v => Math.abs(Math.round(v*f) - v*f) < 0.001) && f < 100) f++;
+            let f = 1; while(!x.every(v => Math.abs(Math.round(v*f) - v*f) < 0.001)) f++;
             let res = x.map(v => Math.round(v*f));
             let oL = [], oR = [];
             res.forEach((c, i) => { let s = (c===1?'':c) + comps[i]; if(i < lhs.length) oL.push(s); else oR.push(s); });
@@ -310,7 +388,7 @@
         function prepS() {
             let comps = document.getElementById('sEq').value.split(/[=+]/).map(s => s.trim());
             document.getElementById('sTab').innerHTML = '<tr>' + comps.map(c => `<th>${c}</th>`).join('') + '</tr>' +
-                '<tr>' + comps.map((_, i) => `<td><input id="v${i}" style="width:60px"><br><select id="t${i}"><option value="m">г</option><option value="n">моль</option></select></td>`).join('') + '</tr>';
+                '<tr>' + comps.map((_, i) => `<td><input id="v${i}" style="width:50px"><br><select id="t${i}"><option value="m">г</option><option value="V">л</option><option value="n">моль</option></select></td>`).join('') + '</tr>';
             document.getElementById('sUI').style.display = 'block';
         }
 
@@ -318,14 +396,21 @@
             let comps = document.getElementById('sEq').value.split(/[=+]/).map(s => s.trim());
             let coeffs = comps.map(c => parseInt(c.match(/^\d+/) || 1));
             let kI = -1; comps.forEach((_, i) => { if(document.getElementById('v'+i).value) kI = i; });
-            let nk = parseFloat(document.getElementById('v'+kI).value) / (document.getElementById('t'+kI).value === 'm' ? getM(comps[kI].replace(/^\d+/, '')) : 1);
+            if(kI === -1) return;
+            let val = parseFloat(document.getElementById('v'+kI).value);
+            let type = document.getElementById('t'+kI).value;
+            let Mk = getM(comps[kI].replace(/^\d+/, ''));
+            let nk = type==='m' ? val/Mk : (type==='V' ? val/22.4 : val);
             let n1 = nk / coeffs[kI];
-            let html = "";
+
+            let html = `<h3>${dict[curLang].sol}</h3>`;
             comps.forEach((c, i) => {
                 if(i !== kI) {
                     let tN = n1 * coeffs[i];
-                    let res = document.getElementById('t'+i).value === 'm' ? (tN * getM(c.replace(/^\d+/, ''))).toFixed(2) + ' г' : tN.toFixed(3) + ' моль';
-                    html += `<div class="result"><b>${c}:</b> ${res}</div>`;
+                    let out = document.getElementById('t'+i).value;
+                    let Mt = getM(c.replace(/^\d+/, ''));
+                    let res = out==='m' ? (tN*Mt).toFixed(2)+' г' : (out==='V' ? (tN*22.4).toFixed(2)+' л' : tN.toFixed(3)+' моль');
+                    html += `<div class="result"><b>${c}:</b><br>n = (${nk.toFixed(4)} * ${coeffs[i]}) / ${coeffs[kI]} = ${tN.toFixed(4)} моль<br><b>${dict[curLang].ans} ${res}</b></div>`;
                 }
             });
             document.getElementById('sRes').innerHTML = html;
@@ -345,10 +430,10 @@
             let h = "";
             Object.keys(lS).forEach(e => {
                 if(rS[e]) { lS[e].forEach(s1 => { rS[e].forEach(s2 => {
-                    if(s1 !== s2) h += `<div><b>${e}</b>: ${s1} -> ${s2}</div>`;
+                    if(s1 !== s2) h += `<div><b>${e}</b>: ${s1>0?'+':''}${s1} → ${s2>0?'+':''}${s2} <span class="badge ${s1>s2?'ox':'red'}">${s1>s2?dict[curLang].ox:dict[curLang].red}</span></div>`;
                 })})}
             });
-            document.getElementById('oRes').innerHTML = h || "Өзгеріс жоқ";
+            document.getElementById('oRes').innerHTML = h || "...";
         }
 
         window.onload = () => manualPH(7);
