@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChemMaster Ultimate Fix</title>
+    <title>Chemistry Pro: Total Control</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"></script>
     <style>
         :root { --bg-mass: #e0f2f1; --bg-rxn: #fff3e0; --bg-stoch: #f3e5f5; --bg-redox: #ffebee; --primary: #263238; }
@@ -17,8 +17,6 @@
         input, select { padding: 12px; margin: 5px 0; border: 2px solid #eee; border-radius: 10px; font-size: 15px; outline: none; }
         .btn-solve { background: var(--primary); color: white; border: none; padding: 15px; width: 100%; border-radius: 12px; font-size: 17px; cursor: pointer; margin-top: 15px; }
         .result { margin-top: 15px; padding: 15px; background: #fcfcfc; border-radius: 10px; border-left: 5px solid var(--primary); line-height: 1.6; }
-        .stoch-table { width: 100%; border-collapse: collapse; margin-top: 15px; display: block; overflow-x: auto; }
-        .stoch-table th, .stoch-table td { padding: 12px; border: 1px solid #eee; text-align: center; min-width: 110px; }
         .badge { padding: 3px 8px; border-radius: 5px; color: white; font-size: 0.85em; font-weight: bold; }
         .ox { background: #d32f2f; } .red { background: #1976d2; }
     </style>
@@ -32,194 +30,94 @@
         <button class="nav-btn" onclick="showPage('redox', '--bg-redox', this)">⚡ ОВР</button>
     </nav>
 
-    <div id="mass" class="container active-page">
-        <h2>⚖️ Молярная масса</h2>
-        <input type="text" id="massInput" placeholder="KMnO4" oninput="liveMass()" style="width: 95%;">
-        <div id="massResult" class="result">...</div>
-    </div>
-
-    <div id="rxn" class="container">
-        <h2>🧪 Уравнивание</h2>
-        <input type="text" id="rxnInput" placeholder="KMnO4 + HCl = KCl + MnCl2 + Cl2 + H2O" style="width: 95%;">
-        <button class="btn-solve" onclick="balanceRxnUI()">Уравнять</button>
-        <div id="rxnResult" class="result">...</div>
-    </div>
-
-    <div id="stoch" class="container">
-        <h2>📐 Решение задач</h2>
-        <input type="text" id="stochEq" placeholder="Fe + Cl2 = FeCl3" style="width: 95%;">
-        <button class="btn-solve" onclick="parseStoch()">Разбор</button>
-        <div id="stochWorkplace" style="display:none; margin-top:15px;">
-            <table class="stoch-table">
-                <thead id="stochHead"></thead>
-                <tbody id="stochBody"></tbody>
-            </table>
-            <button class="btn-solve" onclick="calculateStoch()">Рассчитать</button>
-        </div>
-        <div id="stochFinalResult" class="result">Введите известное, выберите л/г для искомого.</div>
-    </div>
-
-    <div id="redox" class="container">
-        <h2>⚡ Анализ ОВР</h2>
+    <div id="redox" class="container active-page">
+        <h2>⚡ ОВР Анализ (Все элементы)</h2>
         <input type="text" id="redoxInput" placeholder="KMnO4 + HCl = KCl + MnCl2 + Cl2 + H2O" style="width: 95%;">
         <button class="btn-solve" onclick="solveRedox()">Найти окислитель и восстановитель</button>
-        <div id="redoxRes" class="result">...</div>
+        <div id="redoxRes" class="result">Введите уравнение и нажмите кнопку.</div>
     </div>
 
     <script>
+        // ... (функции parseF, getM, showPage из прошлых ответов) ...
+
         const PT = {"H":1.008,"He":4.003,"Li":6.941,"Be":9.012,"B":10.81,"C":12.01,"N":14.01,"O":16.00,"F":19.00,"Ne":20.18,"Na":22.99,"Mg":24.31,"Al":26.98,"Si":28.09,"P":30.97,"S":32.06,"Cl":35.45,"Ar":39.95,"K":39.10,"Ca":40.08,"Sc":44.96,"Ti":47.87,"V":50.94,"Cr":52.00,"Mn":54.94,"Fe":55.85,"Co":58.93,"Ni":58.69,"Cu":63.55,"Zn":65.38,"Ga":69.72,"Ge":72.63,"As":74.92,"Se":78.96,"Br":79.90,"Kr":83.80,"Rb":85.47,"Sr":87.62,"Y":88.91,"Zr":91.22,"Nb":92.91,"Mo":95.94,"Tc":98,"Ru":101.07,"Rh":102.91,"Pd":106.42,"Ag":107.87,"Cd":112.41,"In":114.82,"Sn":118.71,"Sb":121.76,"Te":127.60,"I":126.90,"Xe":131.29,"Cs":132.91,"Ba":137.33,"La":138.91,"Ce":140.12,"Pr":140.91,"Nd":144.24,"Pm":145,"Sm":150.36,"Eu":151.96,"Gd":157.25,"Tb":158.93,"Dy":162.50,"Ho":164.93,"Er":167.26,"Tm":168.93,"Yb":173.04,"Lu":174.97,"Hf":178.49,"Ta":180.95,"W":183.84,"Re":186.21,"Os":190.23,"Ir":192.22,"Pt":195.08,"Au":196.97,"Hg":200.59,"Tl":204.38,"Pb":207.2,"Bi":208.98,"Po":209,"At":210,"Rn":222,"Fr":223,"Ra":226,"Ac":227,"Th":232.04,"Pa":231.04,"U":238.03,"Np":237,"Pu":244,"Am":243,"Cm":247,"Bk":247,"Cf":251,"Es":252,"Fm":257,"Md":258,"No":259,"Lr":262,"Rf":267,"Db":270,"Sg":271,"Bh":270,"Hs":277,"Mt":276,"Ds":281,"Rg":280,"Cn":285,"Nh":284,"Fl":289,"Mc":288,"Lv":293,"Ts":294,"Og":294};
 
-        function showPage(id, col, btn) {
-            document.querySelectorAll('.container').forEach(c => c.classList.remove('active-page'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(id).classList.add('active-page');
-            btn.classList.add('active');
-            document.getElementById('mainBody').style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue(col);
-        }
+        // БАЗА ЗНАНИЙ СТЕПЕНЕЙ ОКИСЛЕНИЯ
+        const FIXED_SOX = {
+            "K":1,"Na":1,"Li":1,"Rb":1,"Cs":1,"Ag":1,
+            "Ba":2,"Ca":2,"Mg":2,"Sr":2,"Zn":2,
+            "Al":3,"F":-1,"O":-2,"H":1
+        };
 
-        function parseF(f) {
-            let i=0; const p=()=>{
-                let d={}; while(i<f.length && f[i]!=')'){
-                    if(f[i]=='('){i++;let n=p();i++;let ft="";while(i<f.length&&/[0-9]/.test(f[i]))ft+=f[i++];
-                    ft=parseInt(ft)||1;for(let e in n)d[e]=(d[e]||0)+n[e]*ft;
-                    }else{let m=f.slice(i).match(/^([A-Z][a-z]?)([0-9]*)/);if(m){let e=m[1];let c=parseInt(m[2])||1;d[e]=(d[e]||0)+c;i+=m[0].length;}else i++;}
-                } return d;
-            }; return p();
-        }
-
-        function getM(f) { try { const els = parseF(f); return Object.entries(els).reduce((s,[e,c])=>(PT[e]||0)*c+s,0); } catch(e){return 0;} }
-        function liveMass() { const m = getM(document.getElementById('massInput').value); document.getElementById('massResult').innerHTML = m > 0 ? `<b>${m.toFixed(3)} г/моль</b>` : "..."; }
-
-        function balanceRxn(input) {
-            try {
-                const [l, r] = input.replace(/\s+/g, '').split('=');
-                const lhs = l.split('+'), rhs = r.split('+'), comps = [...lhs, ...rhs];
-                const elemList = Array.from(new Set(comps.flatMap(c => Object.keys(parseF(c)))));
-                let matrix = elemList.map(e => comps.map((c, j) => (parseF(c)[e] || 0) * (j < lhs.length ? 1 : -1)));
-                matrix.push(comps.map((_, j) => j === 0 ? 1 : 0));
-                let b = new Array(elemList.length).fill(0); b.push(1);
-                let x = math.lusolve(matrix, b).map(v => Math.abs(v[0]));
-                let f = 1; while(!x.every(v => Math.abs(Math.round(v*f) - v*f) < 0.001)) f++;
-                return {coeffs: x.map(v => Math.round(v*f)), comps: comps, lhsLen: lhs.length};
-            } catch(e) { return null; }
-        }
-
-        function balanceRxnUI() {
-            const data = balanceRxn(document.getElementById('rxnInput').value);
-            if(!data) return document.getElementById('rxnResult').innerHTML = "❌ Ошибка.";
-            let oL = [], oR = [];
-            data.coeffs.forEach((c, i) => { let s = (c === 1 ? '' : c) + data.comps[i]; if (i < data.lhsLen) oL.push(s); else oR.push(s); });
-            document.getElementById('rxnResult').innerHTML = `<b style="color:green;">${oL.join(' + ')} = ${oR.join(' + ')}</b>`;
-        }
-
-        function parseStoch() {
-            const eq = document.getElementById('stochEq').value.replace(/\s+/g, '');
-            if(!eq.includes('=')) return alert("Нужен знак '='");
-            const comps = [...eq.split('=')[0].split('+'), ...eq.split('=')[1].split('+')];
-            document.getElementById('stochHead').innerHTML = '<tr>' + comps.map(c => `<th>${c}</th>`).join('') + '</tr>';
-            document.getElementById('stochBody').innerHTML = '<tr>' + comps.map((_, i) => `<td><input type="text" id="v${i}" placeholder="Дано"><br><select id="t${i}"><option value="m">г</option><option value="V">л</option><option value="n">моль</option></select></td>`).join('') + '</tr>';
-            document.getElementById('stochWorkplace').style.display = 'block';
-        }
-
-        function calculateStoch() {
-            const data = balanceRxn(document.getElementById('stochEq').value);
-            if(!data) return alert("Ошибка!");
-            let n0 = -1;
-            for(let i=0; i<data.comps.length; i++) {
-                let val = document.getElementById(`v${i}`).value.trim();
-                if(val !== "") {
-                    let v = parseFloat(val);
-                    let t = document.getElementById(`t${i}`).value;
-                    let moles = (t==='m') ? v/getM(data.comps[i]) : (t==='V' ? v/22.4 : v);
-                    n0 = moles / data.coeffs[i];
-                    break;
-                }
-            }
-            if(n0 < 0) return alert("Введите число!");
-            let res = "<b>Результат:</b><br>";
-            data.comps.forEach((c, i) => {
-                if(document.getElementById(`v${i}`).value === "") {
-                    let ni = n0 * data.coeffs[i];
-                    let t = document.getElementById(`t${i}`).value;
-                    let fv = (t==='m') ? (ni*getM(c)).toFixed(2)+" г" : (t==='V' ? (ni*22.4).toFixed(2)+" л" : ni.toFixed(3)+" моль");
-                    res += `✅ <b>${c}</b>: ${fv}<br>`;
-                }
-            });
-            document.getElementById('stochFinalResult').innerHTML = res;
-        }
-
-        // --- УЛУЧШЕННЫЙ ОВР: ПОНИМАЕТ МЕТАЛЛЫ ---
-        function getSmartSox(comp) {
+        function getSox(comp) {
             const els = parseF(comp);
-            const atoms = Object.keys(els);
-            if(atoms.length === 1) return {[atoms[0]]: 0};
-
-            // Список элементов с практически всегда постоянной степенью окисления
-            const CONST_SOX = {
-                "K":1,"Na":1,"Li":1,"Rb":1,"Cs":1, // Группа I
-                "Ba":2,"Ca":2,"Mg":2,"Sr":2,"Zn":2, // Группа II
-                "Al":3,"F":-1,"H":1,"O":-2
-            };
-
-            let chargeSum = 0;
-            let targetAtom = null;
-
-            atoms.forEach(a => {
-                if(CONST_SOX[a] !== undefined) {
-                    chargeSum += CONST_SOX[a] * els[a];
-                } else {
-                    targetAtom = a; // Находим "неизвестный" (Mn, Cl в солях, S и т.д.)
-                }
-            });
+            const keys = Object.keys(els);
+            if (keys.length === 1) return { [keys[0]]: 0 };
 
             let res = {};
-            // Если нашли неизвестный, вычисляем его степень
-            if(targetAtom) {
-                res[targetAtom] = -chargeSum / els[targetAtom];
+            let unknown = [];
+            let knownSum = 0;
+
+            keys.forEach(k => {
+                if (FIXED_SOX[k] !== undefined) {
+                    res[k] = FIXED_SOX[k];
+                    knownSum += FIXED_SOX[k] * els[k];
+                } else {
+                    unknown.push(k);
+                }
+            });
+
+            // Если остался один неизвестный (например, Mn в KMnO4)
+            if (unknown.length === 1) {
+                res[unknown[0]] = -knownSum / els[unknown[0]];
+            } 
+            // Если неизвестных несколько, но есть типичные (например, Cl в солях)
+            else if (unknown.length > 1) {
+                // Если есть хлор в конце формулы без кислорода - это почти всегда -1
+                if (unknown.includes("Cl") && !keys.includes("O")) {
+                    res["Cl"] = -1;
+                    knownSum += (-1) * els["Cl"];
+                    let last = unknown.find(x => x !== "Cl");
+                    if (last) res[last] = -knownSum / els[last];
+                }
             }
-            // Добавляем остальные
-            atoms.forEach(a => { if(CONST_SOX[a] !== undefined) res[a] = CONST_SOX[a]; });
             return res;
         }
 
         function solveRedox() {
             const eq = document.getElementById('redoxInput').value.replace(/\s+/g, '');
-            if(!eq.includes('=')) return alert("Нужно '='");
             const [l, r] = eq.split('=');
-
-            let lMap = {}, rMap = {};
+            
+            let lStates = {}, rStates = {};
+            
             l.split('+').forEach(c => {
-                let m = getSmartSox(c);
-                for(let e in m) {
-                    if(!lMap[e]) lMap[e] = new Set();
-                    lMap[e].add(Math.round(m[e]));
-                }
+                let m = getSox(c);
+                for(let e in m) { if(!lStates[e]) lStates[e] = new Set(); lStates[e].add(Math.round(m[e])); }
             });
             r.split('+').forEach(c => {
-                let m = getSmartSox(c);
-                for(let e in m) {
-                    if(!rMap[e]) rMap[e] = new Set();
-                    rMap[e].add(Math.round(m[e]));
-                }
+                let m = getSox(c);
+                for(let e in m) { if(!rStates[e]) rStates[e] = new Set(); rStates[e].add(Math.round(m[e])); }
             });
 
             let out = "";
-            let els = new Set([...Object.keys(lMap), ...Object.keys(rMap)]);
+            let elements = new Set([...Object.keys(lStates), ...Object.keys(rStates)]);
 
-            els.forEach(el => {
-                if(lMap[el] && rMap[el]) {
-                    lMap[el].forEach(s1 => {
-                        rMap[el].forEach(s2 => {
+            elements.forEach(el => {
+                if(lStates[el] && rStates[el]) {
+                    lStates[el].forEach(s1 => {
+                        rStates[el].forEach(s2 => {
                             if(s1 !== s2) {
                                 let isOx = s1 > s2;
-                                out += `<div style="margin-bottom:8px;"><b>${el}</b>: ${s1>0?'+':''}${s1} → ${s2>0?'+':''}${s2} | <span class="badge ${isOx?'ox':'red'}">${isOx?'Окислитель':'Восстановитель'}</span></div>`;
+                                out += `<div style="margin-bottom:10px;"><b>${el}</b>: ${s1>0?'+':''}${s1} → ${s2>0?'+':''}${s2} | <span class="badge ${isOx?'ox':'red'}">${isOx?'Окислитель':'Восстановитель'}</span></div>`;
                             }
                         });
                     });
                 }
             });
-            document.getElementById('redoxRes').innerHTML = out || "Изменений нет.";
+            document.getElementById('redoxRes').innerHTML = out || "Изменений не обнаружено.";
         }
+        
+        // ... (остальной скрипт) ...
     </script>
 </body>
 </html>
