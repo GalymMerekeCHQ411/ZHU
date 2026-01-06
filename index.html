@@ -15,12 +15,10 @@
         }
 
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: 'Segoe UI', system-ui, sans-serif;
             margin: 0;
             background-color: var(--bg-color);
-            /* Химический фон с иконками */
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill='%232c3e50' fill-opacity='0.03'%3E%3Cpath d='M30 20l-5 10h10l-5-10zm40 40l-5 10h10l-5-10zM10 80c2 0 3-1 3-3s-1-3-3-3-3 1-3 3 1 3 3 3zm80-60c2 0 3-1 3-3s-1-3-3-3-3 1-3 3 1 3 3 3zM50 10l-2 5h4l-2-5zm0 80l-2 5h4l-2-5z'/%3E%3Ccircle cx='20' cy='40' r='2'/%3E%3Ccircle cx='80' cy='80' r='3'/%3E%3Cpath d='M45 45h10v10H45z'/%3E%3C/g%3E%3C/svg%3E");
-            color: var(--primary);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill='%232c3e50' fill-opacity='0.04'%3E%3Cpath d='M30 20l-5 10h10l-5-10zm40 40l-5 10h10l-5-10zM10 80c2 0 3-1 3-3s-1-3-3-3-3 1-3 3 1 3 3 3zm80-60c2 0 3-1 3-3s-1-3-3-3-3 1-3 3 1 3 3 3z'/%3E%3Cpath d='M45 45h10v10H45z'/%3E%3Ccircle cx='50' cy='15' r='3'/%3E%3Ccircle cx='15' cy='50' r='2'/%3E%3C/g%3E%3C/svg%3E");
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -30,12 +28,12 @@
         nav {
             margin: 25px;
             display: flex;
-            gap: 12px;
-            padding: 8px;
-            background: rgba(255, 255, 255, 0.95);
+            gap: 10px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.9);
             border-radius: 50px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            backdrop-filter: blur(5px);
             position: sticky;
             top: 15px;
             z-index: 1000;
@@ -43,20 +41,18 @@
 
         .nav-btn {
             border: none;
-            padding: 12px 24px;
+            padding: 12px 25px;
             border-radius: 40px;
             cursor: pointer;
             background: transparent;
-            font-weight: 600;
-            transition: all 0.3s ease;
+            font-weight: 700;
+            transition: 0.3s;
             color: var(--primary);
-            font-size: 14px;
         }
 
         .nav-btn.active {
             background: var(--primary);
             color: white;
-            box-shadow: 0 4px 12px rgba(44, 62, 80, 0.3);
         }
 
         .container {
@@ -65,73 +61,73 @@
             max-width: 850px;
             background: rgba(255, 255, 255, 0.98);
             padding: 35px;
-            border-radius: 24px;
-            box-shadow: 0 15px 45px rgba(0,0,0,0.08);
+            border-radius: 25px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
             margin-bottom: 50px;
-            border: 1px solid rgba(255,255,255,0.3);
         }
 
-        .active-page { display: block; animation: slideUp 0.5s ease; }
+        .active-page { display: block; animation: fadeIn 0.5s ease; }
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        h2 { margin-top: 0; font-weight: 800; letter-spacing: -0.5px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
         input, select {
-            padding: 14px;
-            margin: 8px 0;
-            border: 2px solid #edf2f7;
+            padding: 15px;
+            margin: 10px 0;
+            border: 2px solid #e2e8f0;
             border-radius: 12px;
             font-size: 16px;
             outline: none;
-            transition: 0.2s;
             background: #f8fafc;
         }
 
-        input:focus { border-color: var(--accent); background: #fff; box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1); }
+        input:focus { border-color: var(--accent); background: white; }
 
         .btn-solve {
             background: var(--primary);
             color: white;
             border: none;
-            padding: 16px;
+            padding: 18px;
             width: 100%;
-            border-radius: 14px;
-            font-size: 16px;
-            font-weight: 700;
+            border-radius: 15px;
+            font-size: 17px;
+            font-weight: 800;
             cursor: pointer;
             margin-top: 20px;
-            transition: 0.3s;
+            transition: 0.2s;
         }
 
-        .btn-solve:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .btn-solve:hover { opacity: 0.9; transform: scale(0.99); }
 
         .result {
             margin-top: 25px;
             padding: 20px;
-            background: #ffffff;
-            border-radius: 16px;
+            background: #fff;
+            border-radius: 15px;
             border-left: 6px solid var(--accent);
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
-            font-size: 15px;
-            line-height: 1.7;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+            line-height: 1.8;
         }
 
-        .step-box { background: #f1f5f9; padding: 10px; border-radius: 8px; margin: 5px 0; font-family: monospace; font-size: 14px; }
+        .step-card {
+            background: #f1f5f9;
+            border-radius: 10px;
+            padding: 12px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            border-left: 3px solid var(--primary);
+        }
 
-        .stoch-table { width: 100%; border-collapse: separate; border-spacing: 0; margin-top: 20px; border-radius: 12px; overflow: hidden; border: 1px solid #eee; }
-        .stoch-table th { background: #f8fafc; padding: 15px; font-weight: 600; }
-        .stoch-table td { padding: 15px; text-align: center; background: white; border-top: 1px solid #eee; }
+        .stoch-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .stoch-table th, .stoch-table td { padding: 15px; border: 1px solid #edf2f7; text-align: center; }
+        .stoch-table th { background: #f8fafc; }
 
-        .badge { padding: 4px 10px; border-radius: 8px; color: white; font-size: 12px; font-weight: bold; text-transform: uppercase; }
+        .badge { padding: 5px 12px; border-radius: 8px; color: white; font-size: 12px; font-weight: bold; }
         .ox { background: var(--danger); }
         .red { background: var(--accent); }
     </style>
 </head>
-<body id="mainBody">
+<body>
 
     <nav>
         <button class="nav-btn active" onclick="showPage('mass', this)">⚖️ Масса</button>
@@ -141,37 +137,37 @@
     </nav>
 
     <div id="mass" class="container active-page">
-        <h2>⚖️ Молярная масса</h2>
-        <p style="color: #666; font-size: 14px;">Поддерживает коэффициенты (например: <b>5H2O</b> или <b>2KMnO4</b>)</p>
-        <input type="text" id="massInput" placeholder="Введите формулу..." oninput="liveMass()" style="width: 96%;">
-        <div id="massResult" class="result">Результат появится здесь...</div>
+        <h2>⚖️ Расчет молярной массы</h2>
+        <p style="font-size: 14px; color: #666;">Введите формулу (можно с коэффициентом, например: <b>2H2O</b>)</p>
+        <input type="text" id="massInput" placeholder="Напр: 2KMnO4" oninput="liveMass()" style="width: 95%;">
+        <div id="massResult" class="result">Результат будет здесь...</div>
     </div>
 
     <div id="rxn" class="container">
-        <h2>🧪 Уравнивание</h2>
-        <input type="text" id="rxnInput" placeholder="Напр: NaOH + H2SO4 = Na2SO4 + H2O" style="width: 96%;">
-        <button class="btn-solve" onclick="balanceRxnUI()">Уравнять уравнение</button>
+        <h2>🧪 Уравнивание реакций</h2>
+        <input type="text" id="rxnInput" placeholder="Cu + HNO3 = Cu(NO3)2 + NO2 + H2O" style="width: 95%;">
+        <button class="btn-solve" onclick="balanceRxnUI()">Расставить коэффициенты</button>
         <div id="rxnResult" class="result">...</div>
     </div>
 
     <div id="stoch" class="container">
-        <h2>📐 Решение задач</h2>
-        <input type="text" id="stochEq" placeholder="Уравнение (напр: Zn + 2HCl = ZnCl2 + H2)" style="width: 96%;">
-        <button class="btn-solve" onclick="parseStoch()">1. Разбор веществ</button>
+        <h2>📐 Решение задач (Путь и Результат)</h2>
+        <input type="text" id="stochEq" placeholder="1Cu + 4HNO3 = 1Cu(NO3)2 + 2NO2 + 2H2O" style="width: 95%;">
+        <button class="btn-solve" onclick="parseStoch()">1. Разобрать вещества</button>
         <div id="stochWorkplace" style="display:none; margin-top:20px;">
             <table class="stoch-table">
                 <thead id="stochHead"></thead>
                 <tbody id="stochBody"></tbody>
             </table>
-            <button class="btn-solve" onclick="calculateStoch()">2. Рассчитать путь и результат</button>
+            <button class="btn-solve" onclick="calculateStoch()">2. Рассчитать всё решение</button>
         </div>
-        <div id="stochFinalResult" class="result">Введите одно известное значение в таблицу.</div>
+        <div id="stochFinalResult" class="result">Укажите одно известное значение.</div>
     </div>
 
     <div id="redox" class="container">
-        <h2>⚡ Окислительно-восстановительный баланс</h2>
-        <input type="text" id="redoxInput" placeholder="Напр: KMnO4 + HCl = KCl + MnCl2 + Cl2 + H2O" style="width: 96%;">
-        <button class="btn-solve" onclick="solveRedox()">Найти роли элементов</button>
+        <h2>⚡ Анализ ОВР</h2>
+        <input type="text" id="redoxInput" placeholder="KMnO4 + HCl = KCl + MnCl2 + Cl2 + H2O" style="width: 95%;">
+        <button class="btn-solve" onclick="solveRedox()">Определить степени и роли</button>
         <div id="redoxRes" class="result">...</div>
     </div>
 
@@ -186,153 +182,115 @@
             btn.classList.add('active');
         }
 
-        // Парсинг формулы (учитывает скобки и коэффициенты)
-        function parseF(f) {
-            let multiplier = 1;
-            let formulaPart = f;
-            let matchCoeff = f.match(/^(\d+)/);
-            if(matchCoeff) {
-                multiplier = parseInt(matchCoeff[1]);
-                formulaPart = f.slice(matchCoeff[1].length);
-            }
-
+        // Парсер учитывает число ПЕРЕД формулой
+        function parseFormula(f) {
+            let mult = 1, str = f.trim();
+            let m = str.match(/^(\d+)/);
+            if(m) { mult = parseInt(m[0]); str = str.slice(m[0].length); }
             let i=0; const p=()=>{
-                let d={}; while(i<formulaPart.length && formulaPart[i]!=')'){
-                    if(formulaPart[i]=='('){i++;let n=p();i++;let ft="";while(i<formulaPart.length&&/[0-9]/.test(formulaPart[i]))ft+=formulaPart[i++];
+                let d={}; while(i<str.length && str[i]!=')'){
+                    if(str[i]=='('){i++;let n=p();i++;let ft="";while(i<str.length&&/[0-9]/.test(str[i]))ft+=str[i++];
                     ft=parseInt(ft)||1;for(let e in n)d[e]=(d[e]||0)+n[e]*ft;
-                    }else{let m=formulaPart.slice(i).match(/^([A-Z][a-z]?)([0-9]*)/);if(m){let e=m[1];let c=parseInt(m[2])||1;d[e]=(d[e]||0)+c;i+=m[0].length;}else i++;}
+                    }else{let match=str.slice(i).match(/^([A-Z][a-z]?)([0-9]*)/);if(match){let e=match[1];let c=parseInt(match[2])||1;d[e]=(d[e]||0)+c;i+=match[0].length;}else i++;}
                 } return d;
             };
-            let result = p();
-            for(let el in result) result[el] *= multiplier;
-            return result;
+            let res = p();
+            for(let e in res) res[e] *= mult;
+            return res;
         }
 
-        function getM(f) { try { const els = parseF(f); return Object.entries(els).reduce((s,[e,c])=>(PT[e]||0)*c+s,0); } catch(e){return 0;} }
-        
+        function getM(f) { const els = parseFormula(f); return Object.entries(els).reduce((s,[e,c])=>(PT[e]||0)*c+s,0); }
+        function getMpure(f) { return getM(f.replace(/^\d+/, '')); }
+
         function liveMass() { 
-            const input = document.getElementById('massInput').value.trim();
-            const m = getM(input); 
-            if(m > 0) {
-                document.getElementById('massResult').innerHTML = `
-                    <div style="font-size: 1.4em; color: var(--primary);"><b>M = ${m.toFixed(3)} г/моль</b></div>
-                    <div style="color: #666; margin-top:10px;">Для вещества: ${input}</div>
-                `;
-            } else { document.getElementById('massResult').innerHTML = "..."; }
-        }
-
-        function balanceRxn(input) {
-            try {
-                const [l, r] = input.replace(/\s+/g, '').split('=');
-                const lhs = l.split('+'), rhs = r.split('+'), comps = [...lhs, ...rhs];
-                const elemList = Array.from(new Set(comps.flatMap(c => Object.keys(parseF(c)))));
-                let matrix = elemList.map(e => comps.map((c, j) => (parseF(c)[e] || 0) * (j < lhs.length ? 1 : -1)));
-                matrix.push(comps.map((_, j) => j === 0 ? 1 : 0));
-                let b = new Array(elemList.length).fill(0); b.push(1);
-                let x = math.lusolve(matrix, b).map(v => Math.abs(v[0]));
-                let f = 1; while(!x.every(v => Math.abs(Math.round(v*f) - v*f) < 0.001)) f++;
-                return {coeffs: x.map(v => Math.round(v*f)), comps: comps, lhsLen: lhs.length};
-            } catch(e) { return null; }
+            const val = document.getElementById('massInput').value.trim();
+            const m = getM(val);
+            document.getElementById('massResult').innerHTML = m > 0 ? `<b>M(${val}) = ${m.toFixed(3)} г/моль</b>` : "..."; 
         }
 
         function balanceRxnUI() {
-            const data = balanceRxn(document.getElementById('rxnInput').value);
-            if(!data) return document.getElementById('rxnResult').innerHTML = "❌ Ошибка в формулах.";
-            let oL = [], oR = [];
-            data.coeffs.forEach((c, i) => { let s = (c === 1 ? '' : c) + data.comps[i]; if (i < data.lhsLen) oL.push(s); else oR.push(s); });
-            document.getElementById('rxnResult').innerHTML = `<b style="color:var(--success); font-size:1.3em;">${oL.join(' + ')} = ${oR.join(' + ')}</b>`;
+            const input = document.getElementById('rxnInput').value.replace(/\s+/g, '');
+            const [l, r] = input.split('=');
+            const lhs = l.split('+'), rhs = r.split('+'), comps = [...lhs, ...rhs];
+            const elemList = Array.from(new Set(comps.flatMap(c => Object.keys(parseFormula(c)))));
+            let matrix = elemList.map(e => comps.map((c, j) => (parseFormula(c)[e] || 0) * (j < lhs.length ? 1 : -1)));
+            matrix.push(comps.map((_, j) => j === 0 ? 1 : 0));
+            let b = new Array(elemList.length).fill(0); b.push(1);
+            let x = math.lusolve(matrix, b).map(v => Math.abs(v[0]));
+            let f = 1; while(!x.every(v => Math.abs(Math.round(v*f) - v*f) < 0.0001)) f++;
+            const coeffs = x.map(v => Math.round(v*f));
+            let resL = [], resR = [];
+            coeffs.forEach((c, i) => { let s = (c === 1 ? '' : c) + comps[i]; if(i < lhs.length) resL.push(s); else resR.push(s); });
+            document.getElementById('rxnResult').innerHTML = `<b style="color:var(--success)">${resL.join(' + ')} = ${resR.join(' + ')}</b>`;
         }
 
         function parseStoch() {
             const eq = document.getElementById('stochEq').value.replace(/\s+/g, '');
-            if(!eq.includes('=')) return alert("Нужен знак '='");
-            const comps = [...eq.split('=')[0].split('+'), ...eq.split('=')[1].split('+')];
-            document.getElementById('stochHead').innerHTML = '<tr>' + comps.map(c => `<th>${c}</th>`).join('') + '</tr>';
-            document.getElementById('stochBody').innerHTML = '<tr>' + comps.map((_, i) => `<td><input type="text" id="v${i}" placeholder="Дано" style="width:70px;"><br><select id="t${i}"><option value="m">г</option><option value="V">л</option><option value="n">моль</option></select></td>`).join('') + '</tr>';
+            const components = eq.split(/[=+]/);
+            document.getElementById('stochHead').innerHTML = '<tr>' + components.map(c => `<th>${c}</th>`).join('') + '</tr>';
+            document.getElementById('stochBody').innerHTML = '<tr>' + components.map((_, i) => `<td><input type="text" id="v${i}" style="width:60px;"><br><select id="t${i}"><option value="m">г</option><option value="V">л</option><option value="n">моль</option></select></td>`).join('') + '</tr>';
             document.getElementById('stochWorkplace').style.display = 'block';
         }
 
         function calculateStoch() {
-            const data = balanceRxn(document.getElementById('stochEq').value);
-            if(!data) return alert("Ошибка!");
-            let knownIdx = -1, knownMoles = 0, step1 = "";
+            const eq = document.getElementById('stochEq').value.replace(/\s+/g, '');
+            const comps = eq.split(/[=+]/);
+            const coeffs = comps.map(c => parseInt(c.match(/^\d+/)) || 1);
+            
+            let kIdx = -1, nCommon = -1, path1 = "";
 
-            for(let i=0; i<data.comps.length; i++) {
+            for(let i=0; i<comps.length; i++) {
                 let val = document.getElementById(`v${i}`).value.trim();
                 if(val !== "") {
-                    knownIdx = i;
-                    let v = parseFloat(val);
+                    kIdx = i;
+                    let num = parseFloat(val);
                     let type = document.getElementById(`t${i}`).value;
-                    let MW = getM(data.comps[i]);
-                    if(type==='m') { knownMoles = v/MW; step1 = `n(${data.comps[i]}) = m/M = ${v}/${MW.toFixed(2)} = ${knownMoles.toFixed(3)} моль`; }
-                    else if(type==='V') { knownMoles = v/22.4; step1 = `n(${data.comps[i]}) = V/Vm = ${v}/22.4 = ${knownMoles.toFixed(3)} моль`; }
-                    else { knownMoles = v; step1 = `n(${data.comps[i]}) = ${v} моль`; }
+                    let M = getMpure(comps[i]);
+                    let mol = (type==='m') ? num/M : (type==='V' ? num/22.4 : num);
+                    nCommon = mol / coeffs[i];
+                    path1 = `Шаг 1: n(${comps[i]}) = ${mol.toFixed(4)} моль. На 1 порцию: ${nCommon.toFixed(4)} моль.`;
                     break;
                 }
             }
 
-            if(knownIdx < 0) return alert("Введите число!");
-            
-            let nFactor = knownMoles / data.coeffs[knownIdx];
-            let resultsHTML = `<div class="step-box"><b>Шаг 1:</b> ${step1}</div>`;
-            resultsHTML += `<div class="step-box"><b>Шаг 2:</b> Пропорция по коэффициентам (${data.coeffs[knownIdx]} моль -> ${knownMoles.toFixed(3)} моль)</div>`;
+            if(kIdx < 0) return alert("Введите известное!");
 
-            data.comps.forEach((c, i) => {
-                if(i !== knownIdx) {
-                    let ni = nFactor * data.coeffs[i];
+            let outHTML = `<div class="step-card"><b>Дано:</b> ${path1}</div>`;
+            comps.forEach((c, i) => {
+                if(i !== kIdx) {
                     let type = document.getElementById(`t${i}`).value;
-                    let MW = getM(c);
-                    let finalVal = "", calcStr = "";
-                    
-                    if(type==='m') { finalVal = (ni*MW).toFixed(2) + " г"; calcStr = `m = n * M = ${ni.toFixed(3)} * ${MW.toFixed(2)}`; }
-                    else if(type==='V') { finalVal = (ni*22.4).toFixed(2) + " л"; calcStr = `V = n * 22.4 = ${ni.toFixed(3)} * 22.4`; }
-                    else { finalVal = ni.toFixed(3) + " моль"; calcStr = `n = ${ni.toFixed(3)} моль`; }
-
-                    resultsHTML += `
-                        <div class="result" style="margin-top:10px; border-left-color: var(--success);">
-                            <b>${c}: ${finalVal}</b><br>
-                            <small style="color:#777;">Путь: ${calcStr} = ${finalVal}</small>
-                        </div>`;
+                    let targetMol = nCommon * coeffs[i];
+                    let M = getMpure(c);
+                    let res = (type==='m') ? (targetMol*M).toFixed(2)+" г" : (type==='V' ? (targetMol*22.4).toFixed(2)+" л" : targetMol.toFixed(3)+" моль");
+                    outHTML += `<div class="result"><b>${c}: ${res}</b><br><small>Путь: n = ${targetMol.toFixed(4)} моль. Расчет по формуле для ${type}.</small></div>`;
                 }
             });
-            document.getElementById('stochFinalResult').innerHTML = resultsHTML;
+            document.getElementById('stochFinalResult').innerHTML = outHTML;
         }
 
         function getSox(comp) {
-            const els = parseF(comp);
-            const keys = Object.keys(els);
-            if (keys.length === 1) return { [keys[0]]: 0 };
-            let res = {}, unknown = [], knownSum = 0;
-            keys.forEach(k => {
-                if (FIXED_SOX[k] !== undefined) { res[k] = FIXED_SOX[k]; knownSum += FIXED_SOX[k] * els[k]; }
-                else unknown.push(k);
-            });
-            if (unknown.length === 1) res[unknown[0]] = -knownSum / els[unknown[0]];
-            else if (unknown.length > 1 && unknown.includes("Cl") && !keys.includes("O")) {
-                res["Cl"] = -1; knownSum += (-1)*els["Cl"];
-                let last = unknown.find(x => x !== "Cl"); if(last) res[last] = -knownSum/els[last];
-            }
+            const els = parseFormula(comp); const keys = Object.keys(els);
+            if(keys.length === 1) return {[keys[0]]: 0};
+            let res = {}, unknown = [], sum = 0;
+            keys.forEach(k => { if(FIXED_SOX[k]) { res[k] = FIXED_SOX[k]; sum += res[k]*els[k]; } else unknown.push(k); });
+            if(unknown.length === 1) res[unknown[0]] = -sum/els[unknown[0]];
             return res;
         }
 
         function solveRedox() {
-            const eq = document.getElementById('redoxInput').value.replace(/\s+/g, '');
-            const [l, r] = eq.split('=');
+            const [l, r] = document.getElementById('redoxInput').value.replace(/\s+/g, '').split('=');
             let lS = {}, rS = {};
             l.split('+').forEach(c => { let m = getSox(c); for(let e in m) { if(!lS[e]) lS[e] = new Set(); lS[e].add(Math.round(m[e])); }});
             r.split('+').forEach(c => { let m = getSox(c); for(let e in m) { if(!rS[e]) rS[e] = new Set(); rS[e].add(Math.round(m[e])); }});
-            let out = "", elements = new Set([...Object.keys(lS), ...Object.keys(rS)]);
-            elements.forEach(el => {
+            let html = "";
+            new Set([...Object.keys(lS), ...Object.keys(rS)]).forEach(el => {
                 if(lS[el] && rS[el]) {
                     lS[el].forEach(s1 => { rS[el].forEach(s2 => {
-                        if(s1 !== s2) {
-                            let isOx = s1 > s2;
-                            out += `<div style="margin-bottom:12px;">🧪 <b>${el}</b>: ${s1>0?'+':''}${s1} → ${s2>0?'+':''}${s2} | <span class="badge ${isOx?'ox':'red'}">${isOx?'Окислитель':'Восстановитель'}</span></div>`;
-                        }
+                        if(s1 !== s2) html += `<div><b>${el}</b>: ${s1>0?'+':''}${s1} → ${s2>0?'+':''}${s2} <span class="badge ${s1>s2?'ox':'red'}">${s1>s2?'Окислитель':'Восстановитель'}</span></div>`;
                     });});
                 }
             });
-            document.getElementById('redoxRes').innerHTML = out || "Изменений нет.";
+            document.getElementById('redoxRes').innerHTML = html || "Степени не изменились.";
         }
     </script>
 </body>
