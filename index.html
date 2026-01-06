@@ -3,252 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChemMaster Pro: Mendeleev Edition</title>
+    <title>ChemMaster Pro: Teacher Edition</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"></script>
     <style>
         :root {
             --primary: #1a2a6c;
             --accent: #00d2ff;
-            --success: #2ecc71;
-            --danger: #e74c3c;
-            --glass: rgba(255, 255, 255, 0.94);
-            --bg-color: #f0f4f8;
+            --glass: rgba(255, 255, 255, 0.95);
+            --bg-color: #f0f2f5;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             margin: 0;
             background: var(--bg-color);
-            background-image: radial-gradient(circle at 10% 20%, rgba(0, 210, 255, 0.05) 0%, transparent 50%),
-                              radial-gradient(circle at 90% 80%, rgba(26, 42, 108, 0.05) 0%, transparent 50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
             color: var(--primary);
+            display: flex; flex-direction: column; align-items: center;
         }
 
-        /* Тіл ауыстырғыш */
-        .lang-switcher {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 2000;
-            background: white;
-            padding: 8px 18px;
-            border-radius: 30px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            cursor: pointer;
-            border: 2px solid var(--primary);
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
+        /* Navigation */
         nav {
-            margin: 25px;
-            display: flex;
-            gap: 10px;
-            padding: 10px;
-            background: var(--glass);
-            border-radius: 50px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            backdrop-filter: blur(10px);
-            position: sticky;
-            top: 15px;
-            z-index: 1000;
+            margin: 20px; display: flex; gap: 10px; padding: 10px;
+            background: var(--glass); border-radius: 50px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            position: sticky; top: 10px; z-index: 1000;
         }
 
         .nav-btn {
-            border: none;
-            padding: 12px 22px;
-            border-radius: 40px;
-            cursor: pointer;
-            background: transparent;
-            font-weight: 700;
-            transition: 0.3s;
-            color: var(--primary);
+            border: none; padding: 10px 20px; border-radius: 30px;
+            cursor: pointer; background: transparent; font-weight: bold; transition: 0.3s;
         }
 
         .nav-btn.active { background: var(--primary); color: white; }
 
         .container {
-            display: none;
-            width: 90%;
-            max-width: 850px;
-            background: var(--glass);
-            padding: 40px;
-            border-radius: 30px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
-            margin-bottom: 50px;
-            animation: fadeIn 0.5s ease;
+            display: none; width: 90%; max-width: 1000px;
+            background: var(--glass); padding: 30px; border-radius: 25px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1); margin-bottom: 50px;
         }
 
-        .active-page { display: block; }
+        .active-page { display: block; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* pH Simulator Styles */
+        .ph-grid { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 20px; align-items: start; }
+        
+        .item-list { display: flex; flex-direction: column; gap: 15px; }
+        
+        .item-card {
+            background: white; padding: 10px; border-radius: 15px;
+            text-align: center; cursor: pointer; transition: 0.3s;
+            border: 2px solid transparent; box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+        .item-card:hover { transform: scale(1.05); border-color: var(--accent); }
+        .item-card img { width: 50px; height: 50px; object-fit: contain; }
+        .item-card span { display: block; font-size: 12px; margin-top: 5px; font-weight: bold; }
 
-        /* Басты бет */
-        .home-content { text-align: center; }
-        .mendeleev-card {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 30px 0;
-            padding: 25px;
-            background: rgba(255,255,255,0.6);
-            border-radius: 25px;
-            border: 1px solid rgba(26, 42, 108, 0.1);
-        }
-        .mendeleev-img {
-            width: 220px;
-            height: 280px;
-            object-fit: cover;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
-            margin-bottom: 20px;
-        }
-        .periodic-img {
-            width: 100%;
-            border-radius: 20px;
-            margin-top: 25px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            border: 2px solid white;
+        .ph-display {
+            text-align: center; background: #fff; padding: 20px; border-radius: 20px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
         }
 
-        /* Формалар */
-        input, select {
-            padding: 15px;
-            margin: 10px 0;
-            border: 2px solid #e1e8f0;
-            border-radius: 12px;
-            font-size: 16px;
-            width: 100%;
-            box-sizing: border-box;
-            background: white;
+        #ph-slider {
+            width: 100%; height: 20px; border-radius: 10px;
+            appearance: none; background: linear-gradient(to right, red, orange, yellow, green, cyan, blue, purple);
+            outline: none; margin: 20px 0;
         }
-        .btn-solve {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 18px;
-            width: 100%;
-            border-radius: 15px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 15px;
-            transition: 0.3s;
-        }
-        .btn-solve:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
 
-        .result {
-            margin-top: 25px;
-            padding: 25px;
-            background: white;
-            border-radius: 20px;
-            border-left: 8px solid var(--accent);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-        .step-box { background: #f8fbff; border: 1px solid #e2e8f0; padding: 20px; border-radius: 15px; margin-bottom: 15px; }
-        .formula { color: var(--danger); font-family: monospace; font-weight: bold; }
+        .ph-value { font-size: 48px; font-weight: 800; margin: 10px 0; }
+        
+        .indicator-row { display: flex; justify-content: space-around; margin-top: 20px; }
+        .ind-box { padding: 10px; border-radius: 10px; color: white; font-size: 12px; width: 30%; font-weight: bold; }
 
-        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: white; border-radius: 10px; overflow: hidden; }
-        th, td { padding: 15px; border: 1px solid #eee; text-align: center; }
-        .badge { padding: 6px 12px; border-radius: 8px; color: white; font-size: 12px; font-weight: bold; }
-        .ox { background: var(--danger); } .red { background: var(--accent); }
+        .explanation {
+            margin-top: 20px; padding: 15px; background: #f8f9fa;
+            border-radius: 10px; font-size: 14px; line-height: 1.6; border-left: 5px solid var(--primary);
+        }
+
+        /* Others */
+        .mendeleev-img, .periodic-img { width: 100%; max-width: 400px; border-radius: 15px; margin: 10px 0; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px; border: 1px solid #ddd; }
+        .btn-solve { background: var(--primary); color: white; padding: 15px; border: none; width: 100%; border-radius: 10px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <div class="lang-switcher" onclick="toggleLang()">
-        <span id="flag">🇰🇿</span> <span id="langName">Қазақша</span>
-    </div>
-
     <nav>
-        <button class="nav-btn active" id="n-home" onclick="showPage('home', this)">🏠 <span data-key="nav-home">Басты бет</span></button>
-        <button class="nav-btn" onclick="showPage('mass', this)">⚖️ <span data-key="nav-mass">Масса</span></button>
-        <button class="nav-btn" onclick="showPage('rxn', this)">🧪 <span data-key="nav-rxn">Реакциялар</span></button>
-        <button class="nav-btn" onclick="showPage('stoch', this)">📐 <span data-key="nav-stoch">Есептер</span></button>
-        <button class="nav-btn" onclick="showPage('redox', this)">⚡ <span data-key="nav-redox">ТТБ</span></button>
+        <button class="nav-btn active" onclick="showPage('home', this)">🏠 Басты бет</button>
+        <button class="nav-btn" onclick="showPage('ph-sim', this)">🌈 pH Среда</button>
+        <button class="nav-btn" onclick="showPage('mass', this)">⚖️ Масса</button>
+        <button class="nav-btn" onclick="showPage('rxn', this)">🧪 Реакциялар</button>
     </nav>
 
     <div id="home" class="container active-page">
-        <div class="home-content">
-            <h1 data-key="h-welcome">Химия әлеміне қош келдіңіз!</h1>
-            <div class="mendeleev-card">
-                <img src="mendeleev.jpg" class="mendeleev-img" alt="Менделеев">
-                <h2 data-key="m-name">Дмитрий Иванович Менделеев</h2>
-                <p><b>1834 — 1907</b></p>
-                <p data-key="m-desc">Периодтық заңды ашқан және элементтер кестесін жасаған ұлы ғалым.</p>
-            </div>
-            <h3 data-key="p-title">Периодтық кесте</h3>
+        <div style="text-align:center">
+            <h1>Дмитрий Иванович Менделеев</h1>
+            <img src="mendeleev.jpg" class="mendeleev-img" alt="Менделеев">
+            <p>1834 – 1907. Периодтық заңның авторы.</p>
             <img src="table.png" class="periodic-img" alt="Кесте">
         </div>
     </div>
 
+    <div id="ph-sim" class="container">
+        <h2 style="text-align:center">🌈 pH Интерактивті шкаласы</h2>
+        <div class="ph-grid">
+            <div class="item-list">
+                <h4 style="text-align:center">Тұрмыстық</h4>
+                <div class="item-card" onclick="updatePH(2.5, 'lemon')">🍋 <span>Лимон шырыны</span></div>
+                <div class="item-card" onclick="updatePH(5.5, 'coffee')">☕ <span>Кофе</span></div>
+                <div class="item-card" onclick="updatePH(7.0, 'water')">💧 <span>Таза су</span></div>
+                <div class="item-card" onclick="updatePH(8.5, 'soda')">🥯 <span>Ас содасы</span></div>
+                <div class="item-card" onclick="updatePH(10.5, 'soap')">🧼 <span>Сабын</span></div>
+            </div>
+
+            <div class="ph-display">
+                <div id="ph-status" style="font-weight:bold; color:#555">ОРТА: НЕЙТРАЛДЫ</div>
+                <div class="ph-value" id="ph-num">7.0</div>
+                <input type="range" id="ph-slider" min="0" max="14" step="0.1" value="7" oninput="manualPH(this.value)">
+                
+                <div class="indicator-row">
+                    <div id="ind-lak" class="ind-box">Лакмус</div>
+                    <div id="ind-met" class="ind-box">Метилоранж</div>
+                    <div id="ind-fen" class="ind-box">Фенолфталеин</div>
+                </div>
+
+                <div class="explanation" id="ph-exp">
+                    Затты таңдаңыз немесе ползунокты жылжытыңыз.
+                </div>
+            </div>
+
+            <div class="item-list">
+                <h4 style="text-align:center">Химиялық</h4>
+                <div class="item-card" onclick="updatePH(0.1, 'hcl')">🧪 <span>Тұз қышқылы (HCl)</span></div>
+                <div class="item-card" onclick="updatePH(3.0, 'ch3cooh')">⚗️ <span>Сірке қышқылы</span></div>
+                <div class="item-card" onclick="updatePH(7.0, 'nacl')">🧂 <span>Тұз ерітіндісі</span></div>
+                <div class="item-card" onclick="updatePH(11.0, 'nh3')">🧬 <span>Аммиак (NH3)</span></div>
+                <div class="item-card" onclick="updatePH(13.5, 'naoh')">🔥 <span>Күйдіргіш натр</span></div>
+            </div>
+        </div>
+    </div>
+
     <div id="mass" class="container">
-        <h2 data-key="mass-title">⚖️ Молярлық массаны есептеу</h2>
-        <input type="text" id="mIn" placeholder="Мысалы: 2KMnO4" oninput="calcM()">
-        <div id="mRes" class="result">...</div>
+        <h2>⚖️ Молярлық масса</h2>
+        <input type="text" placeholder="Мысалы: H2SO4">
+        <button class="btn-solve">Есептеу</button>
     </div>
 
     <div id="rxn" class="container">
-        <h2 data-key="rxn-title">🧪 Реакцияларды теңестіру</h2>
-        <input type="text" id="rIn" placeholder="NaOH + HCl = NaCl + H2O">
-        <button class="btn-solve" onclick="runBal()" data-key="btn-solve">Теңестіру</button>
-        <div id="rRes" class="result">...</div>
-    </div>
-
-    <div id="stoch" class="container">
-        <h2 data-key="stoch-title">📐 Есептерді толық шығару жолы</h2>
-        <input type="text" id="sEq" placeholder="1Cu + 4HNO3 = 1Cu(NO3)2 + 2NO2 + 2H2O">
-        <button class="btn-solve" onclick="prepS()" data-key="btn-parse">1. Талдау</button>
-        <div id="sUI" style="display:none; margin-top:20px;">
-            <table id="sTab"></table>
-            <button class="btn-solve" onclick="solveS()" data-key="btn-calc">2. Есептеу</button>
-        </div>
-        <div id="sRes"></div>
-    </div>
-
-    <div id="redox" class="container">
-        <h2 data-key="redox-title">⚡ Тотығу-тотықсыздану</h2>
-        <input type="text" id="oIn" placeholder="KMnO4 + HCl = ...">
-        <button class="btn-solve" onclick="runO()" data-key="btn-redox">Анықтау</button>
-        <div id="oRes" class="result">...</div>
+        <h2>🧪 Реакцияларды теңестіру</h2>
+        <input type="text" placeholder="H2 + O2 = H2O">
+        <button class="btn-solve">Теңестіру</button>
     </div>
 
     <script>
-        const PT = {"H":1.008,"He":4.003,"Li":6.941,"Be":9.012,"B":10.81,"C":12.01,"N":14.01,"O":16,"F":19,"Ne":20.18,"Na":22.99,"Mg":24.31,"Al":26.98,"Si":28.09,"P":30.97,"S":32.06,"Cl":35.45,"Ar":39.95,"K":39.1,"Ca":40.08,"Sc":44.96,"Ti":47.87,"V":50.94,"Cr":52,"Mn":54.94,"Fe":55.85,"Co":58.93,"Ni":58.69,"Cu":63.55,"Zn":65.38,"Ga":69.72,"Ge":72.63,"As":74.92,"Se":78.96,"Br":79.9,"Kr":83.8,"Rb":85.47,"Sr":87.62,"Y":88.91,"Zr":91.22,"Nb":92.91,"Mo":95.94,"Ag":107.87,"Ba":137.33,"Pt":195.08,"Au":196.97,"Hg":200.59,"Pb":207.2};
-        const FIXED_SOX = {"K":1,"Na":1,"Li":1,"Ag":1,"Ba":2,"Ca":2,"Mg":2,"Zn":2,"Al":3,"F":-1,"O":-2,"H":1};
-
-        const dict = {
-            kk: {
-                "nav-home":"Басты бет","nav-mass":"Масса","nav-rxn":"Реакциялар","nav-stoch":"Есептер","nav-redox":"ТТБ",
-                "h-welcome":"Химия әлеміне қош келдіңіз!","m-name":"Дмитрий Иванович Менделеев","m-desc":"Периодтық заңды ашқан және кесте жасаған ұлы ғалым.","p-title":"Периодтық кесте",
-                "mass-title":"⚖️ Молярлық масса","rxn-title":"🧪 Реакцияларды теңестіру","stoch-title":"📐 Есептерді шығару жолы",
-                "redox-title":"⚡ Тотығу-тотықсыздану","btn-solve":"Теңестіру","btn-parse":"1. Талдау","btn-calc":"2. Есептеу",
-                "btn-redox":"Анықтау","given":"Берілгені:","sol":"Шешуі:","ans":"Жауабы:","ox":"Тотықтырғыш","red":"Тотықсыздандырғыш"
-            },
-            ru: {
-                "nav-home":"Главная","nav-mass":"Масса","nav-rxn":"Реакции","nav-stoch":"Задачи","nav-redox":"ОВР",
-                "h-welcome":"Добро пожаловать в мир химии!","m-name":"Дмитрий Иванович Менделеев","m-desc":"Великий учёный, создавший периодическую таблицу.","p-title":"Периодическая таблица",
-                "mass-title":"⚖️ Молярная масса","rxn-title":"🧪 Уравнивание реакций","stoch-title":"📐 Полное решение задач",
-                "redox-title":"⚡ Анализ ОВР","btn-solve":"Уравнять","btn-parse":"1. Разобрать","btn-calc":"2. Рассчитать",
-                "btn-redox":"Определить","given":"Дано:","sol":"Решение:","ans":"Ответ:","ox":"Окислитель","red":"Восстановитель"
-            }
+        const data = {
+            'lemon': { exp: 'Лимон құрамында лимон қышқылы бар. Ол сутегі иондарын (H+) бөледі, сондықтан орта қышқыл.', status: 'ҚЫШҚЫЛДЫ' },
+            'coffee': { exp: 'Кофе құрамында әлсіз органикалық қышқылдар бар. Бұл аздап қышқылды орта.', status: 'ӘЛСІЗ ҚЫШҚЫЛДЫ' },
+            'water': { exp: 'Таза су - бейтарап. Онда H+ және OH- иондары тең мөлшерде.', status: 'НЕЙТРАЛДЫ' },
+            'soda': { exp: 'Ас содасы (NaHCO3) суда гидролизденіп, әлсіз сілтілік орта түзеді.', status: 'ӘЛСІЗ СІЛТІЛІК' },
+            'soap': { exp: 'Сабын - жоғары май қышқылдарының тұзы. Ол сілтілік реакция береді.', status: 'СІЛТІЛІК' },
+            'hcl': { exp: 'HCl - күшті электролит. Ол суда толық диссоциацияланып, өте көп H+ иондарын береді.', status: 'КҮШТІ ҚЫШҚЫЛДЫ' },
+            'ch3cooh': { exp: 'Сірке қышқылы - әлсіз қышқыл. Ол тек жартылай ионданады.', status: 'ҚЫШҚЫЛДЫ' },
+            'nacl': { exp: 'NaCl - күшті қышқыл мен күшті негіздің тұзы. Ол гидролизденбейді, орта нейтралды.', status: 'НЕЙТРАЛДЫ' },
+            'nh3': { exp: 'Аммиак сумен әрекеттесіп, OH- иондарын түзеді. Бұл - негіздік орта.', status: 'СІЛТІЛІК' },
+            'naoh': { exp: 'NaOH - күшті негіз (сілті). Ол OH- иондарының максималды концентрациясын береді.', status: 'КҮШТІ СІЛТІЛІК' }
         };
-
-        let curLang = 'kk';
-
-        function toggleLang() {
-            curLang = curLang === 'kk' ? 'ru' : 'kk';
-            document.getElementById('flag').innerText = curLang === 'kk' ? '🇰🇿' : '🇷🇺';
-            document.getElementById('langName').innerText = curLang === 'kk' ? 'Қазақша' : 'Русский';
-            document.querySelectorAll('[data-key]').forEach(el => el.innerText = dict[curLang][el.getAttribute('data-key')]);
-        }
 
         function showPage(id, btn) {
             document.querySelectorAll('.container').forEach(c => c.classList.remove('active-page'));
@@ -257,97 +176,46 @@
             btn.classList.add('active');
         }
 
-        function parse(f) {
-            let mult = (f.match(/^(\d+)/) || [1, 1])[1];
-            let s = f.replace(/^\d+/, ''), i = 0;
-            const p = () => {
-                let d = {};
-                while(i < s.length && s[i] !== ')') {
-                    if(s[i] === '(') { i++; let n = p(); i++; let c = parseInt(s.slice(i).match(/^\d+/) || 1); 
-                        for(let e in n) d[e] = (d[e]||0) + n[e]*c; i += (s.slice(i).match(/^\d+/) || [""])[0].length;
-                    } else {
-                        let m = s.slice(i).match(/^([A-Z][a-z]?)([0-9]*)/);
-                        if(m) { d[m[1]] = (d[m[1]]||0) + parseInt(m[2] || 1); i += m[0].length; } else i++;
-                    }
-                } return d;
-            };
-            let res = p(); for(let e in res) res[e] *= mult; return res;
+        function updatePH(val, key) {
+            document.getElementById('ph-slider').value = val;
+            manualPH(val);
+            if(key) {
+                document.getElementById('ph-exp').innerText = data[key].exp;
+                document.getElementById('ph-status').innerText = 'ОРТА: ' + data[key].status;
+            }
         }
 
-        function getM(f) { let d = parse(f); return Object.entries(d).reduce((a, [e, c]) => a + (PT[e] || 0) * c, 0); }
+        function manualPH(val) {
+            val = parseFloat(val);
+            document.getElementById('ph-num').innerText = val.toFixed(1);
+            
+            // Colors
+            let r, g, b;
+            if(val < 7) { r = 255; g = Math.round(255 * val/7); b = 0; }
+            else { r = Math.round(255 * (14-val)/7); g = Math.round(255 * (14-val)/7); b = 255; }
+            document.getElementById('ph-num').style.color = `rgb(${r},${g},${b})`;
 
-        function calcM() {
-            let v = document.getElementById('mIn').value;
-            let m = getM(v);
-            document.getElementById('mRes').innerHTML = m > 0 ? `<b>M(${v}) = ${m.toFixed(3)} г/моль</b>` : "...";
+            // Indicators
+            // Лакмус: қызыл < 7 < көк
+            let lak = val < 6 ? '#e74c3c' : (val > 8 ? '#3498db' : '#9b59b6');
+            // Метилоранж: қызғылт < 4 < сары
+            let met = val < 4 ? '#ff4d4d' : '#f1c40f';
+            // Фенолфталеин: түссіз < 9 < таңқурай (малиновый)
+            let fen = val < 9 ? '#bdc3c7' : '#e84393';
+
+            document.getElementById('ind-lak').style.backgroundColor = lak;
+            document.getElementById('ind-met').style.backgroundColor = met;
+            document.getElementById('ind-fen').style.backgroundColor = fen;
+
+            if(val < 3) s = "КҮШТІ ҚЫШҚЫЛ";
+            else if(val < 6) s = "ҚЫШҚЫЛ";
+            else if(val <= 7.5) s = "НЕЙТРАЛДЫ";
+            else if(val < 11) s = "СІЛТІЛІК";
+            else s = "КҮШТІ СІЛТІЛІК";
+            document.getElementById('ph-status').innerText = 'ОРТА: ' + s;
         }
 
-        function runBal() {
-            let inp = document.getElementById('rIn').value.replace(/\s+/g, '');
-            let [l, r] = inp.split('=');
-            let lhs = l.split('+'), rhs = r.split('+'), comps = [...lhs, ...rhs];
-            let els = Array.from(new Set(comps.flatMap(c => Object.keys(parse(c)))));
-            let matrix = els.map(e => comps.map((c, j) => (parse(c)[e] || 0) * (j < lhs.length ? 1 : -1)));
-            matrix.push(comps.map((_, j) => j === 0 ? 1 : 0));
-            let b = new Array(els.length).fill(0); b.push(1);
-            let x = math.lusolve(matrix, b).map(v => Math.abs(v[0]));
-            let f = 1; while(!x.every(v => Math.abs(Math.round(v*f) - v*f) < 0.001)) f++;
-            let res = x.map(v => Math.round(v*f));
-            let oL = [], oR = [];
-            res.forEach((c, i) => { let s = (c===1?'':c) + comps[i]; if(i < lhs.length) oL.push(s); else oR.push(s); });
-            document.getElementById('rRes').innerHTML = `<b>${oL.join(' + ')} = ${oR.join(' + ')}</b>`;
-        }
-
-        function prepS() {
-            let comps = document.getElementById('sEq').value.split(/[=+]/).map(s => s.trim());
-            document.getElementById('sTab').innerHTML = '<tr>' + comps.map(c => `<th>${c}</th>`).join('') + '</tr>' +
-                '<tr>' + comps.map((_, i) => `<td><input id="v${i}" style="width:50px"><br><select id="t${i}"><option value="m">г</option><option value="V">л</option><option value="n">моль</option></select></td>`).join('') + '</tr>';
-            document.getElementById('sUI').style.display = 'block';
-        }
-
-        function solveS() {
-            let comps = document.getElementById('sEq').value.split(/[=+]/).map(s => s.trim());
-            let coeffs = comps.map(c => parseInt(c.match(/^\d+/) || 1));
-            let kI = -1; comps.forEach((_, i) => { if(document.getElementById('v'+i).value) kI = i; });
-            if(kI === -1) return;
-            let val = parseFloat(document.getElementById('v'+kI).value);
-            let type = document.getElementById('t'+kI).value;
-            let Mk = getM(comps[kI].replace(/^\d+/, ''));
-            let nk = type==='m' ? val/Mk : (type==='V' ? val/22.4 : val);
-            let n1 = nk / coeffs[kI];
-
-            let html = `<h3>${dict[curLang].sol}</h3><div class="step-box"><b>1. ${dict[curLang].nav-mass}:</b><br>n(${comps[kI]}) = ${val} / ${type==='m'?Mk.toFixed(2):22.4} = <b>${nk.toFixed(4)} моль</b></div>`;
-            comps.forEach((c, i) => {
-                if(i !== kI) {
-                    let tN = n1 * coeffs[i];
-                    let out = document.getElementById('t'+i).value;
-                    let Mt = getM(c.replace(/^\d+/, ''));
-                    let res = out==='m' ? (tN*Mt).toFixed(2)+' г' : (out==='V' ? (tN*22.4).toFixed(2)+' л' : tN.toFixed(3)+' моль');
-                    html += `<div class="result"><b>${c}:</b><br>n = (${nk.toFixed(4)} * ${coeffs[i]}) / ${coeffs[kI]} = ${tN.toFixed(4)} моль<br><b>${dict[curLang].ans} ${res}</b></div>`;
-                }
-            });
-            document.getElementById('sRes').innerHTML = html;
-        }
-
-        function runO() {
-            let [l, r] = document.getElementById('oIn').value.replace(/\s+/g, '').split('=');
-            const getSO = (f) => {
-                let d = parse(f), ks = Object.keys(d); if(ks.length === 1) return {[ks[0]]: 0};
-                let res = {}, sum = 0, unk = '';
-                ks.forEach(k => { if(FIXED_SOX[k]) { res[k]=FIXED_SOX[k]; sum+=res[k]*d[k]; } else unk=k; });
-                if(unk) res[unk] = -sum/d[unk]; return res;
-            };
-            let lS = {}, rS = {};
-            l.split('+').forEach(c => { let m = getSO(c); for(let e in m) { if(!lS[e]) lS[e]=new Set(); lS[e].add(Math.round(m[e])); }});
-            r.split('+').forEach(c => { let m = getSO(c); for(let e in m) { if(!rS[e]) rS[e]=new Set(); rS[e].add(Math.round(m[e])); }});
-            let h = "";
-            Object.keys(lS).forEach(e => {
-                if(rS[e]) { lS[e].forEach(s1 => { rS[e].forEach(s2 => {
-                    if(s1 !== s2) h += `<div><b>${e}</b>: ${s1>0?'+':''}${s1} → ${s2>0?'+':''}${s2} <span class="badge ${s1>s2?'ox':'red'}">${s1>s2?dict[curLang].ox:dict[curLang].red}</span></div>`;
-                })})}
-            });
-            document.getElementById('oRes').innerHTML = h || "...";
-        }
+        window.onload = () => manualPH(7);
     </script>
 </body>
 </html>
