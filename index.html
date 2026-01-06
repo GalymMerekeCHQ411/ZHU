@@ -85,19 +85,42 @@
         }
         .item-card:hover { transform: translateY(-3px); border-color: var(--accent); }
         .item-card span { display: block; font-size: 13px; margin-top: 5px; font-weight: 700; }
+        
         .ph-display { text-align: center; background: #fff; padding: 25px; border-radius: 25px; border: 1px solid #eee; }
+        
         #ph-slider {
             width: 100%; height: 15px; border-radius: 10px; appearance: none;
             background: linear-gradient(to right, #ff0000, #ffa500, #ffff00, #008000, #00ffff, #0000ff, #800080);
             outline: none; margin: 25px 0;
+            cursor: pointer;
         }
-        .ph-value { font-size: 54px; font-weight: 900; margin: 10px 0; transition: color 0.3s; }
+
+        /* Плавность ползунка (thumb) */
+        #ph-slider::-webkit-slider-thumb {
+            appearance: none; width: 24px; height: 24px; background: white; 
+            border: 3px solid var(--primary); border-radius: 50%;
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #ph-slider:active::-webkit-slider-thumb { transform: scale(1.3); }
+
+        .ph-value { 
+            font-size: 54px; font-weight: 900; margin: 10px 0; 
+            transition: color 0.4s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            display: inline-block;
+        }
+
         .indicator-row { display: flex; justify-content: space-around; gap: 8px; margin-top: 25px; }
-        .ind-box { padding: 10px; border-radius: 10px; color: white; font-size: 11px; width: 32%; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); transition: background 0.3s; }
+        .ind-box { 
+            padding: 10px; border-radius: 10px; color: white; font-size: 11px; width: 32%; 
+            font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); 
+            transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1); 
+        }
+
         .explanation {
             margin-top: 20px; padding: 18px; background: #f8fbff;
             border-radius: 15px; font-size: 14px; line-height: 1.5; border-left: 6px solid var(--primary);
             text-align: left; min-height: 60px;
+            transition: opacity 0.3s ease;
         }
 
         /* Home Content */
@@ -161,7 +184,7 @@
                 <div class="item-card" onclick="updatePH(10.5, 'soap')">🧼 <span data-key="soap">Сабын</span></div>
             </div>
             <div class="ph-display">
-                <div id="ph-status" style="font-weight:bold;">ОРТА: НЕЙТРАЛДЫ</div>
+                <div id="ph-status" style="font-weight:bold; transition: 0.3s;">ОРТА: НЕЙТРАЛДЫ</div>
                 <div class="ph-value" id="ph-num">7.0</div>
                 <input type="range" id="ph-slider" min="0" max="14" step="0.1" value="7" oninput="manualPH(this.value)">
                 <div class="indicator-row">
@@ -274,7 +297,6 @@
                 setTimeout(() => {
                     currentActive.classList.remove('active-page');
                     currentActive.style.display = 'none';
-                    
                     startEnterAnimation(nextTarget);
                 }, 400);
             } else {
@@ -286,29 +308,54 @@
             el.style.display = 'block';
             el.style.opacity = '0';
             el.style.transform = 'translateY(20px) scale(0.98)';
-            
-            // Force reflow
             void el.offsetWidth;
-            
             el.classList.add('active-page');
             el.style.opacity = '1';
             el.style.transform = 'translateY(0) scale(1)';
         }
 
-        // pH Logic
-        function updatePH(val, key) {
-            document.getElementById('ph-slider').value = val;
-            manualPH(val);
-            if(key) document.getElementById('ph-exp').innerHTML = `<b>${phInfo[key][curLang]}</b>`;
+        // 60 FPS pH Logic (Smooth Animation)
+        function updatePH(targetVal, key) {
+            const slider = document.getElementById('ph-slider');
+            const startVal = parseFloat(slider.value);
+            const duration = 600; // ms
+            const startTime = performance.now();
+
+            function animate(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // Ease Out Cubic function for smoothness
+                const easeProgress = 1 - Math.pow(1 - progress, 3);
+                
+                const currentVal = startVal + (targetVal - startVal) * easeProgress;
+                slider.value = currentVal;
+                manualPH(currentVal, false);
+
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else if (key) {
+                    const exp = document.getElementById('ph-exp');
+                    exp.style.opacity = '0';
+                    setTimeout(() => {
+                        exp.innerHTML = `<b>${phInfo[key][curLang]}</b>`;
+                        exp.style.opacity = '1';
+                    }, 150);
+                }
+            }
+            requestAnimationFrame(animate);
         }
 
-        function manualPH(val) {
+        function manualPH(val, updateExp = true) {
             val = parseFloat(val);
-            document.getElementById('ph-num').innerText = val.toFixed(1);
+            const numEl = document.getElementById('ph-num');
+            numEl.innerText = val.toFixed(1);
+            
             let r, g, b;
             if(val < 7) { r = 255; g = Math.round(255 * val/7); b = 0; }
             else { r = Math.round(255 * (14-val)/7); g = Math.round(255 * (14-val)/7); b = 255; }
-            document.getElementById('ph-num').style.color = `rgb(${r},${g},${b})`;
+            numEl.style.color = `rgb(${r},${g},${b})`;
+            numEl.style.transform = `scale(${1 + Math.abs(7-val)*0.03})`;
             
             document.getElementById('ind-lak').style.backgroundColor = val < 6 ? '#e74c3c' : (val > 8 ? '#3498db' : '#9b59b6');
             document.getElementById('ind-met').style.backgroundColor = val < 4 ? '#ff4d4d' : '#f1c40f';
@@ -318,8 +365,14 @@
                      val < 6 ? (curLang==='kk'?'ҚЫШҚЫЛ':'КИСЛОТА') : 
                      val <= 7.5 ? (curLang==='kk'?'НЕЙТРАЛДЫ':'НЕЙТРАЛЬНО') : 
                      val < 11 ? (curLang==='kk'?'СІЛТІ':'ЩЕЛОЧЬ') : (curLang==='kk'?'КҮШТІ СІЛТІ':'СИЛЬНАЯ ЩЕЛОЧЬ');
-            document.getElementById('ph-status').innerText = (curLang==='kk'?'ОРТА: ':'СРЕДА: ') + st;
-            document.getElementById('ph-status').style.color = `rgb(${r},${g},${b})`;
+            
+            const status = document.getElementById('ph-status');
+            status.innerText = (curLang==='kk'?'ОРТА: ':'СРЕДА: ') + st;
+            status.style.color = `rgb(${r},${g},${b})`;
+
+            if (updateExp) {
+                document.getElementById('ph-exp').innerText = dict[curLang]["ph-intro"];
+            }
         }
 
         // Mass Logic
@@ -350,18 +403,21 @@
 
         function runBal() {
             let inp = document.getElementById('rIn').value.replace(/\s+/g, '');
+            if (!inp.includes('=')) return;
             let [l, r] = inp.split('=');
             let lhs = l.split('+'), rhs = r.split('+'), comps = [...lhs, ...rhs];
             let els = Array.from(new Set(comps.flatMap(c => Object.keys(parse(c)))));
             let matrix = els.map(e => comps.map((c, j) => (parse(c)[e] || 0) * (j < lhs.length ? 1 : -1)));
             matrix.push(comps.map((_, j) => j === 0 ? 1 : 0));
             let b = new Array(els.length).fill(0); b.push(1);
-            let x = math.lusolve(matrix, b).map(v => Math.abs(v[0]));
-            let f = 1; while(!x.every(v => Math.abs(Math.round(v*f) - v*f) < 0.001)) f++;
-            let res = x.map(v => Math.round(v*f));
-            let oL = [], oR = [];
-            res.forEach((c, i) => { let s = (c===1?'':c) + comps[i]; if(i < lhs.length) oL.push(s); else oR.push(s); });
-            document.getElementById('rRes').innerHTML = `<b>${oL.join(' + ')} = ${oR.join(' + ')}</b>`;
+            try {
+                let x = math.lusolve(matrix, b).map(v => Math.abs(v[0]));
+                let f = 1; while(!x.every(v => Math.abs(Math.round(v*f) - v*f) < 0.001) && f < 100) f++;
+                let res = x.map(v => Math.round(v*f));
+                let oL = [], oR = [];
+                res.forEach((c, i) => { let s = (c===1?'':c) + comps[i]; if(i < lhs.length) oL.push(s); else oR.push(s); });
+                document.getElementById('rRes').innerHTML = `<b>${oL.join(' + ')} = ${oR.join(' + ')}</b>`;
+            } catch(e) { document.getElementById('rRes').innerText = "Қате / Ошибка"; }
         }
 
         function prepS() {
@@ -379,43 +435,4 @@
             let val = parseFloat(document.getElementById('v'+kI).value);
             let type = document.getElementById('t'+kI).value;
             let Mk = getM(comps[kI].replace(/^\d+/, ''));
-            let nk = type==='m' ? val/Mk : (type==='V' ? val/22.4 : val);
-            let n1 = nk / coeffs[kI];
-
-            let html = `<h3>${dict[curLang].sol}</h3>`;
-            comps.forEach((c, i) => {
-                if(i !== kI) {
-                    let tN = n1 * coeffs[i];
-                    let out = document.getElementById('t'+i).value;
-                    let Mt = getM(c.replace(/^\d+/, ''));
-                    let res = out==='m' ? (tN*Mt).toFixed(2)+' г' : (out==='V' ? (tN*22.4).toFixed(2)+' л' : tN.toFixed(3)+' моль');
-                    html += `<div class="result"><b>${c}:</b><br>n = (${nk.toFixed(4)} * ${coeffs[i]}) / ${coeffs[kI]} = ${tN.toFixed(4)} моль<br><b>${dict[curLang].ans} ${res}</b></div>`;
-                }
-            });
-            document.getElementById('sRes').innerHTML = html;
-        }
-
-        function runO() {
-            let [l, r] = document.getElementById('oIn').value.replace(/\s+/g, '').split('=');
-            const getSO = (f) => {
-                let d = parse(f), ks = Object.keys(d); if(ks.length === 1) return {[ks[0]]: 0};
-                let res = {}, sum = 0, unk = '';
-                ks.forEach(k => { if(FIXED_SOX[k]) { res[k]=FIXED_SOX[k]; sum+=res[k]*d[k]; } else unk=k; });
-                if(unk) res[unk] = -sum/d[unk]; return res;
-            };
-            let lS = {}, rS = {};
-            l.split('+').forEach(c => { let m = getSO(c); for(let e in m) { if(!lS[e]) lS[e]=new Set(); lS[e].add(Math.round(m[e])); }});
-            r.split('+').forEach(c => { let m = getSO(c); for(let e in m) { if(!rS[e]) rS[e]=new Set(); rS[e].add(Math.round(m[e])); }});
-            let h = "";
-            Object.keys(lS).forEach(e => {
-                if(rS[e]) { lS[e].forEach(s1 => { rS[e].forEach(s2 => {
-                    if(s1 !== s2) h += `<div><b>${e}</b>: ${s1>0?'+':''}${s1} → ${s2>0?'+':''}${s2} <span class="badge ${s1>s2?'ox':'red'}">${s1>s2?dict[curLang].ox:dict[curLang].red}</span></div>`;
-                })})}
-            });
-            document.getElementById('oRes').innerHTML = h || "...";
-        }
-
-        window.onload = () => manualPH(7);
-    </script>
-</body>
-</html>
+            let nk
