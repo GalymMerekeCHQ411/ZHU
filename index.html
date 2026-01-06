@@ -9,107 +9,111 @@
         :root {
             --primary: #1a2a6c;
             --accent: #00d2ff;
+            --danger: #e74c3c;
+            --success: #2ecc71;
             --glass: rgba(255, 255, 255, 0.95);
             --bg-color: #f0f2f5;
         }
 
         body {
-            font-family: 'Segoe UI', sans-serif;
-            margin: 0;
-            background: var(--bg-color);
-            color: var(--primary);
-            display: flex; flex-direction: column; align-items: center;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            margin: 0; background: var(--bg-color);
+            color: var(--primary); display: flex; flex-direction: column; align-items: center;
         }
 
-        /* Navigation */
+        /* Навигация */
         nav {
-            margin: 20px; display: flex; gap: 10px; padding: 10px;
+            margin: 20px; display: flex; gap: 8px; padding: 10px;
             background: var(--glass); border-radius: 50px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            position: sticky; top: 10px; z-index: 1000;
+            position: sticky; top: 10px; z-index: 1000; backdrop-filter: blur(10px);
         }
 
         .nav-btn {
-            border: none; padding: 10px 20px; border-radius: 30px;
+            border: none; padding: 12px 20px; border-radius: 30px;
             cursor: pointer; background: transparent; font-weight: bold; transition: 0.3s;
+            color: var(--primary);
         }
 
         .nav-btn.active { background: var(--primary); color: white; }
 
         .container {
             display: none; width: 90%; max-width: 1000px;
-            background: var(--glass); padding: 30px; border-radius: 25px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1); margin-bottom: 50px;
+            background: var(--glass); padding: 35px; border-radius: 25px;
+            box-shadow: 0 15px 45px rgba(0,0,0,0.1); margin-bottom: 50px;
         }
 
-        .active-page { display: block; animation: fadeIn 0.5s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .active-page { display: block; animation: fadeIn 0.6s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* pH Simulator Styles */
-        .ph-grid { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 20px; align-items: start; }
-        
-        .item-list { display: flex; flex-direction: column; gap: 15px; }
+        /* pH Simulator Дизайны */
+        .ph-grid { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 20px; margin-top: 20px; }
+        .item-list { display: flex; flex-direction: column; gap: 12px; }
         
         .item-card {
-            background: white; padding: 10px; border-radius: 15px;
+            background: white; padding: 12px; border-radius: 15px;
             text-align: center; cursor: pointer; transition: 0.3s;
-            border: 2px solid transparent; box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            border: 2px solid transparent; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
-        .item-card:hover { transform: scale(1.05); border-color: var(--accent); }
-        .item-card img { width: 50px; height: 50px; object-fit: contain; }
-        .item-card span { display: block; font-size: 12px; margin-top: 5px; font-weight: bold; }
+        .item-card:hover { transform: translateY(-3px); border-color: var(--accent); box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
+        .item-card span { display: block; font-size: 13px; margin-top: 5px; font-weight: 700; }
 
         .ph-display {
-            text-align: center; background: #fff; padding: 20px; border-radius: 20px;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+            text-align: center; background: #fff; padding: 25px; border-radius: 25px;
+            border: 1px solid #eee;
         }
 
         #ph-slider {
-            width: 100%; height: 20px; border-radius: 10px;
-            appearance: none; background: linear-gradient(to right, red, orange, yellow, green, cyan, blue, purple);
-            outline: none; margin: 20px 0;
+            width: 100%; height: 15px; border-radius: 10px;
+            appearance: none; background: linear-gradient(to right, #ff0000, #ffa500, #ffff00, #008000, #00ffff, #0000ff, #800080);
+            outline: none; margin: 25px 0;
         }
 
-        .ph-value { font-size: 48px; font-weight: 800; margin: 10px 0; }
+        .ph-value { font-size: 64px; font-weight: 900; margin: 10px 0; transition: 0.3s; }
         
-        .indicator-row { display: flex; justify-content: space-around; margin-top: 20px; }
-        .ind-box { padding: 10px; border-radius: 10px; color: white; font-size: 12px; width: 30%; font-weight: bold; }
+        .indicator-row { display: flex; justify-content: space-around; gap: 10px; margin-top: 25px; }
+        .ind-box { padding: 12px; border-radius: 12px; color: white; font-size: 11px; width: 30%; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); }
 
         .explanation {
-            margin-top: 20px; padding: 15px; background: #f8f9fa;
-            border-radius: 10px; font-size: 14px; line-height: 1.6; border-left: 5px solid var(--primary);
+            margin-top: 25px; padding: 18px; background: #f0f7ff;
+            border-radius: 15px; font-size: 15px; line-height: 1.6; border-left: 6px solid var(--primary);
+            text-align: left; min-height: 80px;
         }
 
-        /* Others */
-        .mendeleev-img, .periodic-img { width: 100%; max-width: 400px; border-radius: 15px; margin: 10px 0; }
-        input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px; border: 1px solid #ddd; }
-        .btn-solve { background: var(--primary); color: white; padding: 15px; border: none; width: 100%; border-radius: 10px; cursor: pointer; font-weight: bold; }
+        /* Ортақ элементтер */
+        input { width: 100%; padding: 15px; margin: 10px 0; border-radius: 12px; border: 2px solid #ddd; font-size: 16px; box-sizing: border-box; }
+        .btn-solve { background: var(--primary); color: white; padding: 16px; border: none; width: 100%; border-radius: 12px; cursor: pointer; font-weight: bold; font-size: 16px; }
+        .result { margin-top: 20px; padding: 20px; background: #fff; border-radius: 15px; border-left: 6px solid var(--accent); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .mendeleev-img { width: 200px; height: 260px; object-fit: cover; border-radius: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .periodic-img { width: 100%; max-width: 700px; border-radius: 15px; margin-top: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
     </style>
 </head>
 <body>
 
     <nav>
         <button class="nav-btn active" onclick="showPage('home', this)">🏠 Басты бет</button>
-        <button class="nav-btn" onclick="showPage('ph-sim', this)">🌈 pH Среда</button>
+        <button class="nav-btn" onclick="showPage('ph-sim', this)">🌈 pH Орта</button>
         <button class="nav-btn" onclick="showPage('mass', this)">⚖️ Масса</button>
         <button class="nav-btn" onclick="showPage('rxn', this)">🧪 Реакциялар</button>
     </nav>
 
     <div id="home" class="container active-page">
         <div style="text-align:center">
-            <h1>Дмитрий Иванович Менделеев</h1>
             <img src="mendeleev.jpg" class="mendeleev-img" alt="Менделеев">
-            <p>1834 – 1907. Периодтық заңның авторы.</p>
+            <h1>Дмитрий Иванович Менделеев</h1>
+            <p><b>1834 – 1907</b></p>
+            <p style="max-width:600px; margin: 0 auto; color: #555;">Ұлы орыс ғалымы, химиялық элементтердің периодтық заңын ашушы. Оның жүйесі қазіргі химияның негізі болып табылады.</p>
             <img src="table.png" class="periodic-img" alt="Кесте">
         </div>
     </div>
 
     <div id="ph-sim" class="container">
-        <h2 style="text-align:center">🌈 pH Интерактивті шкаласы</h2>
+        <h2 style="text-align:center">🌈 pH Интерактивті зертханасы</h2>
         <div class="ph-grid">
             <div class="item-list">
-                <h4 style="text-align:center">Тұрмыстық</h4>
-                <div class="item-card" onclick="updatePH(2.5, 'lemon')">🍋 <span>Лимон шырыны</span></div>
+                <h4 style="text-align:center">🏠 Тұрмыстық</h4>
+                <div class="item-card" onclick="updatePH(2.0, 'lemon')">🍋 <span>Лимон</span></div>
+                <div class="item-card" onclick="updatePH(3.0, 'apple')">🍎 <span>Алма</span></div>
                 <div class="item-card" onclick="updatePH(5.5, 'coffee')">☕ <span>Кофе</span></div>
                 <div class="item-card" onclick="updatePH(7.0, 'water')">💧 <span>Таза су</span></div>
                 <div class="item-card" onclick="updatePH(8.5, 'soda')">🥯 <span>Ас содасы</span></div>
@@ -117,57 +121,64 @@
             </div>
 
             <div class="ph-display">
-                <div id="ph-status" style="font-weight:bold; color:#555">ОРТА: НЕЙТРАЛДЫ</div>
+                <div id="ph-status" style="font-weight:bold; letter-spacing: 1px;">ОРТА: НЕЙТРАЛДЫ</div>
                 <div class="ph-value" id="ph-num">7.0</div>
                 <input type="range" id="ph-slider" min="0" max="14" step="0.1" value="7" oninput="manualPH(this.value)">
                 
                 <div class="indicator-row">
-                    <div id="ind-lak" class="ind-box">Лакмус</div>
-                    <div id="ind-met" class="ind-box">Метилоранж</div>
-                    <div id="ind-fen" class="ind-box">Фенолфталеин</div>
+                    <div id="ind-lak" class="ind-box">ЛАКМУС</div>
+                    <div id="ind-met" class="ind-box">МЕТИЛОРАНЖ</div>
+                    <div id="ind-fen" class="ind-box">ФЕНОЛФТАЛЕИН</div>
                 </div>
 
                 <div class="explanation" id="ph-exp">
-                    Затты таңдаңыз немесе ползунокты жылжытыңыз.
+                    Затты таңдаңыз немесе ползунокты жылжытып көріңіз.
                 </div>
             </div>
 
             <div class="item-list">
-                <h4 style="text-align:center">Химиялық</h4>
-                <div class="item-card" onclick="updatePH(0.1, 'hcl')">🧪 <span>Тұз қышқылы (HCl)</span></div>
-                <div class="item-card" onclick="updatePH(3.0, 'ch3cooh')">⚗️ <span>Сірке қышқылы</span></div>
-                <div class="item-card" onclick="updatePH(7.0, 'nacl')">🧂 <span>Тұз ерітіндісі</span></div>
-                <div class="item-card" onclick="updatePH(11.0, 'nh3')">🧬 <span>Аммиак (NH3)</span></div>
-                <div class="item-card" onclick="updatePH(13.5, 'naoh')">🔥 <span>Күйдіргіш натр</span></div>
+                <h4 style="text-align:center">🧪 Химиялық</h4>
+                <div class="item-card" onclick="updatePH(0.0, 'hcl')">⚗️ <span>Тұз қышқылы</span></div>
+                <div class="item-card" onclick="updatePH(1.0, 'h2so4')">🧪 <span>Күкірт қышқылы</span></div>
+                <div class="item-card" onclick="updatePH(4.0, 'acid')">🌫️ <span>Қышқыл жаңбыр</span></div>
+                <div class="item-card" onclick="updatePH(9.0, 'nh3')">🧬 <span>Аммиак ерітіндісі</span></div>
+                <div class="item-card" onclick="updatePH(12.0, 'limewater')">⚪ <span>Әк суы</span></div>
+                <div class="item-card" onclick="updatePH(14.0, 'naoh')">🔥 <span>Күйдіргіш натр</span></div>
             </div>
         </div>
     </div>
 
     <div id="mass" class="container">
-        <h2>⚖️ Молярлық масса</h2>
-        <input type="text" placeholder="Мысалы: H2SO4">
-        <button class="btn-solve">Есептеу</button>
+        <h2>⚖️ Молярлық массаны есептеу</h2>
+        <input type="text" id="massIn" placeholder="Мысалы: 2H2SO4" oninput="liveMass()">
+        <div id="massRes" class="result">Зат формуласын жазыңыз...</div>
     </div>
 
     <div id="rxn" class="container">
         <h2>🧪 Реакцияларды теңестіру</h2>
-        <input type="text" placeholder="H2 + O2 = H2O">
-        <button class="btn-solve">Теңестіру</button>
+        <input type="text" id="rxnIn" placeholder="Al + O2 = Al2O3">
+        <button class="btn-solve" onclick="balanceEquation()">Теңестіру</button>
+        <div id="rxnRes" class="result">Реакцияны жазып, батырманы басыңыз...</div>
     </div>
 
     <script>
-        const data = {
-            'lemon': { exp: 'Лимон құрамында лимон қышқылы бар. Ол сутегі иондарын (H+) бөледі, сондықтан орта қышқыл.', status: 'ҚЫШҚЫЛДЫ' },
-            'coffee': { exp: 'Кофе құрамында әлсіз органикалық қышқылдар бар. Бұл аздап қышқылды орта.', status: 'ӘЛСІЗ ҚЫШҚЫЛДЫ' },
-            'water': { exp: 'Таза су - бейтарап. Онда H+ және OH- иондары тең мөлшерде.', status: 'НЕЙТРАЛДЫ' },
-            'soda': { exp: 'Ас содасы (NaHCO3) суда гидролизденіп, әлсіз сілтілік орта түзеді.', status: 'ӘЛСІЗ СІЛТІЛІК' },
-            'soap': { exp: 'Сабын - жоғары май қышқылдарының тұзы. Ол сілтілік реакция береді.', status: 'СІЛТІЛІК' },
-            'hcl': { exp: 'HCl - күшті электролит. Ол суда толық диссоциацияланып, өте көп H+ иондарын береді.', status: 'КҮШТІ ҚЫШҚЫЛДЫ' },
-            'ch3cooh': { exp: 'Сірке қышқылы - әлсіз қышқыл. Ол тек жартылай ионданады.', status: 'ҚЫШҚЫЛДЫ' },
-            'nacl': { exp: 'NaCl - күшті қышқыл мен күшті негіздің тұзы. Ол гидролизденбейді, орта нейтралды.', status: 'НЕЙТРАЛДЫ' },
-            'nh3': { exp: 'Аммиак сумен әрекеттесіп, OH- иондарын түзеді. Бұл - негіздік орта.', status: 'СІЛТІЛІК' },
-            'naoh': { exp: 'NaOH - күшті негіз (сілті). Ол OH- иондарының максималды концентрациясын береді.', status: 'КҮШТІ СІЛТІЛІК' }
+        // Химиялық деректер қоры
+        const phData = {
+            'lemon': { exp: 'Лимонның құрамында лимон қышқылы бар. Ол сулы ерітіндіде сутегі иондарын (H+) бөледі. Сондықтан орта қышқылды.', s: 'ҚЫШҚЫЛДЫ' },
+            'apple': { exp: 'Алмада алма қышқылы болады. Бұл әлсіз қышқылдық орта береді.', s: 'ҚЫШҚЫЛДЫ' },
+            'coffee': { exp: 'Кофе аздап қышқылды ортаға ие (pH ~5). Оның құрамында түрлі органикалық қышқылдар бар.', s: 'ӘЛСІЗ ҚЫШҚЫЛДЫ' },
+            'water': { exp: 'Таза су - бейтарап. Онда H+ және OH- иондарының мөлшері бірдей.', s: 'НЕЙТРАЛДЫ' },
+            'soda': { exp: 'Ас содасы (NaHCO3) суда гидролизденіп, әлсіз сілтілік орта түзеді. Бұл қыжылды басуға көмектеседі.', s: 'ӘЛСІЗ СІЛТІЛІК' },
+            'soap': { exp: 'Сабындар май қышқылдары мен сілтіден түзіледі. Сондықтан олардың ерітіндісі сілтілік болады.', s: 'СІЛТІЛІК' },
+            'hcl': { exp: 'Тұз қышқылы (HCl) - күшті қышқыл. Ол суда толық диссоциацияланып, H+ концентрациясын күрт арттырады.', s: 'КҮШТІ ҚЫШҚЫЛДЫ' },
+            'h2so4': { exp: 'Күкірт қышқылы - өте агрессивті күшті қышқыл. Электролит ретінде қолданылады.', s: 'КҮШТІ ҚЫШҚЫЛДЫ' },
+            'acid': { exp: 'Қышқыл жаңбыр ауадағы азот пен күкірт оксидтерінің сумен әрекеттесуінен түзіледі.', s: 'ҚЫШҚЫЛДЫ' },
+            'nh3': { exp: 'Аммиак сумен әрекеттескенде аммоний гидроксидін түзеді, бұл ортаны сілтілі етеді.', s: 'СІЛТІЛІК' },
+            'limewater': { exp: 'Әк суы Ca(OH)2 - орташа күшті негіз. Зертханада көмірқышқыл газын анықтау үшін қолданылады.', s: 'СІЛТІЛІК' },
+            'naoh': { exp: 'Натрий гидроксиді - күшті сілті. Ол суда OH- иондарын көптеп бөледі.', s: 'КҮШТІ СІЛТІЛІК' }
         };
+
+        const elements = {"H":1.008,"He":4.003,"Li":6.941,"Be":9.012,"B":10.81,"C":12.01,"N":14.01,"O":16,"F":19,"Ne":20.18,"Na":22.99,"Mg":24.31,"Al":26.98,"Si":28.09,"P":30.97,"S":32.06,"Cl":35.45,"Ar":39.95,"K":39.1,"Ca":40.08,"Sc":44.96,"Ti":47.87,"V":50.94,"Cr":52,"Mn":54.94,"Fe":55.85,"Co":58.93,"Ni":58.69,"Cu":63.55,"Zn":65.38,"Ga":69.72,"Ge":72.63,"As":74.92,"Se":78.96,"Br":79.9,"Kr":83.8,"Rb":85.47,"Sr":87.62,"Y":88.91,"Zr":91.22,"Nb":92.91,"Mo":95.94,"Ag":107.87,"Ba":137.33,"Pt":195.08,"Au":196.97,"Hg":200.59,"Pb":207.2};
 
         function showPage(id, btn) {
             document.querySelectorAll('.container').forEach(c => c.classList.remove('active-page'));
@@ -176,12 +187,12 @@
             btn.classList.add('active');
         }
 
+        // pH Логикасы
         function updatePH(val, key) {
             document.getElementById('ph-slider').value = val;
             manualPH(val);
             if(key) {
-                document.getElementById('ph-exp').innerText = data[key].exp;
-                document.getElementById('ph-status').innerText = 'ОРТА: ' + data[key].status;
+                document.getElementById('ph-exp').innerHTML = `<b>${phData[key].s}:</b> ${phData[key].exp}`;
             }
         }
 
@@ -189,30 +200,71 @@
             val = parseFloat(val);
             document.getElementById('ph-num').innerText = val.toFixed(1);
             
-            // Colors
+            // Түсті өзгерту (Қызылдан Көкке)
             let r, g, b;
             if(val < 7) { r = 255; g = Math.round(255 * val/7); b = 0; }
             else { r = Math.round(255 * (14-val)/7); g = Math.round(255 * (14-val)/7); b = 255; }
             document.getElementById('ph-num').style.color = `rgb(${r},${g},${b})`;
 
-            // Indicators
-            // Лакмус: қызыл < 7 < көк
-            let lak = val < 6 ? '#e74c3c' : (val > 8 ? '#3498db' : '#9b59b6');
-            // Метилоранж: қызғылт < 4 < сары
-            let met = val < 4 ? '#ff4d4d' : '#f1c40f';
-            // Фенолфталеин: түссіз < 9 < таңқурай (малиновый)
-            let fen = val < 9 ? '#bdc3c7' : '#e84393';
+            // Индикаторлар түсі
+            document.getElementById('ind-lak').style.backgroundColor = val < 6 ? '#e74c3c' : (val > 8 ? '#3498db' : '#9b59b6');
+            document.getElementById('ind-met').style.backgroundColor = val < 4 ? '#ff4d4d' : '#f1c40f';
+            document.getElementById('ind-fen').style.backgroundColor = val < 9 ? '#bdc3c7' : '#e84393';
 
-            document.getElementById('ind-lak').style.backgroundColor = lak;
-            document.getElementById('ind-met').style.backgroundColor = met;
-            document.getElementById('ind-fen').style.backgroundColor = fen;
+            let status = "";
+            if(val < 3) status = "КҮШТІ ҚЫШҚЫЛДЫ";
+            else if(val < 6) status = "ҚЫШҚЫЛДЫ";
+            else if(val <= 7.5) status = "НЕЙТРАЛДЫ";
+            else if(val < 11) status = "СІЛТІЛІК";
+            else status = "КҮШТІ СІЛТІЛІК";
+            document.getElementById('ph-status').innerText = 'ОPTA: ' + status;
+            document.getElementById('ph-status').style.color = `rgb(${r},${g},${b})`;
+        }
 
-            if(val < 3) s = "КҮШТІ ҚЫШҚЫЛ";
-            else if(val < 6) s = "ҚЫШҚЫЛ";
-            else if(val <= 7.5) s = "НЕЙТРАЛДЫ";
-            else if(val < 11) s = "СІЛТІЛІК";
-            else s = "КҮШТІ СІЛТІЛІК";
-            document.getElementById('ph-status').innerText = 'ОРТА: ' + s;
+        // Масса Логикасы
+        function parseFormula(f) {
+            let mult = f.match(/^(\d+)/) ? parseInt(f.match(/^(\d+)/)[0]) : 1;
+            let s = f.replace(/^\d+/, ''), i = 0;
+            const p = () => {
+                let d = {};
+                while(i < s.length && s[i] !== ')') {
+                    if(s[i] === '(') { i++; let n = p(); i++; let c = parseInt(s.slice(i).match(/^\d+/) || 1); 
+                    for(let e in n) d[e] = (d[e]||0) + n[e]*c; i += (s.slice(i).match(/^\d+/) || [""])[0].length;
+                    } else {
+                        let m = s.slice(i).match(/^([A-Z][a-z]?)([0-9]*)/);
+                        if(m) { d[m[1]] = (d[m[1]]||0) + parseInt(m[2] || 1); i += m[0].length; } else i++;
+                    }
+                } return d;
+            };
+            let res = p(); for(let e in res) res[e] *= mult; return res;
+        }
+
+        function liveMass() {
+            let f = document.getElementById('massIn').value;
+            try {
+                let d = parseFormula(f);
+                let m = Object.entries(d).reduce((a, [e, c]) => a + (elements[e] || 0) * c, 0);
+                document.getElementById('massRes').innerHTML = m > 0 ? `<b>M(${f}) = ${m.toFixed(3)} г/моль</b>` : "Формула қате";
+            } catch(e) { document.getElementById('massRes').innerText = "..."; }
+        }
+
+        // Теңестіру Логикасы
+        function balanceEquation() {
+            try {
+                let input = document.getElementById('rxnIn').value.replace(/\s+/g, '');
+                let [l, r] = input.split('=');
+                let lhs = l.split('+'), rhs = r.split('+'), comps = [...lhs, ...rhs];
+                let els = Array.from(new Set(comps.flatMap(c => Object.keys(parseFormula(c)))));
+                let matrix = els.map(e => comps.map((c, j) => (parseFormula(c)[e] || 0) * (j < lhs.length ? 1 : -1)));
+                matrix.push(comps.map((_, j) => j === 0 ? 1 : 0));
+                let b = new Array(els.length).fill(0); b.push(1);
+                let x = math.lusolve(matrix, b).map(v => Math.abs(v[0]));
+                let f = 1; while(!x.every(v => Math.abs(Math.round(v*f) - v*f) < 0.001)) f++;
+                let coeffs = x.map(v => Math.round(v*f));
+                let resL = [], resR = [];
+                coeffs.forEach((c, i) => { let s = (c===1?'':c) + comps[i]; if(i < lhs.length) resL.push(s); else resR.push(s); });
+                document.getElementById('rxnRes').innerHTML = `<b>${resL.join(' + ')} = ${resR.join(' + ')}</b>`;
+            } catch(e) { document.getElementById('rxnRes').innerText = "Қате! Формуланы тексеріңіз (Мысалы: NaOH + HCl = NaCl + H2O)"; }
         }
 
         window.onload = () => manualPH(7);
