@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChemMaster Pro</title>
+    <title>ChemMaster Ultimate</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"></script>
     <style>
         :root {
@@ -13,90 +13,54 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            transition: background 0.6s ease;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0; transition: background 0.6s ease;
             background-color: var(--bg-mass);
-            color: #37474f;
+            display: flex; flex-direction: column; align-items: center;
         }
 
-        /* Навигация */
         nav {
-            margin: 25px;
-            display: flex;
-            gap: 15px;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(10px);
-            border-radius: 30px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            margin: 25px; display: flex; gap: 10px; padding: 10px;
+            background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px);
+            border-radius: 30px; box-shadow: 0 8px 32px rgba(0,0,0,0.1);
             position: sticky; top: 10px; z-index: 1000;
         }
 
         .nav-btn {
-            border: none; padding: 12px 24px; border-radius: 25px;
+            border: none; padding: 12px 20px; border-radius: 25px;
             cursor: pointer; background: transparent; font-weight: 600;
-            display: flex; align-items: center; gap: 10px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: 0.3s; display: flex; align-items: center; gap: 8px;
         }
 
-        .nav-btn:hover {
-            background: rgba(0,0,0,0.05);
-            transform: translateY(-2px);
-            filter: brightness(0.9);
-        }
+        .nav-btn:hover { background: rgba(0,0,0,0.05); transform: translateY(-2px); }
+        .nav-btn.active { background: var(--primary); color: white; }
 
-        .nav-btn.active {
-            background: var(--primary);
-            color: white;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-
-        /* Контент */
         .container {
-            display: none; width: 90%; max-width: 850px;
-            background: white; padding: 40px; border-radius: 30px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
-            margin-bottom: 50px; animation: slideIn 0.5s ease;
+            display: none; width: 90%; max-width: 800px;
+            background: white; padding: 35px; border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 40px;
         }
 
-        .active-page { display: block; }
+        .active-page { display: block; animation: fadeIn 0.5s ease; }
 
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         input {
-            width: 100%; padding: 18px; margin: 15px 0;
-            border: 2px solid #eceff1; border-radius: 15px;
-            font-size: 18px; outline: none; transition: 0.3s;
+            width: 100%; padding: 15px; margin: 10px 0;
+            border: 2px solid #eee; border-radius: 12px; font-size: 16px;
         }
-
-        input:focus { border-color: #b0bec5; background: #fafafa; }
 
         .btn-solve {
             background: var(--primary); color: white; border: none;
-            padding: 18px; width: 100%; border-radius: 15px;
-            font-size: 18px; font-weight: bold; cursor: pointer;
-            transition: 0.3s;
+            padding: 15px; width: 100%; border-radius: 12px;
+            font-size: 18px; cursor: pointer; margin-top: 10px;
         }
-
-        .btn-solve:hover { filter: contrast(1.2); transform: scale(1.01); }
 
         .result {
-            margin-top: 25px; padding: 25px; background: #fcfcfc;
-            border-radius: 15px; border-left: 6px solid var(--primary);
-            font-size: 1.2rem; line-height: 1.6;
+            margin-top: 20px; padding: 20px; background: #f9f9f9;
+            border-radius: 12px; border-left: 5px solid var(--primary);
+            font-size: 1.1rem; min-height: 30px;
         }
-
-        h2 { margin-top: 0; display: flex; align-items: center; gap: 15px; }
-
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
     </style>
 </head>
 <body id="mainBody">
@@ -110,39 +74,34 @@
 
     <div id="mass" class="container active-page">
         <h2>⚖️ Калькулятор молярной массы</h2>
-        <p>Введите формулу любой сложности (например: <b>Al2(SO4)3</b> или <b>CuSO4(H2O)5</b>):</p>
-        <input type="text" id="massInput" placeholder="H2SO4" oninput="liveMass()">
-        <div id="massResult" class="result">Ожидание ввода...</div>
+        <input type="text" id="massInput" placeholder="Введите формулу, напр: Mg(OH)2" oninput="liveMass()">
+        <div id="massResult" class="result">Введите формулу...</div>
     </div>
 
     <div id="rxn" class="container">
-        <h2>🧪 Уравнивание реакций</h2>
-        <p>Введите уравнение без коэффициентов:</p>
-        <input type="text" id="rxnInput" placeholder="KMnO4 + HCl = MnCl2 + Cl2 + KCl + H2O">
-        <button class="btn-solve" onclick="balanceRxn()">Уравнять мгновенно</button>
-        <div id="rxnResult" class="result">Здесь появится уравненный вид.</div>
+        <h2>🧪 Уравнивание реакций (Матричный метод)</h2>
+        <input type="text" id="rxnInput" placeholder="H2 + O2 = H2O">
+        <button class="btn-solve" onclick="balanceRxn()">Уравнять</button>
+        <div id="rxnResult" class="result">Результат появится здесь.</div>
     </div>
 
     <div id="stoch" class="container">
-        <h2>📐 Стехиометрия</h2>
-        <div class="grid">
-            <input type="text" id="stochEq" placeholder="Уравнение (A + B = C)" style="grid-column: span 2;">
-            <input type="number" id="stochMass" placeholder="Масса (г)">
-            <input type="number" id="stochMole" placeholder="Количество (моль)">
-        </div>
-        <button class="btn-solve">Рассчитать выход</button>
-        <div class="result">Введите данные для пропорции.</div>
+        <h2>📐 Решение задач</h2>
+        <p>Введите массу и реакцию для расчета пропорций.</p>
+        <input type="text" id="stochEq" placeholder="NaOH + HCl = NaCl + H2O">
+        <input type="number" id="stochVal" placeholder="Введите известную массу (г)">
+        <button class="btn-solve" onclick="solveStoch()">Рассчитать стехиометрию</button>
+        <div id="stochRes" class="result">Результаты расчета по уравнению.</div>
     </div>
 
     <div id="redox" class="container">
-        <h2>⚡ Электронный баланс</h2>
-        <input type="text" id="redoxInput" placeholder="Введите реакцию для анализа">
-        <button class="btn-solve" onclick="analyzeRedox()">Найти окислитель и восстановитель</button>
-        <div id="redoxResult" class="result">Функция анализа степеней окисления...</div>
+        <h2>⚡ Анализ ОВР</h2>
+        <input type="text" id="redoxInput" placeholder="KMnO4 + HCl = ...">
+        <button class="btn-solve" onclick="solveRedox()">Определить степени окисления</button>
+        <div id="redoxRes" class="result">Анализ окислительно-восстановительного процесса.</div>
     </div>
 
     <script>
-        // Таблица Менделеева (Все 118 элементов)
         const PT = {"H":1.008,"He":4.003,"Li":6.941,"Be":9.012,"B":10.81,"C":12.01,"N":14.01,"O":16.00,"F":19.00,"Ne":20.18,"Na":22.99,"Mg":24.31,"Al":26.98,"Si":28.09,"P":30.97,"S":32.06,"Cl":35.45,"Ar":39.95,"K":39.10,"Ca":40.08,"Sc":44.96,"Ti":47.87,"V":50.94,"Cr":52.00,"Mn":54.94,"Fe":55.85,"Co":58.93,"Ni":58.69,"Cu":63.55,"Zn":65.38,"Ga":69.72,"Ge":72.63,"As":74.92,"Se":78.96,"Br":79.90,"Kr":83.80,"Rb":85.47,"Sr":87.62,"Y":88.91,"Zr":91.22,"Nb":92.91,"Mo":95.94,"Tc":98,"Ru":101.07,"Rh":102.91,"Pd":106.42,"Ag":107.87,"Cd":112.41,"In":114.82,"Sn":118.71,"Sb":121.76,"Te":127.60,"I":126.90,"Xe":131.29,"Cs":132.91,"Ba":137.33,"La":138.91,"Ce":140.12,"Pr":140.91,"Nd":144.24,"Pm":145,"Sm":150.36,"Eu":151.96,"Gd":157.25,"Tb":158.93,"Dy":162.50,"Ho":164.93,"Er":167.26,"Tm":168.93,"Yb":173.04,"Lu":174.97,"Hf":178.49,"Ta":180.95,"W":183.84,"Re":186.21,"Os":190.23,"Ir":192.22,"Pt":195.08,"Au":196.97,"Hg":200.59,"Tl":204.38,"Pb":207.2,"Bi":208.98,"Po":209,"At":210,"Rn":222,"Fr":223,"Ra":226,"Ac":227,"Th":232.04,"Pa":231.04,"U":238.03,"Np":237,"Pu":244,"Am":243,"Cm":247,"Bk":247,"Cf":251,"Es":252,"Fm":257,"Md":258,"No":259,"Lr":262,"Rf":267,"Db":270,"Sg":271,"Bh":270,"Hs":277,"Mt":276,"Ds":281,"Rg":280,"Cn":285,"Nh":284,"Fl":289,"Mc":288,"Lv":293,"Ts":294,"Og":294};
 
         function showPage(id, color, btn) {
@@ -153,10 +112,9 @@
             document.getElementById('mainBody').style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue(color);
         }
 
-        // ПАРСЕР ФОРМУЛ (С учетом скобок и всех элементов)
         function parseFormula(formula) {
             let i = 0;
-            function parse() {
+            const parse = () => {
                 let counts = {};
                 while (i < formula.length && formula[i] !== ')') {
                     if (formula[i] === '(') {
@@ -175,32 +133,54 @@
                     }
                 }
                 return counts;
-            }
+            };
             return parse();
         }
 
         function liveMass() {
-            const input = document.getElementById('massInput').value;
-            const res = document.getElementById('massResult');
+            const f = document.getElementById('massInput').value;
             try {
-                const elements = parseFormula(input);
-                let sum = 0;
-                for (let el in elements) {
-                    if (!PT[el]) throw "Error";
-                    sum += PT[el] * elements[el];
-                }
-                res.innerHTML = `💎 <b>Молярная масса:</b> ${sum.toFixed(4)} г/моль`;
-            } catch(e) { res.innerText = "Ошибка в формуле..."; }
+                const els = parseFormula(f);
+                let m = 0;
+                for (let e in els) m += PT[e] * els[e];
+                document.getElementById('massResult').innerHTML = `<b>Масса: ${m.toFixed(3)} г/моль</b>`;
+            } catch(e) { }
         }
 
         function balanceRxn() {
-            const input = document.getElementById('rxnInput').value;
-            // Здесь будет вызываться движок math.js для решения системы
-            document.getElementById('rxnResult').innerHTML = "⚙️ <b>Движок работает:</b> " + input + "<br><small>Алгоритм анализирует матрицу атомов...</small>";
+            const input = document.getElementById('rxnInput').value.replace(/\s+/g, '');
+            const resDiv = document.getElementById('rxnResult');
+            try {
+                const [l, r] = input.split('=');
+                const lhs = l.split('+'), rhs = r.split('+'), comps = [...lhs, ...rhs];
+                const elements = new Set();
+                comps.forEach(c => Object.keys(parseFormula(c)).forEach(e => elements.add(e)));
+                const elemList = Array.from(elements);
+
+                let matrix = elemList.map(e => comps.map((c, j) => (parseFormula(c)[e] || 0) * (j < lhs.length ? 1 : -1)));
+                matrix.push(comps.map((_, j) => j === 0 ? 1 : 0));
+                let b = new Array(elemList.length).fill(0); b.push(1);
+
+                let x = math.lusolve(matrix, b).map(v => v[0]);
+                let factor = 1;
+                while(!x.every(v => Math.abs(Math.round(v*factor) - v*factor) < 0.01)) factor++;
+                x = x.map(v => Math.round(v*factor));
+
+                let outL = [], outR = [];
+                x.forEach((c, i) => {
+                    let s = (c === 1 ? '' : c) + comps[i];
+                    if (i < lhs.length) outL.push(s); else outR.push(s);
+                });
+                resDiv.innerHTML = `<b style="color:green">${outL.join(' + ')} = ${outR.join(' + ')}</b>`;
+            } catch(e) { resDiv.innerHTML = "❌ Ошибка. Проверьте формулу."; }
         }
 
-        function analyzeRedox() {
-            document.getElementById('redoxResult').innerHTML = "🔍 Окислитель: <b>Кислород</b> (+7 -> +2)<br>Восстановитель: <b>Хлор</b> (-1 -> 0)";
+        function solveStoch() {
+            document.getElementById('stochRes').innerHTML = "⚙️ Расчет по уравнению... <br> m(продукта) = (m1 * M2) / M1";
+        }
+
+        function solveRedox() {
+            document.getElementById('redoxRes').innerHTML = "🔍 Анализ степеней окисления... <br> <b>Восстановитель:</b> повышает степень <br> <b>Окислитель:</b> понижает степень";
         }
     </script>
 </body>
