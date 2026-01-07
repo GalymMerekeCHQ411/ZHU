@@ -436,7 +436,7 @@
                 let b = new Array(els.length).fill(0); b.push(1);
                 
                 let x = math.lusolve(matrix, b).map(v => Math.abs(v[0]));
-                let f = 1; while(!x.every(v => Math.abs(Math.round(v*f) - v*f) < 0.001) && f < 1000) f++;
+                let f = 1; while(!x.every(v => Math.abs(Math.round(v*f) - v*f) < 0.0001) && f < 2000) f++;
                 let res = x.map(v => Math.round(v*f));
                 
                 let oL = [], oR = [];
