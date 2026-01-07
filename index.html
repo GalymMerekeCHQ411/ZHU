@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChemMaster Pro: Mendeleev Edition</title>
+    
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3022/3022588.png" type="image/png">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3022/3022588.png">
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"></script>
     <style>
         :root {
@@ -54,7 +58,6 @@
         .nav-btn.active { background: var(--primary); color: white; }
         .nav-btn:active { transform: scale(0.95); }
 
-        /* 60 FPS Transitions */
         .container {
             display: none; 
             width: 90%; max-width: 850px;
@@ -73,7 +76,6 @@
             transform: translateY(0) scale(1);
         }
 
-        /* pH Simulator Styles */
         .ph-grid { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 20px; margin-top: 20px; }
         .item-list { display: flex; flex-direction: column; gap: 12px; }
         .item-card {
@@ -98,7 +100,6 @@
             text-align: left; min-height: 60px;
         }
 
-        /* Home Content */
         .home-content { text-align: center; }
         .mendeleev-card {
             display: flex; flex-direction: column; align-items: center; margin: 30px 0;
@@ -118,7 +119,6 @@
         .badge { padding: 6px 12px; border-radius: 8px; color: white; font-size: 12px; font-weight: bold; }
         .ox { background: var(--danger); } .red { background: var(--accent); }
 
-        /* Composition Styles */
         .comp-row { display: flex; align-items: center; justify-content: space-between; margin: 8px 0; padding: 8px; background: #f0f7ff; border-radius: 10px; }
         .comp-bar-bg { flex-grow: 1; height: 8px; background: #e1e8f0; margin: 0 15px; border-radius: 4px; overflow: hidden; }
         .comp-bar-fill { height: 100%; background: var(--accent); transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
@@ -266,30 +266,22 @@
             document.getElementById('flag').innerText = curLang === 'kk' ? '🇰🇿' : '🇷🇺';
             document.getElementById('langName').innerText = curLang === 'kk' ? 'Қазақша' : 'Русский';
             document.querySelectorAll('[data-key]').forEach(el => el.innerText = dict[curLang][el.getAttribute('data-key')]);
-            
-            // Исправляем placeholder в массе
             document.getElementById('mIn').placeholder = dict[curLang]['mass-placeholder'];
-            
             manualPH(document.getElementById('ph-slider').value);
         }
 
-        // Optimized Smooth Page Switching
         function showPage(id, btn) {
             const currentActive = document.querySelector('.container.active-page');
             const nextTarget = document.getElementById(id);
-            
             if (currentActive === nextTarget) return;
-
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-
             if (currentActive) {
                 currentActive.style.opacity = '0';
                 currentActive.style.transform = 'translateY(-20px) scale(0.98)';
                 setTimeout(() => {
                     currentActive.classList.remove('active-page');
                     currentActive.style.display = 'none';
-                    
                     startEnterAnimation(nextTarget);
                 }, 400);
             } else {
@@ -301,36 +293,26 @@
             el.style.display = 'block';
             el.style.opacity = '0';
             el.style.transform = 'translateY(20px) scale(0.98)';
-            
-            // Force reflow
             void el.offsetWidth;
-            
             el.classList.add('active-page');
             el.style.opacity = '1';
             el.style.transform = 'translateY(0) scale(1)';
         }
 
-        // 60 FPS Smooth Slider Animation
         let animationFrame = null;
         function updatePH(targetVal, key) {
             if (animationFrame) cancelAnimationFrame(animationFrame);
-            
             const slider = document.getElementById('ph-slider');
             const startVal = parseFloat(slider.value);
-            const duration = 500; // 0.5 seconds
+            const duration = 500;
             const startTime = performance.now();
-
             function animate(currentTime) {
                 const elapsed = currentTime - startTime;
                 const progress = Math.min(elapsed / duration, 1);
-                
-                // Ease out function for smoothness
                 const easedProgress = 1 - Math.pow(1 - progress, 3);
-                
                 const currentVal = startVal + (targetVal - startVal) * easedProgress;
                 slider.value = currentVal;
                 manualPH(currentVal);
-
                 if (progress < 1) {
                     animationFrame = requestAnimationFrame(animate);
                 } else if (key) {
@@ -347,11 +329,9 @@
             if(val < 7) { r = 255; g = Math.round(255 * val/7); b = 0; }
             else { r = Math.round(255 * (14-val)/7); g = Math.round(255 * (14-val)/7); b = 255; }
             document.getElementById('ph-num').style.color = `rgb(${r},${g},${b})`;
-            
             document.getElementById('ind-lak').style.backgroundColor = val < 6 ? '#e74c3c' : (val > 8 ? '#3498db' : '#9b59b6');
             document.getElementById('ind-met').style.backgroundColor = val < 4 ? '#ff4d4d' : '#f1c40f';
             document.getElementById('ind-fen').style.backgroundColor = val < 9 ? '#bdc3c7' : '#e84393';
-            
             let st = val < 3 ? (curLang==='kk'?'КҮШТІ ҚЫШҚЫЛ':'СИЛЬНАЯ КИСЛОТА') : 
                      val < 6 ? (curLang==='kk'?'ҚЫШҚЫЛ':'КИСЛОТА') : 
                      val <= 7.5 ? (curLang==='kk'?'НЕЙТРАЛДЫ':'НЕЙТРАЛЬНО') : 
@@ -360,7 +340,6 @@
             document.getElementById('ph-status').style.color = `rgb(${r},${g},${b})`;
         }
 
-        // Mass Logic
         function parse(f) {
             let mult = (f.match(/^(\d+)/) || [1, 1])[1];
             let s = f.replace(/^\d+/, ''), i = 0;
@@ -390,18 +369,14 @@
         function calcM() {
             let v = document.getElementById('mIn').value.trim();
             if (!v) { document.getElementById('mRes').innerHTML = "..."; return; }
-            
-            // ПРОВЕРКА: Если в поле ввели реакцию (содержит = или +)
             if (v.includes('=') || v.includes('+')) {
                 document.getElementById('mRes').innerHTML = `<span style="color:var(--danger)">${dict[curLang]['err-not-substance']}</span>`;
                 return;
             }
-
             try {
                 let d = parse(v);
                 let totalM = 0;
                 let components = [];
-
                 for (let e in d) {
                     let atomMass = PT[e] || 0;
                     if (atomMass === 0) throw "Error";
@@ -410,11 +385,9 @@
                     totalM += weight;
                     components.push({ name: e, weight: weight, count: count });
                 }
-
                 if (totalM > 0) {
                     let html = `<div style="font-size: 1.2em; margin-bottom: 15px;"><b>Mr(${v}) = ${totalM.toFixed(3)} г/моль</b></div>`;
                     html += `<div style="border-top: 1px solid #eee; padding-top: 10px;">`;
-                    
                     components.forEach(comp => {
                         let percentage = ((comp.weight / totalM) * 100).toFixed(2);
                         html += `
@@ -428,7 +401,6 @@
                                 </div>
                             </div>`;
                     });
-                    
                     html += `</div>`;
                     document.getElementById('mRes').innerHTML = html;
                 }
@@ -443,41 +415,32 @@
                 document.getElementById('rRes').innerHTML = `<span style="color:var(--danger)">${dict[curLang]['err-eq']}</span>`;
                 return;
             }
-
             try {
                 let [l, r] = inp.split('=');
                 let lhs = l.split('+'), rhs = r.split('+'), comps = [...lhs, ...rhs];
                 let els = Array.from(new Set(comps.flatMap(c => Object.keys(parse(c)))));
-                
                 let matrix = els.map(e => comps.map((c, j) => (parse(c)[e] || 0) * (j < lhs.length ? 1 : -1)));
                 let constraint = comps.map((_, j) => j === 0 ? 1 : 0);
                 matrix.push(constraint);
-                
                 let b = new Array(els.length).fill(0); 
                 b.push(1);
-                
                 let x;
                 try {
                     x = math.lusolve(matrix, b).map(v => Math.abs(v[0]));
                 } catch(e) {
                     x = math.multiply(math.pinv(matrix), b).map(v => Math.abs(v));
                 }
-                
                 let f = 1; 
                 while(!x.every(v => Math.abs(Math.round(v*f) - v*f) < 0.001) && f < 1000) f++;
                 let res = x.map(v => Math.round(v*f));
-                
                 let oL = [], oR = [];
                 res.forEach((c, i) => { 
                     let s = (c===1?'':c) + comps[i]; 
                     if(i < lhs.length) oL.push(s); else oR.push(s); 
                 });
-
-                // Классификация типа реакции
                 let typeKK = "", typeRU = "", descKK = "", descRU = "";
                 let nL = lhs.length, nR = rhs.length;
                 const isSimple = (f) => Object.keys(parse(f)).length === 1;
-
                 if (nL >= 2 && nR === 1) {
                     typeKK = "Қосылу"; typeRU = "Соединения";
                     descKK = "Екі немесе одан да көп заттардан бір күрделі зат түзіледі.";
@@ -503,10 +466,8 @@
                     descKK = "Бұл реакция бірнеше реагенттер мен өнімдерден тұратын күрделі процесс.";
                     descRU = "Эта реакция является сложным процессом с участием множества реагентов и продуктов.";
                 }
-
                 let typeStr = curLang === 'kk' ? typeKK : typeRU;
                 let descStr = curLang === 'kk' ? descKK : descRU;
-
                 document.getElementById('rRes').innerHTML = `
                     <div style="font-size: 1.1em; margin-bottom: 10px;"><b>${oL.join(' + ')} = ${oR.join(' + ')}</b></div>
                     <div style="color: var(--primary); font-weight: bold;">${curLang==='kk'?'Типі:':'Тип:'} ${typeStr}</div>
@@ -534,7 +495,6 @@
             let Mk = getM(comps[kI].replace(/^\d+/, ''));
             let nk = type==='m' ? val/Mk : (type==='V' ? val/22.4 : val);
             let n1 = nk / coeffs[kI];
-
             let html = `<h3>${dict[curLang].sol}</h3>`;
             comps.forEach((c, i) => {
                 if(i !== kI) {
