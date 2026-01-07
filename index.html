@@ -117,6 +117,10 @@
         .result { margin-top: 25px; padding: 25px; background: white; border-radius: 20px; border-left: 8px solid var(--accent); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
         .badge { padding: 6px 12px; border-radius: 8px; color: white; font-size: 12px; font-weight: bold; }
         .ox { background: var(--danger); } .red { background: var(--accent); }
+
+        /* Composition Bars */
+        .comp-bar-bg { width: 100%; height: 8px; background: #e1e8f0; border-radius: 4px; overflow: hidden; margin-top: 5px; }
+        .comp-bar-fill { height: 100%; background: var(--accent); transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
     </style>
 </head>
 <body>
@@ -128,7 +132,7 @@
     <nav>
         <button class="nav-btn active" onclick="showPage('home', this)">🏠 <span data-key="nav-home">Басты бет</span></button>
         <button class="nav-btn" onclick="showPage('ph-sim', this)">🌈 <span data-key="nav-ph">pH Орта</span></button>
-        <button class="nav-btn" onclick="showPage('mass', this)">⚖️ <span data-key="nav-mass">Масса</span></button>
+        <button class="nav-btn" onclick="showPage('mass', this)">⚖️ <span data-key="nav-mass">Масса және құрам</span></button>
         <button class="nav-btn" onclick="showPage('rxn', this)">🧪 <span data-key="nav-rxn">Реакциялар</span></button>
         <button class="nav-btn" onclick="showPage('stoch', this)">📐 <span data-key="nav-stoch">Есептер</span></button>
         <button class="nav-btn" onclick="showPage('redox', this)">⚡ <span data-key="nav-redox">ТТБ</span></button>
@@ -180,8 +184,8 @@
     </div>
 
     <div id="mass" class="container">
-        <h2 data-key="mass-title">⚖️ Молярлық массаны есептеу</h2>
-        <input type="text" id="mIn" placeholder="Мысалы: 2KMnO4" oninput="calcM()">
+        <h2 data-key="mass-title">⚖️ Молярлық масса және құрам</h2>
+        <input type="text" id="mIn" placeholder="Мысалы: H2SO4" oninput="calcM()">
         <div id="mRes" class="result">...</div>
     </div>
 
@@ -216,18 +220,18 @@
 
         const dict = {
             kk: {
-                "nav-home":"Басты бет","nav-mass":"Масса","nav-rxn":"Реакциялар","nav-stoch":"Есептер","nav-redox":"ТТБ","nav-ph":"pH Орта",
+                "nav-home":"Басты бет","nav-mass":"Масса және құрам","nav-rxn":"Реакциялар","nav-stoch":"Есептер","nav-redox":"ТТБ","nav-ph":"pH Орта",
                 "h-welcome":"Химия әлеміне қош келдіңіз!","m-name":"Дмитрий Иванович Менделеев","m-desc":"Периодтық заңды ашқан және кесте жасаған ұлы ғалым.","p-title":"Периодтық кесте",
-                "mass-title":"⚖️ Молярлық масса","rxn-title":"🧪 Реакцияларды теңестіру","stoch-title":"📐 Есептерді шығару жолы","ph-title":"🌈 pH Интерактивті шкаласы",
+                "mass-title":"⚖️ Молярлық масса және құрам","rxn-title":"🧪 Реакцияларды теңестіру","stoch-title":"📐 Есептерді шығару жолы","ph-title":"🌈 pH Интерактивті шкаласы",
                 "redox-title":"⚡ Тотығу-тотықсыздану","btn-solve":"Теңестіру","btn-parse":"1. Талдау","btn-calc":"2. Есептеу",
                 "btn-redox":"Анықтау","given":"Берілгені:","sol":"Шешуі:","ans":"Жауабы:","ox":"Тотықтырғыш","red":"Тотықсыздандырғыш",
                 "ph-intro":"Затты таңдаңыз немесе ползунокты жылжытыңыз.","ph-home":"🏠 Тұрмыстық","ph-chem":"🧪 Химиялық",
                 "lemon":"Лимон","coffee":"Кофе","water":"Су","soap":"Сабын","hcl":"Тұз қышқылы","h2so4":"Күкірт қышқылы","nh3":"Аммиак","naoh":"Күйдіргіш натр"
             },
             ru: {
-                "nav-home":"Главная","nav-mass":"Масса","nav-rxn":"Реакции","nav-stoch":"Задачи","nav-redox":"ОВР","nav-ph":"pH Среда",
+                "nav-home":"Главная","nav-mass":"Масса и состав","nav-rxn":"Реакции","nav-stoch":"Задачи","nav-redox":"ОВР","nav-ph":"pH Среда",
                 "h-welcome":"Добро пожаловать в мир химии!","m-name":"Дмитрий Иванович Менделеев","m-desc":"Великий учёный, создавший периодическую таблицу.","p-title":"Периодическая таблица",
-                "mass-title":"⚖️ Молярная масса","rxn-title":"🧪 Уравнивание реакций","stoch-title":"📐 Решение задач","ph-title":"🌈 Интерактивная шкала pH",
+                "mass-title":"⚖️ Молярная масса и состав","rxn-title":"🧪 Уравнивание реакций","stoch-title":"📐 Решение задач","ph-title":"🌈 Интерактивная шкала pH",
                 "redox-title":"⚡ Анализ ОВР","btn-solve":"Уравнять","btn-parse":"1. Разобрать","btn-calc":"2. Рассчитать",
                 "btn-redox":"Определить","given":"Дано:","sol":"Решение:","ans":"Ответ:","ox":"Окислитель","red":"Восстановитель",
                 "ph-intro":"Выберите вещество или двигайте ползунок.","ph-home":"🏠 Бытовые","ph-chem":"🧪 Химические",
@@ -364,9 +368,50 @@
         function getM(f) { let d = parse(f); return Object.entries(d).reduce((a, [e, c]) => a + (PT[e] || 0) * c, 0); }
 
         function calcM() {
-            let v = document.getElementById('mIn').value;
-            let m = getM(v);
-            document.getElementById('mRes').innerHTML = m > 0 ? `<b>M(${v}) = ${m.toFixed(3)} г/моль</b>` : "...";
+            let v = document.getElementById('mIn').value.trim();
+            if(!v) { document.getElementById('mRes').innerHTML = "..."; return; }
+            
+            try {
+                let d = parse(v);
+                let totalM = 0;
+                let components = [];
+
+                // Считаем Mr
+                for (let element in d) {
+                    let atomMass = PT[element] || 0;
+                    let count = d[element];
+                    let partMass = atomMass * count;
+                    totalM += partMass;
+                    components.push({ name: element, mass: partMass });
+                }
+
+                if (totalM > 0) {
+                    let html = `<div style="font-size: 22px; margin-bottom: 15px;"><b>Mr(${v}) = ${totalM.toFixed(3)} г/моль</b></div>`;
+                    html += `<div style="display: flex; flex-direction: column; gap: 10px;">`;
+                    
+                    // Считаем доли %
+                    components.forEach(comp => {
+                        let percent = ((comp.mass / totalM) * 100).toFixed(2);
+                        html += `
+                            <div style="background: #f8fbff; padding: 10px; border-radius: 12px; border: 1px solid #e1e8f0;">
+                                <div style="display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 4px;">
+                                    <span>${comp.name}</span>
+                                    <span>${percent}%</span>
+                                </div>
+                                <div class="comp-bar-bg">
+                                    <div class="comp-bar-fill" style="width: ${percent}%"></div>
+                                </div>
+                            </div>`;
+                    });
+                    
+                    html += `</div>`;
+                    document.getElementById('mRes').innerHTML = html;
+                } else {
+                    document.getElementById('mRes').innerHTML = "Элемент табылмады";
+                }
+            } catch (e) {
+                document.getElementById('mRes').innerHTML = "Қате формат";
+            }
         }
 
         function runBal() {
@@ -436,6 +481,7 @@
             document.getElementById('oRes').innerHTML = h || "...";
         }
 
+            
         window.onload = () => manualPH(7);
     </script>
 </body>
