@@ -54,7 +54,6 @@
         .nav-btn.active { background: var(--primary); color: white; }
         .nav-btn:active { transform: scale(0.95); }
 
-        /* 60 FPS Transitions */
         .container {
             display: none; 
             width: 90%; max-width: 850px;
@@ -98,7 +97,6 @@
             text-align: left; min-height: 60px;
         }
 
-        /* Home Content */
         .home-content { text-align: center; }
         .mendeleev-card {
             display: flex; flex-direction: column; align-items: center; margin: 30px 0;
@@ -118,12 +116,14 @@
         .badge { padding: 6px 12px; border-radius: 8px; color: white; font-size: 12px; font-weight: bold; }
         .ox { background: var(--danger); } .red { background: var(--accent); }
 
-        /* Composition Styles */
         .comp-row { display: flex; align-items: center; justify-content: space-between; margin: 8px 0; padding: 8px; background: #f0f7ff; border-radius: 10px; }
         .comp-bar-bg { flex-grow: 1; height: 8px; background: #e1e8f0; margin: 0 15px; border-radius: 4px; overflow: hidden; }
         .comp-bar-fill { height: 100%; background: var(--accent); transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
         .comp-label { font-weight: bold; min-width: 35px; }
         .comp-val { font-size: 13px; color: #555; min-width: 100px; text-align: right; }
+        
+        .rxn-info { margin-top: 15px; padding: 12px; background: #fffdf0; border-radius: 12px; border: 1px dashed #f1c40f; color: #7f8c8d; font-size: 14px; }
+        .rxn-type-title { color: var(--primary); font-weight: bold; display: block; margin-bottom: 4px; font-size: 16px; }
     </style>
 </head>
 <body>
@@ -263,23 +263,18 @@
             manualPH(document.getElementById('ph-slider').value);
         }
 
-        // Optimized Smooth Page Switching
         function showPage(id, btn) {
             const currentActive = document.querySelector('.container.active-page');
             const nextTarget = document.getElementById(id);
-            
             if (currentActive === nextTarget) return;
-
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-
             if (currentActive) {
                 currentActive.style.opacity = '0';
                 currentActive.style.transform = 'translateY(-20px) scale(0.98)';
                 setTimeout(() => {
                     currentActive.classList.remove('active-page');
                     currentActive.style.display = 'none';
-                    
                     startEnterAnimation(nextTarget);
                 }, 400);
             } else {
@@ -291,36 +286,26 @@
             el.style.display = 'block';
             el.style.opacity = '0';
             el.style.transform = 'translateY(20px) scale(0.98)';
-            
-            // Force reflow
             void el.offsetWidth;
-            
             el.classList.add('active-page');
             el.style.opacity = '1';
             el.style.transform = 'translateY(0) scale(1)';
         }
 
-        // 60 FPS Smooth Slider Animation
         let animationFrame = null;
         function updatePH(targetVal, key) {
             if (animationFrame) cancelAnimationFrame(animationFrame);
-            
             const slider = document.getElementById('ph-slider');
             const startVal = parseFloat(slider.value);
-            const duration = 500; // 0.5 seconds
+            const duration = 500;
             const startTime = performance.now();
-
             function animate(currentTime) {
                 const elapsed = currentTime - startTime;
                 const progress = Math.min(elapsed / duration, 1);
-                
-                // Ease out function for smoothness
                 const easedProgress = 1 - Math.pow(1 - progress, 3);
-                
                 const currentVal = startVal + (targetVal - startVal) * easedProgress;
                 slider.value = currentVal;
                 manualPH(currentVal);
-
                 if (progress < 1) {
                     animationFrame = requestAnimationFrame(animate);
                 } else if (key) {
@@ -337,11 +322,9 @@
             if(val < 7) { r = 255; g = Math.round(255 * val/7); b = 0; }
             else { r = Math.round(255 * (14-val)/7); g = Math.round(255 * (14-val)/7); b = 255; }
             document.getElementById('ph-num').style.color = `rgb(${r},${g},${b})`;
-            
             document.getElementById('ind-lak').style.backgroundColor = val < 6 ? '#e74c3c' : (val > 8 ? '#3498db' : '#9b59b6');
             document.getElementById('ind-met').style.backgroundColor = val < 4 ? '#ff4d4d' : '#f1c40f';
             document.getElementById('ind-fen').style.backgroundColor = val < 9 ? '#bdc3c7' : '#e84393';
-            
             let st = val < 3 ? (curLang==='kk'?'КҮШТІ ҚЫШҚЫЛ':'СИЛЬНАЯ КИСЛОТА') : 
                      val < 6 ? (curLang==='kk'?'ҚЫШҚЫЛ':'КИСЛОТА') : 
                      val <= 7.5 ? (curLang==='kk'?'НЕЙТРАЛДЫ':'НЕЙТРАЛЬНО') : 
@@ -350,7 +333,6 @@
             document.getElementById('ph-status').style.color = `rgb(${r},${g},${b})`;
         }
 
-        // Mass Logic
         function parse(f) {
             let mult = (f.match(/^(\d+)/) || [1, 1])[1];
             let s = f.replace(/^\d+/, ''), i = 0;
@@ -373,13 +355,10 @@
         function calcM() {
             let v = document.getElementById('mIn').value.trim();
             if (!v) { document.getElementById('mRes').innerHTML = "..."; return; }
-            
             try {
                 let d = parse(v);
                 let totalM = 0;
                 let components = [];
-
-                // Используем твою систему счета массы
                 for (let e in d) {
                     let atomMass = PT[e] || 0;
                     if (atomMass === 0) throw "Error";
@@ -388,25 +367,13 @@
                     totalM += weight;
                     components.push({ name: e, weight: weight, count: count });
                 }
-
                 if (totalM > 0) {
                     let html = `<div style="font-size: 1.2em; margin-bottom: 15px;"><b>Mr(${v}) = ${totalM.toFixed(3)} г/моль</b></div>`;
                     html += `<div style="border-top: 1px solid #eee; padding-top: 10px;">`;
-                    
                     components.forEach(comp => {
                         let percentage = ((comp.weight / totalM) * 100).toFixed(2);
-                        html += `
-                            <div class="comp-row">
-                                <div class="comp-label">${comp.name}</div>
-                                <div class="comp-bar-bg">
-                                    <div class="comp-bar-fill" style="width: ${percentage}%"></div>
-                                </div>
-                                <div class="comp-val">
-                                    <b>${percentage}%</b> (${comp.weight.toFixed(2)} г)
-                                </div>
-                            </div>`;
+                        html += `<div class="comp-row"><div class="comp-label">${comp.name}</div><div class="comp-bar-bg"><div class="comp-bar-fill" style="width: ${percentage}%"></div></div><div class="comp-val"><b>${percentage}%</b> (${comp.weight.toFixed(2)} г)</div></div>`;
                     });
-                    
                     html += `</div>`;
                     document.getElementById('mRes').innerHTML = html;
                 }
@@ -417,18 +384,51 @@
 
         function runBal() {
             let inp = document.getElementById('rIn').value.replace(/\s+/g, '');
+            if (!inp.includes('=')) return;
             let [l, r] = inp.split('=');
             let lhs = l.split('+'), rhs = r.split('+'), comps = [...lhs, ...rhs];
             let els = Array.from(new Set(comps.flatMap(c => Object.keys(parse(c)))));
             let matrix = els.map(e => comps.map((c, j) => (parse(c)[e] || 0) * (j < lhs.length ? 1 : -1)));
             matrix.push(comps.map((_, j) => j === 0 ? 1 : 0));
             let b = new Array(els.length).fill(0); b.push(1);
-            let x = math.lusolve(matrix, b).map(v => Math.abs(v[0]));
-            let f = 1; while(!x.every(v => Math.abs(Math.round(v*f) - v*f) < 0.001)) f++;
-            let res = x.map(v => Math.round(v*f));
-            let oL = [], oR = [];
-            res.forEach((c, i) => { let s = (c===1?'':c) + comps[i]; if(i < lhs.length) oL.push(s); else oR.push(s); });
-            document.getElementById('rRes').innerHTML = `<b>${oL.join(' + ')} = ${oR.join(' + ')}</b>`;
+            
+            try {
+                let x = math.lusolve(matrix, b).map(v => Math.abs(v[0]));
+                let f = 1; while(!x.every(v => Math.abs(Math.round(v*f) - v*f) < 0.001) && f < 100) f++;
+                let res = x.map(v => Math.round(v*f));
+                let oL = [], oR = [];
+                res.forEach((c, i) => { let s = (c===1?'':c) + comps[i]; if(i < lhs.length) oL.push(s); else oR.push(s); });
+                
+                // Определение типа реакции
+                let typeKey = "", descKey = "";
+                let nL = lhs.length, nR = rhs.length;
+                
+                if (nL >= 2 && nR === 1) {
+                    typeKey = curLang === 'kk' ? "Қосылу реакциясы" : "Реакция соединения";
+                    descKey = curLang === 'kk' ? "Екі немесе бірнеше заттың бірігіп, бір күрделі затқа айналуы." : "Два или более веществ объединяются в одно сложное вещество.";
+                } else if (nL === 1 && nR >= 2) {
+                    typeKey = curLang === 'kk' ? "Айырылу реакциясы" : "Реакция разложения";
+                    descKey = curLang === 'kk' ? "Бір күрделі заттың бірнеше жай немесе күрделі заттарға ыдырауы." : "Одно сложное вещество распадается на несколько простых или сложных веществ.";
+                } else if (nL === 2 && nR === 2) {
+                    let isSimpleL = lhs.some(c => Object.keys(parse(c)).length === 1);
+                    let isSimpleR = rhs.some(c => Object.keys(parse(c)).length === 1);
+                    if (isSimpleL && isSimpleR) {
+                        typeKey = curLang === 'kk' ? "Орын басу реакциясы" : "Реакция замещения";
+                        descKey = curLang === 'kk' ? "Жай зат күрделі заттың құрамындағы бір элемент атомының орнын басуы." : "Атомы простого вещества замещают атомы одного из элементов в сложном веществе.";
+                    } else {
+                        typeKey = curLang === 'kk' ? "Алмасу реакциясы" : "Реакция обмена";
+                        descKey = curLang === 'kk' ? "Екі күрделі заттың құрамдас бөліктерінің (иондарының) алмасуы." : "Два сложных вещества обмениваются своими составными частями.";
+                    }
+                }
+
+                let finalHTML = `<b>${oL.join(' + ')} = ${oR.join(' + ')}</b>`;
+                if(typeKey) {
+                    finalHTML += `<div class="rxn-info"><span class="rxn-type-title">${typeKey}</span>${descKey}</div>`;
+                }
+                document.getElementById('rRes').innerHTML = finalHTML;
+            } catch(e) {
+                document.getElementById('rRes').innerHTML = "Қате: Теңдеуді тексеріңіз";
+            }
         }
 
         function prepS() {
@@ -448,7 +448,6 @@
             let Mk = getM(comps[kI].replace(/^\d+/, ''));
             let nk = type==='m' ? val/Mk : (type==='V' ? val/22.4 : val);
             let n1 = nk / coeffs[kI];
-
             let html = `<h3>${dict[curLang].sol}</h3>`;
             comps.forEach((c, i) => {
                 if(i !== kI) {
@@ -481,7 +480,6 @@
             });
             document.getElementById('oRes').innerHTML = h || "...";
         }
-
         window.onload = () => manualPH(7);
     </script>
 </body>
