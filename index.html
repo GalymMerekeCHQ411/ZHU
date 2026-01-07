@@ -118,9 +118,12 @@
         .badge { padding: 6px 12px; border-radius: 8px; color: white; font-size: 12px; font-weight: bold; }
         .ox { background: var(--danger); } .red { background: var(--accent); }
 
-        /* Composition Bars */
-        .comp-bar-bg { width: 100%; height: 8px; background: #e1e8f0; border-radius: 4px; overflow: hidden; margin-top: 5px; }
+        /* Composition Styles */
+        .comp-row { display: flex; align-items: center; justify-content: space-between; margin: 8px 0; padding: 8px; background: #f0f7ff; border-radius: 10px; }
+        .comp-bar-bg { flex-grow: 1; height: 8px; background: #e1e8f0; margin: 0 15px; border-radius: 4px; overflow: hidden; }
         .comp-bar-fill { height: 100%; background: var(--accent); transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .comp-label { font-weight: bold; min-width: 35px; }
+        .comp-val { font-size: 13px; color: #555; min-width: 100px; text-align: right; }
     </style>
 </head>
 <body>
@@ -185,7 +188,7 @@
 
     <div id="mass" class="container">
         <h2 data-key="mass-title">⚖️ Молярлық масса және құрам</h2>
-        <input type="text" id="mIn" placeholder="Мысалы: H2SO4" oninput="calcM()">
+        <input type="text" id="mIn" placeholder="Мысалы: H2O немесе KMnO4" oninput="calcM()">
         <div id="mRes" class="result">...</div>
     </div>
 
@@ -369,48 +372,46 @@
 
         function calcM() {
             let v = document.getElementById('mIn').value.trim();
-            if(!v) { document.getElementById('mRes').innerHTML = "..."; return; }
+            if (!v) { document.getElementById('mRes').innerHTML = "..."; return; }
             
             try {
                 let d = parse(v);
                 let totalM = 0;
                 let components = [];
 
-                // Считаем Mr
-                for (let element in d) {
-                    let atomMass = PT[element] || 0;
-                    let count = d[element];
-                    let partMass = atomMass * count;
-                    totalM += partMass;
-                    components.push({ name: element, mass: partMass });
+                // Используем твою систему счета массы
+                for (let e in d) {
+                    let atomMass = PT[e] || 0;
+                    if (atomMass === 0) throw "Error";
+                    let count = d[e];
+                    let weight = atomMass * count;
+                    totalM += weight;
+                    components.push({ name: e, weight: weight, count: count });
                 }
 
                 if (totalM > 0) {
-                    let html = `<div style="font-size: 22px; margin-bottom: 15px;"><b>Mr(${v}) = ${totalM.toFixed(3)} г/моль</b></div>`;
-                    html += `<div style="display: flex; flex-direction: column; gap: 10px;">`;
+                    let html = `<div style="font-size: 1.2em; margin-bottom: 15px;"><b>Mr(${v}) = ${totalM.toFixed(3)} г/моль</b></div>`;
+                    html += `<div style="border-top: 1px solid #eee; padding-top: 10px;">`;
                     
-                    // Считаем доли %
                     components.forEach(comp => {
-                        let percent = ((comp.mass / totalM) * 100).toFixed(2);
+                        let percentage = ((comp.weight / totalM) * 100).toFixed(2);
                         html += `
-                            <div style="background: #f8fbff; padding: 10px; border-radius: 12px; border: 1px solid #e1e8f0;">
-                                <div style="display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 4px;">
-                                    <span>${comp.name}</span>
-                                    <span>${percent}%</span>
-                                </div>
+                            <div class="comp-row">
+                                <div class="comp-label">${comp.name}</div>
                                 <div class="comp-bar-bg">
-                                    <div class="comp-bar-fill" style="width: ${percent}%"></div>
+                                    <div class="comp-bar-fill" style="width: ${percentage}%"></div>
+                                </div>
+                                <div class="comp-val">
+                                    <b>${percentage}%</b> (${comp.weight.toFixed(2)} г)
                                 </div>
                             </div>`;
                     });
                     
                     html += `</div>`;
                     document.getElementById('mRes').innerHTML = html;
-                } else {
-                    document.getElementById('mRes').innerHTML = "Элемент табылмады";
                 }
             } catch (e) {
-                document.getElementById('mRes').innerHTML = "Қате формат";
+                document.getElementById('mRes').innerHTML = `<span style="color:var(--danger)">Формуланы тексеріңіз / Проверьте формулу</span>`;
             }
         }
 
@@ -481,7 +482,6 @@
             document.getElementById('oRes').innerHTML = h || "...";
         }
 
-            
         window.onload = () => manualPH(7);
     </script>
 </body>
