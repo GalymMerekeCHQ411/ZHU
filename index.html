@@ -29,6 +29,7 @@
             overflow-x: hidden;
         }
 
+        /* Тіл ауыстырғыш */
         .lang-switcher {
             position: fixed; top: 20px; right: 20px; z-index: 2000;
             background: white; padding: 8px 18px; border-radius: 30px;
@@ -53,6 +54,7 @@
         .nav-btn.active { background: var(--primary); color: white; }
         .nav-btn:active { transform: scale(0.95); }
 
+        /* 60 FPS Transitions */
         .container {
             display: none; 
             width: 90%; max-width: 850px;
@@ -65,8 +67,13 @@
             will-change: transform, opacity;
         }
 
-        .active-page { display: block; opacity: 1; transform: translateY(0) scale(1); }
+        .active-page { 
+            display: block; 
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
 
+        /* pH Simulator Styles */
         .ph-grid { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 20px; margin-top: 20px; }
         .item-list { display: flex; flex-direction: column; gap: 12px; }
         .item-card {
@@ -75,23 +82,48 @@
             border: 2px solid transparent; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
         .item-card:hover { transform: translateY(-3px); border-color: var(--accent); }
+        .item-card span { display: block; font-size: 13px; margin-top: 5px; font-weight: 700; }
         .ph-display { text-align: center; background: #fff; padding: 25px; border-radius: 25px; border: 1px solid #eee; }
-        #ph-slider { width: 100%; height: 15px; border-radius: 10px; appearance: none; background: linear-gradient(to right, #ff0000, #ffa500, #ffff00, #008000, #00ffff, #0000ff, #800080); outline: none; margin: 25px 0; }
+        #ph-slider {
+            width: 100%; height: 15px; border-radius: 10px; appearance: none;
+            background: linear-gradient(to right, #ff0000, #ffa500, #ffff00, #008000, #00ffff, #0000ff, #800080);
+            outline: none; margin: 25px 0;
+        }
         .ph-value { font-size: 54px; font-weight: 900; margin: 10px 0; transition: color 0.3s; }
         .indicator-row { display: flex; justify-content: space-around; gap: 8px; margin-top: 25px; }
-        .ind-box { padding: 10px; border-radius: 10px; color: white; font-size: 11px; width: 32%; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); }
-        .explanation { margin-top: 20px; padding: 18px; background: #f8fbff; border-radius: 15px; font-size: 14px; line-height: 1.5; border-left: 6px solid var(--primary); text-align: left; }
+        .ind-box { padding: 10px; border-radius: 10px; color: white; font-size: 11px; width: 32%; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); transition: background 0.3s; }
+        .explanation {
+            margin-top: 20px; padding: 18px; background: #f8fbff;
+            border-radius: 15px; font-size: 14px; line-height: 1.5; border-left: 6px solid var(--primary);
+            text-align: left; min-height: 60px;
+        }
+
+        /* Home Content */
+        .home-content { text-align: center; }
+        .mendeleev-card {
+            display: flex; flex-direction: column; align-items: center; margin: 30px 0;
+            padding: 25px; background: rgba(255,255,255,0.6); border-radius: 25px;
+            border: 1px solid rgba(26, 42, 108, 0.1);
+        }
+        .mendeleev-img { width: 220px; height: 280px; object-fit: cover; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.15); margin-bottom: 20px; }
+        .periodic-img { width: 100%; border-radius: 20px; margin-top: 25px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); border: 2px solid white; }
 
         input, select { padding: 15px; margin: 10px 0; border: 2px solid #e1e8f0; border-radius: 12px; font-size: 16px; width: 100%; box-sizing: border-box; background: white; transition: border-color 0.3s; }
-        .btn-solve { background: var(--primary); color: white; border: none; padding: 18px; width: 100%; border-radius: 15px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 15px; transition: 0.3s; }
-        .result { margin-top: 25px; padding: 25px; background: white; border-radius: 20px; border-left: 8px solid var(--accent); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        input:focus { border-color: var(--accent); outline: none; }
+        .btn-solve { background: var(--primary); color: white; border: none; padding: 18px; width: 100%; border-radius: 15px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 15px; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .btn-solve:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+        .btn-solve:active { transform: translateY(0); }
         
+        .result { margin-top: 25px; padding: 25px; background: white; border-radius: 20px; border-left: 8px solid var(--accent); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .badge { padding: 6px 12px; border-radius: 8px; color: white; font-size: 12px; font-weight: bold; }
+        .ox { background: var(--danger); } .red { background: var(--accent); }
+
+        /* Composition Styles */
         .comp-row { display: flex; align-items: center; justify-content: space-between; margin: 8px 0; padding: 8px; background: #f0f7ff; border-radius: 10px; }
         .comp-bar-bg { flex-grow: 1; height: 8px; background: #e1e8f0; margin: 0 15px; border-radius: 4px; overflow: hidden; }
-        .comp-bar-fill { height: 100%; background: var(--accent); transition: width 0.6s; }
-
-        /* Rxn Type Info */
-        .rxn-info { margin-top: 15px; padding: 12px; background: #eef9ff; border-radius: 12px; border: 1px dashed var(--accent); font-size: 14px; }
+        .comp-bar-fill { height: 100%; background: var(--accent); transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .comp-label { font-weight: bold; min-width: 35px; }
+        .comp-val { font-size: 13px; color: #555; min-width: 100px; text-align: right; }
     </style>
 </head>
 <body>
@@ -156,13 +188,13 @@
 
     <div id="mass" class="container">
         <h2 data-key="mass-title">⚖️ Молярлық масса және құрам</h2>
-        <input type="text" id="mIn" placeholder="H2O, KMnO4, [Cu(NH3)4]SO4..." oninput="calcM()">
+        <input type="text" id="mIn" placeholder="Мысалы: H2O немесе KMnO4" oninput="calcM()">
         <div id="mRes" class="result">...</div>
     </div>
 
     <div id="rxn" class="container">
         <h2 data-key="rxn-title">🧪 Реакцияларды теңестіру</h2>
-        <input type="text" id="rIn" placeholder="H2SO4 + KOH = K2SO4 + H2O">
+        <input type="text" id="rIn" placeholder="NaOH + HCl = NaCl + H2O">
         <button class="btn-solve" onclick="runBal()" data-key="btn-solve">Теңестіру</button>
         <div id="rRes" class="result">...</div>
     </div>
@@ -197,8 +229,7 @@
                 "redox-title":"⚡ Тотығу-тотықсыздану","btn-solve":"Теңестіру","btn-parse":"1. Талдау","btn-calc":"2. Есептеу",
                 "btn-redox":"Анықтау","given":"Берілгені:","sol":"Шешуі:","ans":"Жауабы:","ox":"Тотықтырғыш","red":"Тотықсыздандырғыш",
                 "ph-intro":"Затты таңдаңыз немесе ползунокты жылжытыңыз.","ph-home":"🏠 Тұрмыстық","ph-chem":"🧪 Химиялық",
-                "lemon":"Лимон","coffee":"Кофе","water":"Су","soap":"Сабын","hcl":"Тұз қышқылы","h2so4":"Күкірт қышқылы","nh3":"Аммиак","naoh":"Күйдіргіш натр",
-                "rxn-s":"Қосылу реакциясы","rxn-d":"Айырылу реакциясы","rxn-sr":"Орын басу реакциясы","rxn-dr":"Алмасу реакциясы","rxn-c":"Жану реакциясы"
+                "lemon":"Лимон","coffee":"Кофе","water":"Су","soap":"Сабын","hcl":"Тұз қышқылы","h2so4":"Күкірт қышқылы","nh3":"Аммиак","naoh":"Күйдіргіш натр"
             },
             ru: {
                 "nav-home":"Главная","nav-mass":"Масса и состав","nav-rxn":"Реакции","nav-stoch":"Задачи","nav-redox":"ОВР","nav-ph":"pH Среда",
@@ -207,8 +238,7 @@
                 "redox-title":"⚡ Анализ ОВР","btn-solve":"Уравнять","btn-parse":"1. Разобрать","btn-calc":"2. Рассчитать",
                 "btn-redox":"Определить","given":"Дано:","sol":"Решение:","ans":"Ответ:","ox":"Окислитель","red":"Восстановитель",
                 "ph-intro":"Выберите вещество или двигайте ползунок.","ph-home":"🏠 Бытовые","ph-chem":"🧪 Химические",
-                "lemon":"Лимон","coffee":"Кофе","water":"Вода","soap":"Мыло","hcl":"Соляная кислота","h2so4":"Серная кислота","nh3":"Аммиак","naoh":"Едкий натр",
-                "rxn-s":"Реакция соединения","rxn-d":"Реакция разложения","rxn-sr":"Реакция замещения","rxn-dr":"Реакция обмена","rxn-c":"Реакция горения"
+                "lemon":"Лимон","coffee":"Кофе","water":"Вода","soap":"Мыло","hcl":"Соляная кислота","h2so4":"Серная кислота","nh3":"Аммиак","naoh":"Едкий натр"
             }
         };
 
@@ -233,73 +263,108 @@
             manualPH(document.getElementById('ph-slider').value);
         }
 
+        // Optimized Smooth Page Switching
         function showPage(id, btn) {
             const currentActive = document.querySelector('.container.active-page');
             const nextTarget = document.getElementById(id);
+            
             if (currentActive === nextTarget) return;
+
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
+
             if (currentActive) {
                 currentActive.style.opacity = '0';
                 currentActive.style.transform = 'translateY(-20px) scale(0.98)';
                 setTimeout(() => {
                     currentActive.classList.remove('active-page');
                     currentActive.style.display = 'none';
+                    
                     startEnterAnimation(nextTarget);
                 }, 400);
-            } else { startEnterAnimation(nextTarget); }
+            } else {
+                startEnterAnimation(nextTarget);
+            }
         }
 
         function startEnterAnimation(el) {
-            el.style.display = 'block'; el.style.opacity = '0'; el.style.transform = 'translateY(20px) scale(0.98)';
+            el.style.display = 'block';
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px) scale(0.98)';
+            
+            // Force reflow
             void el.offsetWidth;
-            el.classList.add('active-page'); el.style.opacity = '1'; el.style.transform = 'translateY(0) scale(1)';
+            
+            el.classList.add('active-page');
+            el.style.opacity = '1';
+            el.style.transform = 'translateY(0) scale(1)';
         }
 
+        // 60 FPS Smooth Slider Animation
         let animationFrame = null;
         function updatePH(targetVal, key) {
             if (animationFrame) cancelAnimationFrame(animationFrame);
+            
             const slider = document.getElementById('ph-slider');
             const startVal = parseFloat(slider.value);
-            const duration = 500; const startTime = performance.now();
+            const duration = 500; // 0.5 seconds
+            const startTime = performance.now();
+
             function animate(currentTime) {
                 const elapsed = currentTime - startTime;
                 const progress = Math.min(elapsed / duration, 1);
+                
+                // Ease out function for smoothness
                 const easedProgress = 1 - Math.pow(1 - progress, 3);
+                
                 const currentVal = startVal + (targetVal - startVal) * easedProgress;
-                slider.value = currentVal; manualPH(currentVal);
-                if (progress < 1) animationFrame = requestAnimationFrame(animate);
-                else if (key) document.getElementById('ph-exp').innerHTML = `<b>${phInfo[key][curLang]}</b>`;
+                slider.value = currentVal;
+                manualPH(currentVal);
+
+                if (progress < 1) {
+                    animationFrame = requestAnimationFrame(animate);
+                } else if (key) {
+                    document.getElementById('ph-exp').innerHTML = `<b>${phInfo[key][curLang]}</b>`;
+                }
             }
             animationFrame = requestAnimationFrame(animate);
         }
 
         function manualPH(val) {
-            val = parseFloat(val); document.getElementById('ph-num').innerText = val.toFixed(1);
+            val = parseFloat(val);
+            document.getElementById('ph-num').innerText = val.toFixed(1);
             let r, g, b;
             if(val < 7) { r = 255; g = Math.round(255 * val/7); b = 0; }
             else { r = Math.round(255 * (14-val)/7); g = Math.round(255 * (14-val)/7); b = 255; }
             document.getElementById('ph-num').style.color = `rgb(${r},${g},${b})`;
+            
             document.getElementById('ind-lak').style.backgroundColor = val < 6 ? '#e74c3c' : (val > 8 ? '#3498db' : '#9b59b6');
             document.getElementById('ind-met').style.backgroundColor = val < 4 ? '#ff4d4d' : '#f1c40f';
             document.getElementById('ind-fen').style.backgroundColor = val < 9 ? '#bdc3c7' : '#e84393';
-            let st = val < 3 ? (curLang==='kk'?'КҮШТІ ҚЫШҚЫЛ':'СИЛЬНАЯ КИСЛОТА') : val < 6 ? (curLang==='kk'?'ҚЫШҚЫЛ':'КИСЛОТА') : val <= 7.5 ? (curLang==='kk'?'НЕЙТРАЛДЫ':'НЕЙТРАЛЬНО') : val < 11 ? (curLang==='kk'?'СІЛТІ':'ЩЕЛОЧЬ') : (curLang==='kk'?'КҮШТІ СІЛТІ':'СИЛЬНАЯ ЩЕЛОЧЬ');
+            
+            let st = val < 3 ? (curLang==='kk'?'КҮШТІ ҚЫШҚЫЛ':'СИЛЬНАЯ КИСЛОТА') : 
+                     val < 6 ? (curLang==='kk'?'ҚЫШҚЫЛ':'КИСЛОТА') : 
+                     val <= 7.5 ? (curLang==='kk'?'НЕЙТРАЛДЫ':'НЕЙТРАЛЬНО') : 
+                     val < 11 ? (curLang==='kk'?'СІЛТІ':'ЩЕЛОЧЬ') : (curLang==='kk'?'КҮШТІ СІЛТІ':'СИЛЬНАЯ ЩЕЛОЧЬ');
             document.getElementById('ph-status').innerText = (curLang==='kk'?'ОРТА: ':'СРЕДА: ') + st;
             document.getElementById('ph-status').style.color = `rgb(${r},${g},${b})`;
         }
 
-        // Универсальный парсер формул (поддерживает (), [], длинную органику)
+        // Mass Logic
         function parse(f) {
             let mult = (f.match(/^(\d+)/) || [1, 1])[1];
-            let s = f.replace(/^\d+/, '').replace(/\[/g, '(').replace(/\]/g, ')');
-            let i = 0;
+            let s = f.replace(/^\d+/, ''), i = 0;
             const p = () => {
                 let d = {};
-                while(i < s.length && s[i] !== ')') {
-                    if(s[i] === '(') {
-                        i++; let n = p(); i++;
-                        let c = parseInt(s.slice(i).match(/^\d+/) || 1);
-                        for(let e in n) d[e] = (d[e]||0) + n[e]*c;
+                while(i < s.length && s[i] !== ')' && s[i] !== ']') {
+                    if(s[i] === '(' || s[i] === '[') { 
+                        let open = s[i];
+                        let close = open === '(' ? ')' : ']';
+                        i++; 
+                        let n = p(); 
+                        i++; 
+                        let c = parseInt((s.slice(i).match(/^\d+/) || [1])[0]); 
+                        for(let e in n) d[e] = (d[e]||0) + n[e]*c; 
                         i += (s.slice(i).match(/^\d+/) || [""])[0].length;
                     } else {
                         let m = s.slice(i).match(/^([A-Z][a-z]?)([0-9]*)/);
@@ -315,78 +380,114 @@
         function calcM() {
             let v = document.getElementById('mIn').value.trim();
             if (!v) { document.getElementById('mRes').innerHTML = "..."; return; }
-            try {
-                let d = parse(v); let totalM = 0; let components = [];
-                for (let e in d) {
-                    let atomMass = PT[e] || 0; if (atomMass === 0) throw "Error";
-                    let count = d[e]; let weight = atomMass * count;
-                    totalM += weight; components.push({ name: e, weight: weight });
-                }
-                if (totalM > 0) {
-                    let html = `<div style="font-size: 1.2em; margin-bottom: 15px;"><b>Mr(${v}) = ${totalM.toFixed(3)} г/моль</b></div><div style="border-top: 1px solid #eee; padding-top: 10px;">`;
-                    components.forEach(comp => {
-                        let percentage = ((comp.weight / totalM) * 100).toFixed(2);
-                        html += `<div class="comp-row"><div class="comp-label">${comp.name}</div><div class="comp-bar-bg"><div class="comp-bar-fill" style="width: ${percentage}%"></div></div><div class="comp-val"><b>${percentage}%</b> (${comp.weight.toFixed(2)} г)</div></div>`;
-                    });
-                    document.getElementById('mRes').innerHTML = html + `</div>`;
-                }
-            } catch (e) { document.getElementById('mRes').innerHTML = `<span style="color:var(--danger)">Формуланы тексеріңіз / Проверьте формулу</span>`; }
-        }
-
-        // --- Улучшенное уравнивание и определение типа ---
-        function runBal() {
-            let inp = document.getElementById('rIn').value.replace(/\s+/g, '').replace(/→/g, '=');
-            if (!inp.includes('=')) return;
-            let [l, r] = inp.split('=');
-            let lhs = l.split('+'), rhs = r.split('+'), comps = [...lhs, ...rhs];
             
             try {
+                let d = parse(v);
+                let totalM = 0;
+                let components = [];
+
+                // Используем твою систему счета массы
+                for (let e in d) {
+                    let atomMass = PT[e] || 0;
+                    if (atomMass === 0) throw "Error";
+                    let count = d[e];
+                    let weight = atomMass * count;
+                    totalM += weight;
+                    components.push({ name: e, weight: weight, count: count });
+                }
+
+                if (totalM > 0) {
+                    let html = `<div style="font-size: 1.2em; margin-bottom: 15px;"><b>Mr(${v}) = ${totalM.toFixed(3)} г/моль</b></div>`;
+                    html += `<div style="border-top: 1px solid #eee; padding-top: 10px;">`;
+                    
+                    components.forEach(comp => {
+                        let percentage = ((comp.weight / totalM) * 100).toFixed(2);
+                        html += `
+                            <div class="comp-row">
+                                <div class="comp-label">${comp.name}</div>
+                                <div class="comp-bar-bg">
+                                    <div class="comp-bar-fill" style="width: ${percentage}%"></div>
+                                </div>
+                                <div class="comp-val">
+                                    <b>${percentage}%</b> (${comp.weight.toFixed(2)} г)
+                                </div>
+                            </div>`;
+                    });
+                    
+                    html += `</div>`;
+                    document.getElementById('mRes').innerHTML = html;
+                }
+            } catch (e) {
+                document.getElementById('mRes').innerHTML = `<span style="color:var(--danger)">Формуланы тексеріңіз / Проверьте формулу</span>`;
+            }
+        }
+
+        function runBal() {
+            let inp = document.getElementById('rIn').value.replace(/\s+/g, '');
+            if (!inp.includes('=')) return;
+
+            try {
+                let [l, r] = inp.split('=');
+                let lhs = l.split('+'), rhs = r.split('+'), comps = [...lhs, ...rhs];
                 let els = Array.from(new Set(comps.flatMap(c => Object.keys(parse(c)))));
+                
                 let matrix = els.map(e => comps.map((c, j) => (parse(c)[e] || 0) * (j < lhs.length ? 1 : -1)));
                 matrix.push(comps.map((_, j) => j === 0 ? 1 : 0));
                 let b = new Array(els.length).fill(0); b.push(1);
                 
                 let x = math.lusolve(matrix, b).map(v => Math.abs(v[0]));
-                let f = 1; while(!x.every(v => Math.abs(Math.round(v*f) - v*f) < 0.0001) && f < 500) f++;
+                let f = 1; while(!x.every(v => Math.abs(Math.round(v*f) - v*f) < 0.001) && f < 1000) f++;
                 let res = x.map(v => Math.round(v*f));
                 
                 let oL = [], oR = [];
-                res.forEach((c, i) => { let s = (c===1?'':c) + comps[i]; if(i < lhs.length) oL.push(s); else oR.push(s); });
-                
-                // Определение типа реакции
-                let typeKey = ""; let desc = "";
+                res.forEach((c, i) => { 
+                    let s = (c===1?'':c) + comps[i]; 
+                    if(i < lhs.length) oL.push(s); else oR.push(s); 
+                });
+
+                // Классификация типа реакции
+                let typeKK = "", typeRU = "", descKK = "", descRU = "";
                 let nL = lhs.length, nR = rhs.length;
-                let lSimple = lhs.filter(c => Object.keys(parse(c)).length === 1);
-                let rSimple = rhs.filter(c => Object.keys(parse(c)).length === 1);
 
-                if (nL >= 2 && nR === 1) { 
-                    typeKey = "rxn-s"; 
-                    desc = curLang === 'kk' ? "Бірнеше заттан бір күрделі зат түзілді." : "Из нескольких веществ образуется одно сложное.";
-                } else if (nL === 1 && nR >= 2) { 
-                    typeKey = "rxn-d"; 
-                    desc = curLang === 'kk' ? "Бір күрделі зат бірнеше затқа ыдырады." : "Одно сложное вещество распадается на несколько.";
-                } else if (lSimple.length > 0 && nL >= 2 && nR >= 2) { 
-                    typeKey = "rxn-sr"; 
-                    desc = curLang === 'kk' ? "Жай зат күрделі заттың құрамындағы бір элементті ығыстырды." : "Простое вещество замещает атом в сложном.";
-                } else { 
-                    typeKey = "rxn-dr"; 
-                    desc = curLang === 'kk' ? "Екі күрделі зат құрамдас бөліктерімен алмасты." : "Два сложных вещества обмениваются своими составными частями.";
+                const isSimple = (f) => Object.keys(parse(f)).length === 1;
+
+                if (nL >= 2 && nR === 1) {
+                    typeKK = "Қосылу"; typeRU = "Соединения";
+                    descKK = "Екі немесе одан да көп заттардан бір күрделі зат түзіледі.";
+                    descRU = "Из двух или более веществ образуется одно сложное вещество.";
+                } else if (nL === 1 && nR >= 2) {
+                    typeKK = "Айырылу"; typeRU = "Разложения";
+                    descKK = "Бір күрделі зат бірнеше жай немесе күрделі заттарға ыдырайды.";
+                    descRU = "Одно сложное вещество распадается на несколько простых или сложных веществ.";
+                } else if (nL === 2 && nR === 2) {
+                    let simL = lhs.filter(isSimple).length;
+                    let simR = rhs.filter(isSimple).length;
+                    if (simL === 1 && simR === 1) {
+                        typeKK = "Орын басу"; typeRU = "Замещения";
+                        descKK = "Жай заттың атомдары күрделі заттың құрамындағы бір элемент атомының орнын басады.";
+                        descRU = "Атомы простого вещества замещают атомы одного из элементов в сложном веществе.";
+                    } else {
+                        typeKK = "Алмасу"; typeRU = "Обмена";
+                        descKK = "Екі күрделі зат құрамдас бөліктерімен алмасады.";
+                        descRU = "Два сложных вещества обмениваются своими составными частями.";
+                    }
+                } else {
+                    typeKK = "Күрделі реакция (Көп сатылы)"; typeRU = "Сложная реакция (Многокомпонентная)";
+                    descKK = "Бұл реакция бірнеше реагенттер мен өнімдерден тұратын күрделі процесс.";
+                    descRU = "Эта реакция является сложным процессом с участием множества реагентов и продуктов.";
                 }
 
-                // Специальный случай: Горение органики
-                if (lhs.join().includes('O2') && (rhs.join().includes('CO2') || rhs.join().includes('H2O'))) {
-                    typeKey = "rxn-c";
-                    desc = curLang === 'kk' ? "Заттың оттегімен әрекеттесіп, жылу бөлуі." : "Взаимодействие вещества с кислородом с выделением тепла.";
-                }
+                let typeStr = curLang === 'kk' ? typeKK : typeRU;
+                let descStr = curLang === 'kk' ? descKK : descRU;
 
                 document.getElementById('rRes').innerHTML = `
-                    <div style="font-size:1.1em; color:var(--primary)"><b>${oL.join(' + ')} = ${oR.join(' + ')}</b></div>
-                    <div class="rxn-info">
-                        <b>${dict[curLang][typeKey]}</b><br>
-                        <small>${desc}</small>
-                    </div>
+                    <div style="font-size: 1.1em; margin-bottom: 10px;"><b>${oL.join(' + ')} = ${oR.join(' + ')}</b></div>
+                    <div style="color: var(--primary); font-weight: bold;">${curLang==='kk'?'Типі:':'Тип:'} ${typeStr}</div>
+                    <div style="font-size: 0.9em; margin-top: 5px; opacity: 0.8;">${descStr}</div>
                 `;
-            } catch (e) { document.getElementById('rRes').innerHTML = "Қате: Реакцияны теңестіру мүмкін емес."; }
+            } catch(e) {
+                document.getElementById('rRes').innerHTML = `<span style="color:var(--danger)">Қате: Теңдеуді тексеріңіз (Формат: A + B = C)</span>`;
+            }
         }
 
         function prepS() {
@@ -406,10 +507,12 @@
             let Mk = getM(comps[kI].replace(/^\d+/, ''));
             let nk = type==='m' ? val/Mk : (type==='V' ? val/22.4 : val);
             let n1 = nk / coeffs[kI];
+
             let html = `<h3>${dict[curLang].sol}</h3>`;
             comps.forEach((c, i) => {
                 if(i !== kI) {
-                    let tN = n1 * coeffs[i]; let out = document.getElementById('t'+i).value;
+                    let tN = n1 * coeffs[i];
+                    let out = document.getElementById('t'+i).value;
                     let Mt = getM(c.replace(/^\d+/, ''));
                     let res = out==='m' ? (tN*Mt).toFixed(2)+' г' : (out==='V' ? (tN*22.4).toFixed(2)+' л' : tN.toFixed(3)+' моль');
                     html += `<div class="result"><b>${c}:</b><br>n = (${nk.toFixed(4)} * ${coeffs[i]}) / ${coeffs[kI]} = ${tN.toFixed(4)} моль<br><b>${dict[curLang].ans} ${res}</b></div>`;
