@@ -229,7 +229,8 @@
                 "redox-title":"⚡ Тотығу-тотықсыздану","btn-solve":"Теңестіру","btn-parse":"1. Талдау","btn-calc":"2. Есептеу",
                 "btn-redox":"Анықтау","given":"Берілгені:","sol":"Шешуі:","ans":"Жауабы:","ox":"Тотықтырғыш","red":"Тотықсыздандырғыш",
                 "ph-intro":"Затты таңдаңыз немесе ползунокты жылжытыңыз.","ph-home":"🏠 Тұрмыстық","ph-chem":"🧪 Химиялық",
-                "lemon":"Лимон","coffee":"Кофе","water":"Су","soap":"Сабын","hcl":"Тұз қышқылы","h2so4":"Күкірт қышқылы","nh3":"Аммиак","naoh":"Күйдіргіш натр"
+                "lemon":"Лимон","coffee":"Кофе","water":"Су","soap":"Сабын","hcl":"Тұз қышқылы","h2so4":"Күкірт қышқылы","nh3":"Аммиак","naoh":"Күйдіргіш натр",
+                "err-eq": "Қате: Теңдеуді тексеріңіз (Формат: A + B = C)"
             },
             ru: {
                 "nav-home":"Главная","nav-mass":"Масса и состав","nav-rxn":"Реакции","nav-stoch":"Задачи","nav-redox":"ОВР","nav-ph":"pH Среда",
@@ -238,7 +239,8 @@
                 "redox-title":"⚡ Анализ ОВР","btn-solve":"Уравнять","btn-parse":"1. Разобрать","btn-calc":"2. Рассчитать",
                 "btn-redox":"Определить","given":"Дано:","sol":"Решение:","ans":"Ответ:","ox":"Окислитель","red":"Восстановитель",
                 "ph-intro":"Выберите вещество или двигайте ползунок.","ph-home":"🏠 Бытовые","ph-chem":"🧪 Химические",
-                "lemon":"Лимон","coffee":"Кофе","water":"Вода","soap":"Мыло","hcl":"Соляная кислота","h2so4":"Серная кислота","nh3":"Аммиак","naoh":"Едкий натр"
+                "lemon":"Лимон","coffee":"Кофе","water":"Вода","soap":"Мыло","hcl":"Соляная кислота","h2so4":"Серная кислота","nh3":"Аммиак","naoh":"Едкий натр",
+                "err-eq": "Ошибка: Проверьте уравнение (Формат: A + B = C)"
             }
         };
 
@@ -424,19 +426,39 @@
 
         function runBal() {
             let inp = document.getElementById('rIn').value.replace(/\s+/g, '');
-            if (!inp.includes('=')) return;
+            if (!inp.includes('=')) {
+                document.getElementById('rRes').innerHTML = `<span style="color:var(--danger)">${dict[curLang]['err-eq']}</span>`;
+                return;
+            }
 
             try {
                 let [l, r] = inp.split('=');
                 let lhs = l.split('+'), rhs = r.split('+'), comps = [...lhs, ...rhs];
                 let els = Array.from(new Set(comps.flatMap(c => Object.keys(parse(c)))));
                 
+                // Создаем матрицу. Для n уравнений с m неизвестными (m = число веществ)
+                // Если уравнений (элементов) меньше, чем веществ, система будет недоопределена, что нормально для реакций
                 let matrix = els.map(e => comps.map((c, j) => (parse(c)[e] || 0) * (j < lhs.length ? 1 : -1)));
-                matrix.push(comps.map((_, j) => j === 0 ? 1 : 0));
-                let b = new Array(els.length).fill(0); b.push(1);
                 
-                let x = math.lusolve(matrix, b).map(v => Math.abs(v[0]));
-                let f = 1; while(!x.every(v => Math.abs(Math.round(v*f) - v*f) < 0.0001) && f < 2000) f++;
+                // Добавляем условие для фиксации первого коэффициента (x0 = 1), чтобы решить систему
+                let constraint = comps.map((_, j) => j === 0 ? 1 : 0);
+                matrix.push(constraint);
+                
+                let b = new Array(els.length).fill(0); 
+                b.push(1);
+                
+                // Решаем систему методом наименьших квадратов или через QR, если lusolve не справляется с сингулярностью
+                let x;
+                try {
+                    x = math.lusolve(matrix, b).map(v => Math.abs(v[0]));
+                } catch(e) {
+                    // Фоллбэк на решение через псевдообратную матрицу для вырожденных случаев
+                    x = math.multiply(math.pinv(matrix), b).map(v => Math.abs(v));
+                }
+                
+                // Поиск общего множителя для целых коэффициентов
+                let f = 1; 
+                while(!x.every(v => Math.abs(Math.round(v*f) - v*f) < 0.001) && f < 1000) f++;
                 let res = x.map(v => Math.round(v*f));
                 
                 let oL = [], oR = [];
@@ -486,7 +508,7 @@
                     <div style="font-size: 0.9em; margin-top: 5px; opacity: 0.8;">${descStr}</div>
                 `;
             } catch(e) {
-                document.getElementById('rRes').innerHTML = `<span style="color:var(--danger)">Қате: Теңдеуді тексеріңіз (Формат: A + B = C)</span>`;
+                document.getElementById('rRes').innerHTML = `<span style="color:var(--danger)">${dict[curLang]['err-eq']}</span>`;
             }
         }
 
